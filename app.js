@@ -6,6 +6,9 @@ const app = express();
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json({
+    type: ['application/json', 'text/plain']
+}));
 app.set('view engine', 'ejs');
 
 const connection = mysql.createConnection({
@@ -28,7 +31,7 @@ connection.connect((err) => {
         console.log('Database created: ' + result);
     });
 
-    connection.query('CREATE TABLE IF NOT EXISTS todos (todo CHAR(255))', err => {
+    connection.query('CREATE TABLE IF NOT EXISTS todos (id INT AUTO_INCREMENT PRIMARY KEY, todo CHAR(255))', err => {
         if (err) throw err;
         console.log('Table created.');
     });
@@ -40,23 +43,33 @@ connection.connect((err) => {
 });
 
 app.route('/')
+
     .get((req, res) => {
         connection.query('SELECT * FROM todos', (err, results) => {
             if (err) throw err;
-            console.log('Query completed');
+            console.log(results);
+            console.log('Todos read from database');
             res.render('home', { results: results });
         });
     })
     .post((req, res) => {
         const todoItem = req.body.todo;
-        console.log(todoItem);
 
-        connection.query('INSERT INTO todos (todo) VALUES (?)', todoItem, (err, results) => {
+        connection.query('INSERT INTO todos (todo) VALUES (?)', todoItem, err => {
             if (err) throw err;
-            console.log('Query completed');
-            res.render('home', { results: results });
+            console.log('Todo inserted into database.');
+            res.redirect('/');
         });
-        res.redirect('/');
+    })
+    .delete((req, res) => {
+        const todo = req.body.todoItem;
+        console.log(res.headers);
+
+        connection.query('DELETE FROM todos WHERE todo=?', todo, err => {
+            if (err) throw err;
+            console.log('Todo deleted from database.');
+        });
+        res.redirect(303, '/');
     });
 
 // connection.end();

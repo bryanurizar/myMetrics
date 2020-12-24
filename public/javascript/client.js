@@ -1,11 +1,27 @@
 'use strict';
 
-let imgTags = document.getElementsByTagName('img');
+let todoItems = document.getElementsByClassName('todo-item');
 
-for (let i = 0; i < imgTags.length; i++) {
-    imgTags[i].addEventListener('click', e => {
-        console.log(e.target);
-        const index = Array.from(imgTags).indexOf(e.target);
-        console.log(index);
-    });
+for (let i = 0; i < todoItems.length; i++) {
+    todoItems[i].addEventListener('click', handleClick);
+}
+
+function handleClick(e) {
+    const todoTag = e.target.closest('.todo-item');
+    const todoItem = todoTag.getElementsByClassName('todo')[0].innerText;
+
+    const clickeTodo = {
+        todoItem: todoItem
+    };
+
+    fetch('http://localhost:3000/', {
+        method: 'DELETE',
+        body: JSON.stringify(clickeTodo),
+        headers: { 'Content-type': 'application/json; charset=UTF-8' }
+    })
+        .then(response => {
+            window.location = response.url;
+            return response.json();
+        })
+        .catch(err => console.log(err));
 }
