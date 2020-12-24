@@ -57,8 +57,7 @@ app.route('/')
             res.render('home', { results: results });
         });
         res.redirect('/');
-    })
-app.put
+    });
 
 // connection.end();
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}.`));
