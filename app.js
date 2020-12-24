@@ -3,6 +3,8 @@ const express = require('express');
 const mysql = require('mysql');
 
 const app = express();
+
+app.use(express.static('public'));
 app.set('view engine', 'ejs');
 
 const connection = mysql.createConnection({
@@ -19,24 +21,29 @@ connection.connect((err) => {
         return;
     }
     console.log('Database successfully connected.');
-    connection.query('CREATE DATABASE IF NOT EXISTS crud_db', (err, result) => {
+    connection.query('CREATE DATABASE IF NOT EXISTS todoDB', (err, result) => {
         if (err) throw err;
         console.log('Database created: ' + result);
     });
 
-    connection.query('CREATE TABLE IF NOT EXISTS products(id CHAR(255), description CHAR(255), price INT)', err => {
+    connection.query('CREATE TABLE IF NOT EXISTS todos (id CHAR(255), description CHAR(255), price INT)', err => {
         if (err) throw err;
         console.log('Table created.');
     });
 
-    connection.query(`INSERT INTO products (id, description, price) VALUES ('Laptop', 'HP Laptop', 600)`, err => {
-        if (err) throw err;
-        console.log('Product added to database.');
-    });
+    // connection.query(`INSERT INTO products (id, description, price) VALUES ('Laptop', 'HP Laptop', 600)`, err => {
+    //     if (err) throw err;
+    //     console.log('Product added to database.');
+    // });
 });
 
 app.get('/', (req, res) => {
-    res.render('home');
+    connection.query('SELECT * FROM todos', (err, results) => {
+        if (err) throw err;
+        console.log(results[0].id);
+        console.log('Query completed');
+        res.render('home', { results: results });
+    });
 });
 
 // connection.end();

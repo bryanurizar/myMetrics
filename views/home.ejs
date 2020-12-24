@@ -15,20 +15,13 @@
     <button>Update</button>
     <button>Delete</button>
 
-    <table>
-      <tr>
-        <th>Product ID</th>
-        <th>Description</th>
-        <th>Price</td>
-      </tr>
+    <h3>To Do List</h3>
 
 
       <% for (let i = 0; i < results.length; i++) { %>
-        <tr>
           <td><%= results[0].id %></td>
           <td><%= results[0].description %></td>
           <td><%= results[0].price %></td>
-        </tr>
         <% } %>
 
     </table>
