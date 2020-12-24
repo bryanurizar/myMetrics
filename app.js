@@ -5,6 +5,7 @@ const mysql = require('mysql');
 const app = express();
 
 app.use(express.static('public'));
+app.use(express.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
 
 const connection = mysql.createConnection({
@@ -32,19 +33,32 @@ connection.connect((err) => {
         console.log('Table created.');
     });
 
-    connection.query('INSERT INTO todos (todo) VALUES (\'study\')', err => {
-        if (err) throw err;
-        console.log('Todo added to database.');
-    });
+    // connection.query('INSERT INTO todos (todo) VALUES (\'hello\')', err => {
+    //     if (err) throw err;
+    //     console.log('Todo added to database.');
+    // });
 });
 
-app.get('/', (req, res) => {
-    connection.query('SELECT * FROM todos', (err, results) => {
-        if (err) throw err;
-        console.log('Query completed');
-        res.render('home', { results: results });
-    });
-});
+app.route('/')
+    .get((req, res) => {
+        connection.query('SELECT * FROM todos', (err, results) => {
+            if (err) throw err;
+            console.log('Query completed');
+            res.render('home', { results: results });
+        });
+    })
+    .post((req, res) => {
+        const todoItem = req.body.todo;
+        console.log(todoItem);
+
+        connection.query('INSERT INTO todos (todo) VALUES (?)', todoItem, (err, results) => {
+            if (err) throw err;
+            console.log('Query completed');
+            res.render('home', { results: results });
+        });
+        res.redirect('/');
+    })
+app.put
 
 // connection.end();
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}.`));
