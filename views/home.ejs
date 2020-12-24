@@ -9,22 +9,16 @@
     <link rel="stylesheet" href="./css/styles.css" />
   </head>
   <body>
-    <h1>MySQL CRUD App!</h1>
-    <button>Create</button>
-    <button>Read</button>
-    <button>Update</button>
-    <button>Delete</button>
-
-    <h3>To Do List</h3>
-
-
-      <% for (let i = 0; i < results.length; i++) { %>
-          <td><%= results[0].id %></td>
-          <td><%= results[0].description %></td>
-          <td><%= results[0].price %></td>
-        <% } %>
-
-    </table>
+    <div class="todo-container">
+      <h3>To Do List</h3>
+      <input type="text" />
+      <% for (i = 0; i < results.length; i++) { %>
+      <div class="todo-item">
+        <input type="checkbox" id="vehicle1" name="vehicle1" value="Bike" />
+        <label for="vehicle1"><%= results[0].todo %></label><br />
+      </div>
+      <% } %>
+    </div>
 
     <script src="" async defer></script>
   </body>

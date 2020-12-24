@@ -2,10 +2,19 @@ body {
   align-items: center;
 }
 
-table,
-th,
-td {
-  padding: 5px;
-  border: 1px solid black;
-  border-collapse: collapse;
+.todo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 25%;
+  border: solid;
+}
+
+.todo-item {
+  margin: 5px;
+  padding: 5%;
+  flex: 1;
+  border-radius: 5px;
+  border: solid;
 }
