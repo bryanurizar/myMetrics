@@ -8,7 +8,12 @@ body {
 }
 
 input {
-  width: 98%;
+  width: 100%;
+  padding: 8px 20px;
+  margin: 6px 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
 }
 
 .todo-container {
@@ -42,9 +47,14 @@ input {
   flex-direction: row;
 }
 
-label {
-  flex: 7;
+.todo {
+  margin-right: 2%;
 }
+
+label {
+  flex: 6;
+}
+
 .flaticons {
   padding: 0;
   flex: 1;

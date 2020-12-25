@@ -35,11 +35,6 @@ connection.connect((err) => {
         if (err) throw err;
         console.log('Table created.');
     });
-
-    // connection.query('INSERT INTO todos (todo) VALUES (\'hello\')', err => {
-    //     if (err) throw err;
-    //     console.log('Todo added to database.');
-    // });
 });
 
 app.route('/')
@@ -60,15 +55,6 @@ app.route('/')
             res.redirect('/');
         });
     })
-    .delete((req, res) => {
-        const todo = req.body.todoItem;
-
-        connection.query('DELETE FROM todos WHERE todo=?', todo, err => {
-            if (err) throw err;
-            console.log('Todo deleted from database.');
-        });
-        res.redirect(303, '/');
-    })
     .put((req, res) => {
         const originalTodo = req.body.originalTodo;
         const updatedTodo = req.body.updatedTodo;
@@ -78,7 +64,15 @@ app.route('/')
             console.log('Todo updated from database.');
         });
         res.redirect(303, '/');
+    })
+    .delete((req, res) => {
+        const todo = req.body.todoItem;
+
+        connection.query('DELETE FROM todos WHERE todo=?', todo, err => {
+            if (err) throw err;
+            console.log('Todo deleted from database.');
+        });
+        res.redirect(303, '/');
     });
 
-// connection.end();
 app.listen(process.env.PORT, () => console.log(`Listening on port ${process.env.PORT}.`));
