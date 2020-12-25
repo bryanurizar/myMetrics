@@ -77,6 +77,7 @@ app.route('/')
             if (err) throw err;
             console.log('Todo updated from database.');
         });
+        res.redirect(303, '/');
     });
 
 // connection.end();

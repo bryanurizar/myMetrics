@@ -21,7 +21,7 @@ function handleClick(e) {
         })
             .then(response => {
                 window.location = response.url;
-                return response.json();
+                response.json();
             })
             .catch(err => console.log(err));
     }
@@ -45,7 +45,8 @@ function handleClick(e) {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             })
                 .then(response => {
-                    return response.json();
+                    window.location = response.url;
+                    response.json();
                 })
                 .catch(err => console.log(err));
         });
