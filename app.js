@@ -38,7 +38,6 @@ connection.connect((err) => {
 });
 
 app.route('/')
-
     .get((req, res) => {
         connection.query('SELECT * FROM todos', (err, results) => {
             if (err) throw err;
