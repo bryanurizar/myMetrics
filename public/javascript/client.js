@@ -26,8 +26,28 @@ function handleClick(e) {
             .catch(err => console.log(err));
     }
 
+    if (e.target.className === 'edit') {
 
+        const todoInputTag = todoTag.getElementsByClassName('todo')[0];
+        todoInputTag.setAttribute('contenteditable', true);
+        todoInputTag.focus();
+        const todoInputTagText = todoInputTag.innerText;
 
+        todoInputTag.addEventListener('blur', e => {
+            const editedTodo = {
+                originalTodo: todoInputTagText,
+                updatedTodo: e.target.innerText
+            };
 
-
+            fetch('http://localhost:3000/', {
+                method: 'PUT',
+                body: JSON.stringify(editedTodo),
+                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+            })
+                .then(response => {
+                    return response.json();
+                })
+                .catch(err => console.log(err));
+        });
+    }
 }

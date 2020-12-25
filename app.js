@@ -47,7 +47,6 @@ app.route('/')
     .get((req, res) => {
         connection.query('SELECT * FROM todos', (err, results) => {
             if (err) throw err;
-            console.log(results);
             console.log('Todos read from database');
             res.render('home', { results: results });
         });
@@ -63,13 +62,21 @@ app.route('/')
     })
     .delete((req, res) => {
         const todo = req.body.todoItem;
-        console.log(res.headers);
 
         connection.query('DELETE FROM todos WHERE todo=?', todo, err => {
             if (err) throw err;
             console.log('Todo deleted from database.');
         });
         res.redirect(303, '/');
+    })
+    .put((req, res) => {
+        const originalTodo = req.body.originalTodo;
+        const updatedTodo = req.body.updatedTodo;
+
+        connection.query('UPDATE todos SET todo=? WHERE todo=?', [updatedTodo, originalTodo], err => {
+            if (err) throw err;
+            console.log('Todo updated from database.');
+        });
     });
 
 // connection.end();
