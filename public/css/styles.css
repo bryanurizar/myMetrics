@@ -57,3 +57,7 @@ img {
   width: 10px; /* you can use % */
   height: auto;
 }
+
+img:hover {
+  opacity: 0.5;
+}
