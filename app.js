@@ -3,6 +3,7 @@ const express = require('express');
 const db = require('./database/db_init');
 
 const app = express();
+const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -48,4 +49,4 @@ app.route('/')
         res.redirect(303, '/');
     });
 
-app.listen(process.env.PORT || 3000, () => console.log(`Listening on port ${process.env.PORT}.`));
+app.listen(port, () => console.log(`Listening on port ${port}.`));
