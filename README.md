@@ -1,1 +1,1 @@
-Just a quick todo app to familiarse myself wiht MySQL!
+Just a small todo app to familiarse myself with MySQL & JWT!
