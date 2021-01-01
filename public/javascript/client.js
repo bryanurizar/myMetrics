@@ -1,22 +1,22 @@
 'use strict';
 
-let todoItems = document.getElementsByClassName('todo-item');
+let todoItems = document.getElementsByClassName('todo-card');
 
 for (let i = 0; i < todoItems.length; i++) {
     todoItems[i].addEventListener('click', handleClick);
 }
 
 function handleClick(e) {
-    const todoTag = e.target.closest('.todo-item');
-    const todoItem = todoTag.getElementsByClassName('todo')[0].innerText;
+    const todoTag = e.target.closest('.todo-card');
+    const todoItem = todoTag.getElementsByClassName('todo-description')[0].innerText;
 
     if (e.target.className === 'trash') {
-        const clickeTodo = {
+        const clickedTodo = {
             todoItem: todoItem
         };
         fetch('http://localhost:3000/', {
             method: 'DELETE',
-            body: JSON.stringify(clickeTodo),
+            body: JSON.stringify(clickedTodo),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
             .then(response => {
@@ -28,7 +28,7 @@ function handleClick(e) {
 
     if (e.target.className === 'edit') {
 
-        const todoInputTag = todoTag.getElementsByClassName('todo')[0];
+        const todoInputTag = todoTag.getElementsByClassName('todo-description')[0];
         todoInputTag.setAttribute('contenteditable', true);
         todoInputTag.focus();
         const todoInputTagText = todoInputTag.innerText;
@@ -45,7 +45,7 @@ function handleClick(e) {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             })
                 .then(response => {
-                    window.location = response.url;
+                    // window.location = response.url;
                     response.json();
                 })
                 .catch(err => console.log(err));

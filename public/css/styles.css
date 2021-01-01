@@ -31,7 +31,7 @@ input {
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
 
-.todo-item {
+.todo-card {
   flex-direction: row;
   align-items: center;
   margin: 5px;
@@ -47,18 +47,23 @@ input {
   flex-direction: row;
 }
 
-.todo {
+.todo-description {
+  flex: 6;
   margin-right: 2%;
+  align-self: center;
 }
 
-label {
-  flex: 6;
+input[type="checkbox"] {
+  flex: 1;
+  align-self: center;
+  margin-right: 2px;
 }
 
 .flaticons {
   padding: 0;
   flex: 1;
   margin: 0;
+  align-self: center;
 }
 
 img {
@@ -70,4 +75,9 @@ img {
 
 img:hover {
   opacity: 0.5;
+}
+
+.completed-tag {
+  color: red;
+  font-size: 12px;
 }

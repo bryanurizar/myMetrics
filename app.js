@@ -2,44 +2,47 @@ require('dotenv').config();
 const express = require('express');
 const db = require('./database/db_init');
 
-// RSA private/public key generated
-const { generateKeyPairSync } = require('crypto');
-const { publicKey, privateKey } = generateKeyPairSync('rsa', {
-    modulusLength: 4096,
-    publicKeyEncoding: {
-        type: 'spki',
-        format: 'pem'
-    },
-    privateKeyEncoding: {
-        type: 'pkcs8',
-        format: 'pem',
-        cipher: 'aes-256-cbc',
-        passphrase: 'top secret'
-    }
-});
+//RSA private / public key generated
+// const { generateKeyPairSync } = require('crypto');
+// const { publicKey, privateKey } = generateKeyPairSync('rsa', {
+//     modulusLength: 4096,
+//     publicKeyEncoding: {
+//         type: 'spki',
+//         format: 'pem'
+//     },
+//     privateKeyEncoding: {
+//         type: 'pkcs8',
+//         format: 'pem',
+//         cipher: 'aes-256-cbc',
+//         passphrase: 'top secret'
+//     }
+// });
+
+// console.log(publicKey);
+// console.log(privateKey);
 
 // JWT implementation
-const JwtStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
+// const JwtStrategy = require('passport-jwt').Strategy;
+// const ExtractJwt = require('passport-jwt').ExtractJwt;
 
-const opts = {
-    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-    secretOrKey: process.env.JWT_SECRET
-};
+// const opts = {
+//     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+//     secretOrKey: process.env.JWT_SECRET
+// };
 
-passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
-    User.findOne({ id: jwt_payload.sub }, function (err, user) {
-        if (err) {
-            return done(err, false);
-        }
-        if (user) {
-            return done(null, user);
-        } else {
-            return done(null, false);
-            // or you could create a new account
-        }
-    });
-}));
+// passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
+//     User.findOne({ id: jwt_payload.sub }, function (err, user) {
+//         if (err) {
+//             return done(err, false);
+//         }
+//         if (user) {
+//             return done(null, user);
+//         } else {
+//             return done(null, false);
+//             or you could create a new account
+//         }
+//     });
+// }));
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -53,26 +56,28 @@ app.set('view engine', 'ejs');
 
 app.route('/')
     .get((req, res) => {
-        db.connection.query('SELECT * FROM todos', (err, results) => {
+        db.connection.query('SELECT todoDescription FROM Todos Where TodoDescription=0', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
             res.render('home', { results: results });
         });
     })
     .post((req, res) => {
+        console.log('post: ' + req.body);
         const todoItem = req.body.todo;
 
-        db.connection.query('INSERT INTO todos (todo) VALUES (?)', todoItem, err => {
+        db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoItem, err => {
             if (err) throw err;
             console.log('Todo inserted into database.');
             res.redirect('/');
         });
     })
     .put((req, res) => {
+        console.log('put: ' + req.body);
         const originalTodo = req.body.originalTodo;
         const updatedTodo = req.body.updatedTodo;
 
-        db.connection.query('UPDATE todos SET todo=? WHERE todo=?', [updatedTodo, originalTodo], err => {
+        db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoDescription=?', [updatedTodo, originalTodo], err => {
             if (err) throw err;
             console.log('Todo updated from database.');
         });
@@ -81,7 +86,7 @@ app.route('/')
     .delete((req, res) => {
         const todo = req.body.todoItem;
 
-        db.connection.query('DELETE FROM todos WHERE todo=?', todo, err => {
+        db.connection.query('DELETE FROM todos WHERE todoDescription=?', todo, err => {
             if (err) throw err;
             console.log('Todo deleted from database.');
         });

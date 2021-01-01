@@ -16,9 +16,12 @@
       </form>
 
       <% for (i = 0; i < results.length; i++) { %>
-      <div class="todo-item">
+      <div class="todo-card">
         <div class="todo-content">
-          <label class="todo"><%= results[i].todo %></label><br />
+          <input type="checkbox" />
+          <label class="todo-description"
+            ><%= results[i].todoDescription %></label
+          ><br />
           <div class="flaticons">
             <img
               class="edit"
@@ -32,6 +35,7 @@
         </div>
       </div>
       <% } %>
+      <p class="completed-tag">Show Completed..</p>
     </div>
 
     <script src="./javascript/client.js" async defer></script>
