@@ -63,17 +63,16 @@ app.route('/')
         });
     })
     .post((req, res) => {
-        console.log('post: ' + req.body);
-        const todoItem = req.body.todo;
+        const todoDescription = req.body.todoDescription;
 
-        db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoItem, err => {
+        db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoDescription, err => {
             if (err) throw err;
             console.log('Todo inserted into database.');
             res.redirect('/');
         });
     })
     .put((req, res) => {
-        console.log('put: ' + req.body);
+        console.log(req.body);
         const originalTodo = req.body.originalTodo;
         const updatedTodo = req.body.updatedTodo;
 

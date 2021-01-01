@@ -8,11 +8,13 @@ for (let i = 0; i < todoItems.length; i++) {
 
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
-    const todoItem = todoTag.getElementsByClassName('todo-description')[0].innerText;
+    const todoDescription = todoTag.getElementsByClassName('todo-description')[0].innerText;
 
-    if (e.target.className === 'trash') {
+    const isTrashClicked = e.target.className === 'trash';
+
+    if (isTrashClicked) {
         const clickedTodo = {
-            todoItem: todoItem
+            todoDescription: todoDescription
         };
         fetch('http://localhost:3000/', {
             method: 'DELETE',
@@ -20,13 +22,15 @@ function handleClick(e) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
             .then(response => {
-                window.location = response.url;
+                // window.location = response.url;
                 response.json();
             })
             .catch(err => console.log(err));
     }
 
-    if (e.target.className === 'edit') {
+    const isEditClicked = e.target.className === 'edit';
+
+    if (isEditClicked) {
 
         const todoInputTag = todoTag.getElementsByClassName('todo-description')[0];
         todoInputTag.setAttribute('contenteditable', true);
