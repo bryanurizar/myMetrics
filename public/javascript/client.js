@@ -9,6 +9,28 @@ for (let i = 0; i < todoItems.length; i++) {
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
     const todoDescription = todoTag.getElementsByClassName('todo-description')[0].innerText;
+    console.log(todoDescription);
+
+    const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
+
+    if (todoCheckbox.checked) {
+        const completedTodo = {
+            completedTodo: todoDescription
+        };
+        todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'line-through';
+        fetch('http://localhost:3000/', completedTodo)
+            .then(response => {
+                response.text();
+            })
+            .catch(err => console.log(err));
+
+    } else {
+        todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'none';
+    }
+
+
+
+    console.log(todoCheckbox);
 
     const isTrashClicked = e.target.className === 'trash';
 
