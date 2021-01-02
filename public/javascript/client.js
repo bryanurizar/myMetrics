@@ -13,19 +13,19 @@ function handleClick(e) {
     const isTrashClicked = e.target.className === 'trash';
 
     if (isTrashClicked) {
-        const clickedTodo = {
+        const deletedTodo = {
             todoDescription: todoDescription
         };
         fetch('http://localhost:3000/', {
             method: 'DELETE',
-            body: JSON.stringify(clickedTodo),
+            body: JSON.stringify(deletedTodo),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
             .then(response => {
-                // window.location = response.url;
-                response.json();
+                window.location = response.url;
+                response.text();
             })
-            .catch(err => console.log(err));
+            .catch(err => console.log('this is being executed:' + err));
     }
 
     const isEditClicked = e.target.className === 'edit';
@@ -49,8 +49,8 @@ function handleClick(e) {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             })
                 .then(response => {
-                    // window.location = response.url;
-                    response.json();
+                    window.location = response.url;
+                    response.text();
                 })
                 .catch(err => console.log(err));
         });
