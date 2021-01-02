@@ -1,11 +1,38 @@
+* {
+  max-height: 90vh;
+}
 body {
-  display: flex;
-  justify-content: center;
-  align-content: center;
-  background-color: #3b89dd;
-  font-family: helvetica;
+  font-family: "Montserrat", sans-serif;
   color: #182a4e;
-  max-height: 100vh;
+  background-color: #3b89dd;
+  padding: 1%;
+}
+
+nav {
+  display: flex;
+}
+
+#logo {
+  color: white;
+  font-size: 32px;
+  font-weight: 600;
+  flex: 5;
+}
+
+#link {
+  flex: 1;
+  align-self: center;
+}
+
+a {
+  text-decoration: none;
+  color: white;
+}
+
+#board {
+  display: flex;
+  justify-content: start;
+  align-content: center;
 }
 
 input {
@@ -23,7 +50,7 @@ input {
   align-content: center; */
   flex-direction: column;
   border-radius: 5px;
-  padding: 0.5% 3%;
+  padding: 0.5% 1.5%;
   margin: 20px;
   width: 240px;
   background-color: #e5eff5;
@@ -32,6 +59,7 @@ input {
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
+
 .todos {
   overflow-y: auto;
   margin-bottom: 5%;

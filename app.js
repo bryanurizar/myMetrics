@@ -73,7 +73,7 @@ app.route('/board')
         db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoDescription, err => {
             if (err) throw err;
             console.log('Todo inserted into database.');
-            res.redirect('/');
+            res.redirect('/board');
         });
     })
     .put((req, res) => {
@@ -93,7 +93,7 @@ app.route('/board')
                 console.log('Todo updated from database.');
             });
         }
-        res.redirect(303, '/');
+        res.redirect(303, '/board');
     })
     .delete((req, res) => {
         const todoDescription = req.body.todoDescription;
@@ -102,7 +102,7 @@ app.route('/board')
             if (err) throw err;
             console.log('Todo deleted from database.');
         });
-        res.redirect(303, '/');
+        res.redirect(303, '/board');
     });
 
 app.route('/completed')
@@ -117,7 +117,7 @@ app.route('/login')
     })
     .post((req, res) => {
         console.log(req.body);
-        res.redirect('/');
+        res.redirect('/board');
     });
 
 app.listen(port, () => console.log(`Listening on port ${port}.`));

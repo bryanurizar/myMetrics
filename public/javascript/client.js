@@ -18,7 +18,7 @@ function handleClick(e) {
             completedTodo: todoDescription
         };
 
-        fetch('http://localhost:3000/', {
+        fetch('http://localhost:3000/board', {
             method: 'PUT',
             body: JSON.stringify(completedTodo),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
@@ -39,7 +39,7 @@ function handleClick(e) {
         const deletedTodo = {
             todoDescription: todoDescription
         };
-        fetch('http://localhost:3000/', {
+        fetch('http://localhost:3000/board', {
             method: 'DELETE',
             body: JSON.stringify(deletedTodo),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
@@ -70,7 +70,7 @@ function handleClick(e) {
                 updatedTodo: e.target.innerText
             };
 
-            fetch('http://localhost:3000/', {
+            fetch('http://localhost:3000/board', {
                 method: 'PUT',
                 body: JSON.stringify(editedTodo),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
