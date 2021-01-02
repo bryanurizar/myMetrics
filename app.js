@@ -83,9 +83,9 @@ app.route('/')
         res.redirect(303, '/');
     })
     .delete((req, res) => {
-        const todo = req.body.todoItem;
+        const todoDescription = req.body.todoDescription;
 
-        db.connection.query('DELETE FROM todos WHERE todoDescription=?', todo, err => {
+        db.connection.query('DELETE FROM Todos WHERE todoDescription=?', todoDescription, err => {
             if (err) throw err;
             console.log('Todo deleted from database.');
         });
