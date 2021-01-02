@@ -54,6 +54,11 @@ app.use(express.json({
 }));
 app.set('view engine', 'ejs');
 
+app.route('/dashboard')
+    .get((req, res) => {
+        res.render('dashboard');
+    });
+
 app.route('/')
     .get((req, res) => {
         db.connection.query('SELECT todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {

@@ -60,6 +60,10 @@ function handleClick(e) {
         todoInputTag.focus();
         const todoInputTagText = todoInputTag.innerText;
 
+        todoInputTag.addEventListener('keypress', e => {
+            if (e.key === 'Enter') todoInputTag.removeAttribute('contenteditable');
+        });
+
         todoInputTag.addEventListener('blur', e => {
             const editedTodo = {
                 originalTodo: todoInputTagText,
