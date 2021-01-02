@@ -59,7 +59,7 @@ app.route('/dashboard')
         res.render('dashboard');
     });
 
-app.route('/')
+app.route('/board')
     .get((req, res) => {
         db.connection.query('SELECT todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
             if (err) throw err;
