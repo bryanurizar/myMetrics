@@ -72,7 +72,6 @@ app.route('/')
         });
     })
     .put((req, res) => {
-        console.log(req.body);
         const originalTodo = req.body.originalTodo;
         const updatedTodo = req.body.updatedTodo;
         const completedTodo = req.body.completedTodo;
@@ -100,6 +99,12 @@ app.route('/')
         });
         res.redirect(303, '/');
     });
+
+app.route('/completed')
+    .get((req, res) => {
+        res.render('completed');
+    });
+
 
 app.route('/login')
     .get((req, res) => {

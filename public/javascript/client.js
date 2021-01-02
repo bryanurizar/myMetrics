@@ -33,10 +33,6 @@ function handleClick(e) {
         todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'none';
     }
 
-
-
-    console.log(todoCheckbox);
-
     const isTrashClicked = e.target.className === 'trash';
 
     if (isTrashClicked) {
