@@ -9,17 +9,22 @@ for (let i = 0; i < todoItems.length; i++) {
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
     const todoDescription = todoTag.getElementsByClassName('todo-description')[0].innerText;
-    console.log(todoDescription);
-
     const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
 
     if (todoCheckbox.checked) {
+        todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'line-through';
+
         const completedTodo = {
             completedTodo: todoDescription
         };
-        todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'line-through';
-        fetch('http://localhost:3000/', completedTodo)
+
+        fetch('http://localhost:3000/', {
+            method: 'PUT',
+            body: JSON.stringify(completedTodo),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        })
             .then(response => {
+                window.location = response.url;
                 response.text();
             })
             .catch(err => console.log(err));

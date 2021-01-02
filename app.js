@@ -56,7 +56,7 @@ app.set('view engine', 'ejs');
 
 app.route('/')
     .get((req, res) => {
-        db.connection.query('SELECT todoDescription FROM Todos Where TodoDescription=0', (err, results) => {
+        db.connection.query('SELECT todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
             res.render('home', { results: results });
@@ -75,11 +75,20 @@ app.route('/')
         console.log(req.body);
         const originalTodo = req.body.originalTodo;
         const updatedTodo = req.body.updatedTodo;
+        const completedTodo = req.body.completedTodo;
 
-        db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoDescription=?', [updatedTodo, originalTodo], err => {
-            if (err) throw err;
-            console.log('Todo updated from database.');
-        });
+        if (completedTodo) {
+            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoDescription=?', completedTodo, err => {
+                if (err) throw err;
+                console.log('Todo updated from database.');
+            });
+
+        } else {
+            db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoDescription=?', [updatedTodo, originalTodo], err => {
+                if (err) throw err;
+                console.log('Todo updated from database.');
+            });
+        }
         res.redirect(303, '/');
     })
     .delete((req, res) => {
