@@ -112,10 +112,7 @@ function dragoverHandler(e) {
 }
 
 function dropHandler(e) {
-    e.preventDefault();
-    console.log(e.target);
-    // Get the id of the target and add the moved element to the target's DOM
     const data = e.dataTransfer.getData('text/html');
-    data.getElementsByClassName("todo-card")[0].innerHTML;
-    e.target.insertAdjacentHTML('afterbegin', `${data.getElementsByClassName('.todo-card')}`);
+    e.target.insertAdjacentHTML('afterend', data);
+    e.preventDefault();
 }

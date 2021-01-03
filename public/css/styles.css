@@ -59,7 +59,7 @@ input {
   flex-direction: column;
   border-radius: 5px;
   padding: 0.5% 1.5%;
-  margin: 20px;
+  margin: 5px 20px 40px;
   width: 240px;
   background-color: #e5eff5;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
