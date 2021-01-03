@@ -83,3 +83,39 @@ function handleClick(e) {
         });
     }
 }
+
+// Drag and Drop API implementation
+
+// Begins by selecting the draggable todo cards
+const todoCards = document.querySelectorAll('.todo-card');
+
+// Adds the drag start event listener to each of the todo cards above
+todoCards.forEach(todoCard => {
+    todoCard.addEventListener('dragstart', dragstartHandler);
+});
+
+// The below adds the draggable cards to the dataTransfer object which is basically an object
+// that stores the data while it is being dragged
+function dragstartHandler(e) {
+    // Add the target element to the data trasfer object
+    e.dataTransfer.setData('text/html', e.target);
+}
+
+const todos = document.querySelector('.todos');
+
+todos.addEventListener('dragover', dragoverHandler);
+todos.addEventListener('drop', dropHandler);
+
+function dragoverHandler(e) {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+}
+
+function dropHandler(e) {
+    e.preventDefault();
+    console.log(e.target);
+    // Get the id of the target and add the moved element to the target's DOM
+    const data = e.dataTransfer.getData('text/html');
+    data.getElementsByClassName("todo-card")[0].innerHTML;
+    e.target.insertAdjacentHTML('afterbegin', `${data.getElementsByClassName('.todo-card')}`);
+}
