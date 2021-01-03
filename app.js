@@ -54,6 +54,11 @@ app.use(express.json({
 }));
 app.set('view engine', 'ejs');
 
+app.route('/')
+    .get((req, res) => {
+        res.render('landing');
+    });
+
 app.route('/dashboard')
     .get((req, res) => {
         res.render('dashboard');
