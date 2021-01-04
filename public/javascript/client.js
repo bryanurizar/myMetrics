@@ -84,35 +84,51 @@ function handleClick(e) {
     }
 }
 
-// Drag and Drop API implementation
+/*
+***
+*** Drag and Drop API Implementation
+***
+*/
 
-// Begins by selecting the draggable todo cards
+// This begins by selecting the elements that will be draggable
 const todoCards = document.querySelectorAll('.todo-card');
 
-// Adds the drag start event listener to each of the todo cards above
+// Adds the drag start event listener to each of the todo cards selected above
 todoCards.forEach(todoCard => {
     todoCard.addEventListener('dragstart', dragstartHandler);
 });
 
-// The below adds the draggable cards to the dataTransfer object which is basically an object
-// that stores the data while it is being dragged
+// Adds the dragged node to the DataTransfer object which is a property on the DragEvent
 function dragstartHandler(e) {
-    // Add the target element to the data trasfer object
-    e.dataTransfer.setData('text/html', e.target);
+    e.stopPropagation();
+    console.log(e.target.outerHTML);
+    e.dataTransfer.setData('text/html', e.target.innerHTML);
 }
 
-const todos = document.querySelector('.todos');
+// Sets the drop zone where draggable elements can be dropped
+const todosDropZone = document.querySelectorAll('.todo-card');
 
-todos.addEventListener('dragover', dragoverHandler);
-todos.addEventListener('drop', dropHandler);
+// The drop zone must have a dragover and drop event handler
+todosDropZone.forEach(todo => {
+    todo.addEventListener('dragover', dragoverHandler);
+    todo.addEventListener('drop', dropHandler);
+});
 
+// Specifies the type of the drag and prevents the default on the event
 function dragoverHandler(e) {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 }
 
+// you need to obtain the data from the DataTransfer object and then
+// do something to it by using the e.target element (i.e. element that
+// you over hovering over for example))
 function dropHandler(e) {
-    const data = e.dataTransfer.getData('text/html');
-    e.target.insertAdjacentHTML('afterend', data);
     e.preventDefault();
+    const insertBelowTodoo = e.currentTarget;
+    const draggedTodo = e.dataTransfer.getData('text/html');
+    // console.log(insertBelowTodoo);
+    // console.log(draggedTodo);
+
+    insertBelowTodoo.insertAdjacentHTML('afterend', draggedTodo);
 }
