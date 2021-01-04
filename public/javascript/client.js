@@ -134,6 +134,7 @@ todoCards.forEach(todoCard => {
     todoCard.addEventListener('dragend', dragEndHandler);
 });
 
+// Checks to see if drop was succesfull and if it was, removes the dragged element from the todo list and only keeps the inserted one
 function dragEndHandler(e) {
     if (e.dataTransfer.dropEffect !== 'none') {
         e.target.remove();
