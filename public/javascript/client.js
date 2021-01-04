@@ -102,7 +102,7 @@ todoCards.forEach(todoCard => {
 function dragstartHandler(e) {
     e.stopPropagation();
     console.log(e.target.outerHTML);
-    e.dataTransfer.setData('text/html', e.target.innerHTML);
+    e.dataTransfer.setData('text/html', e.target.outerHTML);
 }
 
 // Sets the drop zone where draggable elements can be dropped
