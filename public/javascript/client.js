@@ -101,7 +101,6 @@ todoCards.forEach(todoCard => {
 // Adds the dragged node to the DataTransfer object which is a property on the DragEvent
 function dragstartHandler(e) {
     e.stopPropagation();
-    console.log(e.target.outerHTML);
     e.dataTransfer.setData('text/html', e.target.outerHTML);
 }
 
@@ -125,10 +124,18 @@ function dragoverHandler(e) {
 // you over hovering over for example))
 function dropHandler(e) {
     e.preventDefault();
-    const insertBelowTodoo = e.currentTarget;
+    const insertBelowTodo = e.currentTarget;
     const draggedTodo = e.dataTransfer.getData('text/html');
-    // console.log(insertBelowTodoo);
-    // console.log(draggedTodo);
 
-    insertBelowTodoo.insertAdjacentHTML('afterend', draggedTodo);
+    insertBelowTodo.insertAdjacentHTML('afterend', draggedTodo);
+}
+
+todoCards.forEach(todoCard => {
+    todoCard.addEventListener('dragend', dragEndHandler);
+});
+
+function dragEndHandler(e) {
+    if (e.dataTransfer.dropEffect !== 'none') {
+        e.target.remove();
+    }
 }
