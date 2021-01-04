@@ -39,7 +39,9 @@
           <div class="todo-card" draggable="true">
             <div class="todo-content">
               <input type="checkbox" />
-              <p class="todo-description"><%= results[i].todoDescription %></p>
+              <p class="todo-description">
+                <%= results[results.length - 1 - i].todoDescription %>
+              </p>
               <br />
               <div class="flaticons">
                 <img
