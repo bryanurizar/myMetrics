@@ -1,11 +1,5 @@
 'use strict';
 
-document.addEventListener('click', titleClick);
-
-function titleClick() {
-    alert('title was clicked');
-}
-
 let todoItems = document.getElementsByClassName('todo-card');
 
 for (let i = 0; i < todoItems.length; i++) {
@@ -13,7 +7,6 @@ for (let i = 0; i < todoItems.length; i++) {
 }
 
 function handleClick(e) {
-    alert('card was clicked');
     const todoTag = e.target.closest('.todo-card');
     const todoDescription = todoTag.getElementsByClassName('todo-description')[0].innerText;
     const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
