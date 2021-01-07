@@ -90,55 +90,93 @@ function handleClick(e) {
 ***
 */
 
-// This begins by selecting the elements that will be draggable
-const todoCards = document.querySelectorAll('.todo-card');
+// Selects the draggable items (i.e. todo cards)
+const draggables = document.querySelectorAll('.todo-card');
+const dropZone = document.querySelector('.todos');
 
-// Adds the drag start event listener to each of the todo cards selected above
-todoCards.forEach(todoCard => {
-    todoCard.addEventListener('dragstart', dragstartHandler);
-});
+// Adds the dragged todo card to the dataTransfer object
+const handleDragStart = e => {
+    e.dataTransfer.setData('application/x-moz-node', e.target);
+    e.dataTransfer.dropEffect = 'move';
+};
 
-// Adds the dragged node to the DataTransfer object which is a property on the DragEvent
-function dragstartHandler(e) {
-    console.log('drag start handler started');
-    // console.log(e.target.outerHTML);
-    e.dataTransfer.setData('text', e.target.outerHTML);
-}
-
-// Sets the drop zone where draggable elements can be dropped
-const todosDropZone = document.querySelectorAll('.todo-card');
-
-// The drop zone must have a dragover and drop event handler
-todosDropZone.forEach(todo => {
-    todo.addEventListener('dragover', dragoverHandler);
-    todo.addEventListener('drop', dropHandler);
-});
-
-// Specifies the type of the drag and prevents the default on the event
-function dragoverHandler(e) {
+const handleDragOver = e => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
-}
+};
 
-// you need to obtain the data from the DataTransfer object and then
-// do something to it by using the e.target element (i.e. element that
-// you over hovering over for example))
-function dropHandler(e) {
+const handleDrop = e => {
     e.preventDefault();
-    const insertBelowTodo = e.currentTarget;
-    const draggedTodo = e.dataTransfer.getData('text');
+    const draggable = e.dataTransfer.getData('application/x-moz-node');
+    console.log(draggable);
+};
 
-    // console.log(draggedTodo);
-    insertBelowTodo.insertAdjacentHTML('afterend', draggedTodo);
-}
-
-todoCards.forEach(todoCard => {
-    todoCard.addEventListener('dragend', dragEndHandler);
+// Adds an event listener to the todo cards
+draggables.forEach(draggable => {
+    draggable.addEventListener('dragstart', handleDragStart);
 });
 
-// Checks to see if drop was succesfull and if it was, removes the dragged element from the todo list and only keeps the inserted one
-function dragEndHandler(e) {
-    if (e.dataTransfer.dropEffect !== 'none') {
-        e.target.remove();
-    }
-}
+dropZone.addEventListener('dragover', handleDragOver);
+dropZone.addEventListener('drop', handleDrop);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+// // This begins by selecting the elements that will be draggable
+// const todoCards = document.querySelectorAll('.todo-card');
+
+// // Adds the drag start event listener to each of the todo cards selected above
+// todoCards.forEach(todoCard => {
+//     todoCard.addEventListener('dragstart', dragstartHandler);
+//     todoCard.addEventListener('dragover', dragoverHandler);
+//     todoCard.addEventListener('drop', dropHandler);
+// });
+
+// // Adds the dragged node to the DataTransfer object which is a property value on the DragEvent
+// function dragstartHandler(e) {
+//     e.dataTransfer.dropEffect = 'move';
+//     e.dataTransfer.setData('application/x-moz-node', e.currentTarget);
+// }
+
+// // Specifies the type of drag and prevents the default on the event
+// function dragoverHandler(e) {
+//     e.preventDefault();
+//     e.dataTransfer.dropEffect = 'move';
+// }
+
+// function dropHandler(e) {
+//     e.preventDefault();
+//     const insertBelowTodo = e.currentTarget;
+//     const draggedTodo = e.dataTransfer.getData('text');
+
+//     // console.log(draggedTodo);
+//     insertBelowTodo.insertAdjacentHTML('afterend', draggedTodo);
+// }
+
+// todoCards.forEach(todoCard => {
+//     todoCard.addEventListener('dragend', dragEndHandler);
+// });
+
+// // Checks to see if drop was succesfull and if it was, removes the dragged element from the todo list and only keeps the inserted one
+// function dragEndHandler(e) {
+//     if (e.dataTransfer.dropEffect !== 'none') {
+//         e.target.remove();
+//     }
+// }
