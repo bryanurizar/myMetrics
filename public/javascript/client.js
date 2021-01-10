@@ -24,7 +24,7 @@ function handleClick(e) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
             .then(response => {
-                window.location = response.url;
+                window.location.reload();
                 response.text();
             })
             .catch(err => console.log(err));
@@ -45,7 +45,7 @@ function handleClick(e) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         })
             .then(response => {
-                window.location = response.url;
+                window.location.reload();
                 response.text();
             })
             .catch(err => console.log('this is being executed:' + err));
@@ -76,7 +76,7 @@ function handleClick(e) {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             })
                 .then(response => {
-                    window.location = response.url;
+                    window.location.reload();
                     response.text();
                 })
                 .catch(err => console.log(err));
