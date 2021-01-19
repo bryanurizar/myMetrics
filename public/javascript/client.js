@@ -18,17 +18,19 @@ function handleClick(e) {
             completedTodo: todoDescription
         };
 
-        fetch('http://localhost:3000/board', {
-            method: 'PUT',
-            body: JSON.stringify(completedTodo),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        })
-            .then(response => {
-                window.location.reload();
+        (async () => {
+            try {
+                const response = await fetch('http://localhost:3000/board', {
+                    method: 'PUT',
+                    body: JSON.stringify(completedTodo),
+                    headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                });
                 response.text();
-            })
-            .catch(err => console.log(err));
-
+                window.location.reload();
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     } else {
         todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'none';
     }
@@ -39,16 +41,20 @@ function handleClick(e) {
         const deletedTodo = {
             todoDescription: todoDescription
         };
-        fetch('http://localhost:3000/board', {
-            method: 'DELETE',
-            body: JSON.stringify(deletedTodo),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        })
-            .then(response => {
+
+        (async () => {
+            try {
+                const response = await fetch('http://localhost:3000/board', {
+                    method: 'DELETE',
+                    body: JSON.stringify(deletedTodo),
+                    headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                });
+                await response.text();
                 window.location.reload();
-                response.text();
-            })
-            .catch(err => console.log('this is being executed:' + err));
+            } catch (err) {
+                console.log('this is being executed:' + err);
+            }
+        })();
     }
 
     const isEditClicked = e.target.className === 'edit';
@@ -70,16 +76,20 @@ function handleClick(e) {
                 updatedTodo: e.target.innerText
             };
 
-            fetch('http://localhost:3000/board', {
-                method: 'PUT',
-                body: JSON.stringify(editedTodo),
-                headers: { 'Content-type': 'application/json; charset=UTF-8' }
-            })
-                .then(response => {
-                    window.location.reload();
+            (async () => {
+                try {
+                    let response = await fetch('http://localhost:3000/board', {
+                        method: 'PUT',
+                        body: JSON.stringify(editedTodo),
+                        headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                    });
                     response.text();
-                })
-                .catch(err => console.log(err));
+                    window.location.reload();
+                } catch (err) {
+                    console.log(err);
+                }
+
+            })();
         });
     }
 }
@@ -90,34 +100,34 @@ function handleClick(e) {
 ***
 */
 
-// Selects the draggable items (i.e. todo cards)
-const draggables = document.querySelectorAll('.todo-card');
-const dropZone = document.querySelector('.todos');
+// // Selects the draggable items (i.e. todo cards)
+// const draggables = document.querySelectorAll('.todo-card');
+// const dropZone = document.querySelector('.todos');
 
-// Adds the dragged todo card to the dataTransfer object
-const handleDragStart = e => {
-    e.dataTransfer.setData('application/x-moz-node', e.target);
-    e.dataTransfer.dropEffect = 'move';
-};
+// // Adds the dragged todo card to the dataTransfer object
+// const handleDragStart = e => {
+//     e.dataTransfer.setData('application/x-moz-node', e.target);
+//     e.dataTransfer.dropEffect = 'move';
+// };
 
-const handleDragOver = e => {
-    e.preventDefault();
-    e.dataTransfer.dropEffect = 'move';
-};
+// const handleDragOver = e => {
+//     e.preventDefault();
+//     e.dataTransfer.dropEffect = 'move';
+// };
 
-const handleDrop = e => {
-    e.preventDefault();
-    const draggable = e.dataTransfer.getData('application/x-moz-node');
-    console.log(draggable);
-};
+// const handleDrop = e => {
+//     e.preventDefault();
+//     const draggable = e.dataTransfer.getData('application/x-moz-node');
+//     console.log(draggable);
+// };
 
-// Adds an event listener to the todo cards
-draggables.forEach(draggable => {
-    draggable.addEventListener('dragstart', handleDragStart);
-});
+// // Adds an event listener to the todo cards
+// draggables.forEach(draggable => {
+//     draggable.addEventListener('dragstart', handleDragStart);
+// });
 
-dropZone.addEventListener('dragover', handleDragOver);
-dropZone.addEventListener('drop', handleDrop);
+// dropZone.addEventListener('dragover', handleDragOver);
+// dropZone.addEventListener('drop', handleDrop);
 
 
 
