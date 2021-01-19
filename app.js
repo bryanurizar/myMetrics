@@ -55,7 +55,7 @@ app.use(express.json({
 app.set('view engine', 'ejs');
 
 app.route('/')
-    .get((req, res) => {
+    .get((_, res) => {
         res.render('landing');
     });
 
@@ -65,7 +65,7 @@ app.route('/dashboard')
     });
 
 app.route('/board')
-    .get((req, res) => {
+    .get((_, res) => {
         db.connection.query('SELECT todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
@@ -111,13 +111,13 @@ app.route('/board')
     });
 
 app.route('/completed')
-    .get((req, res) => {
+    .get((_, res) => {
         res.render('completed');
     });
 
 
 app.route('/login')
-    .get((req, res) => {
+    .get((_, res) => {
         res.render('login');
     })
     .post((req, res) => {

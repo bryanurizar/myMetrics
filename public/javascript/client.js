@@ -88,7 +88,6 @@ function handleClick(e) {
                 } catch (err) {
                     console.log(err);
                 }
-
             })();
         });
     }
