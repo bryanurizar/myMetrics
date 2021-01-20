@@ -93,6 +93,42 @@ function handleClick(e) {
     }
 }
 
+// Drag and Drop API implementation
+
+const handleDragStart = () => {
+
+};
+
+
+
+let draggableCards = document.querySelector('.todo-card');
+
+draggableCards.forEach(card => {
+    card.addEventListener('dragstart', handleDragStart);
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 ***
 *** Drag and Drop API Implementation
