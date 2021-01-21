@@ -114,13 +114,13 @@ const handleDragStart = e => {
 const handleDragOver = e => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
+    console.log(yOrd(e));
 };
 
 const handleDrop = e => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     dropZone.appendChild(document.querySelector(`#${cardId}`));
-
 };
 
 // Adds an event listener to the todo cards
@@ -128,8 +128,15 @@ draggableCards.forEach(draggableCard => {
     draggableCard.addEventListener('dragstart', handleDragStart);
 });
 
-dropZone.addEventListener('dragover', handleDragOver);
+function yOrd(e) {
+    if (e.target.id != )
+        var bounds = e.target.getBoundingClientRect();
+    var y = e.clientY - bounds.top;
+    return y;
+}
+
 dropZone.addEventListener('drop', handleDrop);
+dropZone.addEventListener('dragover', handleDragOver);
 
 
 
