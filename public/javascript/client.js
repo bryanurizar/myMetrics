@@ -107,7 +107,7 @@ const dropZone = document.querySelector('.todos');
 const handleDragStart = e => {
     console.log(e.target.nodeType); // => 1
     console.log(e.target);
-    e.dataTransfer.setData('application/x-moz-node', e.target);
+    e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
 };
 
@@ -118,8 +118,9 @@ const handleDragOver = e => {
 
 const handleDrop = e => {
     e.preventDefault();
-    const draggable = e.dataTransfer.getData('application/x-moz-node');
-    console.log(draggable.nodeType); d
+    const cardId = e.dataTransfer.getData('text/plain');
+    dropZone.appendChild(document.querySelector(`#${cardId}`));
+
 };
 
 // Adds an event listener to the todo cards
