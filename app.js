@@ -66,10 +66,11 @@ app.route('/dashboard')
 
 app.route('/board')
     .get((_, res) => {
-        db.connection.query('SELECT todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
+        db.connection.query('SELECT todoID, todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
             res.render('home', { results: results });
+            console.log(results);
         });
     })
     .post((req, res) => {

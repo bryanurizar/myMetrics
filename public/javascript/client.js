@@ -93,76 +93,42 @@ function handleClick(e) {
     }
 }
 
-// Drag and Drop API implementation
-
-const handleDragStart = () => {
-
-};
-
-
-
-let draggableCards = document.querySelector('.todo-card');
-
-draggableCards.forEach(card => {
-    card.addEventListener('dragstart', handleDragStart);
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*
 ***
 *** Drag and Drop API Implementation
 ***
 */
 
-// // Selects the draggable items (i.e. todo cards)
-// const draggables = document.querySelectorAll('.todo-card');
-// const dropZone = document.querySelector('.todos');
+// Selects the draggable items (i.e. todo cards)
+const draggableCards = document.querySelectorAll('.todo-card');
+const dropZone = document.querySelector('.todos');
 
-// // Adds the dragged todo card to the dataTransfer object
-// const handleDragStart = e => {
-//     e.dataTransfer.setData('application/x-moz-node', e.target);
-//     e.dataTransfer.dropEffect = 'move';
-// };
+// Adds the dragged todo card to the dataTransfer object
+const handleDragStart = e => {
+    console.log(e.target.nodeType); // => 1
+    console.log(e.target);
+    e.dataTransfer.setData('application/x-moz-node', e.target);
+    e.dataTransfer.dropEffect = 'move';
+};
 
-// const handleDragOver = e => {
-//     e.preventDefault();
-//     e.dataTransfer.dropEffect = 'move';
-// };
+const handleDragOver = e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+};
 
-// const handleDrop = e => {
-//     e.preventDefault();
-//     const draggable = e.dataTransfer.getData('application/x-moz-node');
-//     console.log(draggable);
-// };
+const handleDrop = e => {
+    e.preventDefault();
+    const draggable = e.dataTransfer.getData('application/x-moz-node');
+    console.log(draggable.nodeType); d
+};
 
-// // Adds an event listener to the todo cards
-// draggables.forEach(draggable => {
-//     draggable.addEventListener('dragstart', handleDragStart);
-// });
+// Adds an event listener to the todo cards
+draggableCards.forEach(draggableCard => {
+    draggableCard.addEventListener('dragstart', handleDragStart);
+});
 
-// dropZone.addEventListener('dragover', handleDragOver);
-// dropZone.addEventListener('drop', handleDrop);
+dropZone.addEventListener('dragover', handleDragOver);
+dropZone.addEventListener('drop', handleDrop);
 
 
 

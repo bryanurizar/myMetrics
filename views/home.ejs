@@ -36,7 +36,11 @@
 
         <div class="todos">
           <% for (i = 0; i < results.length; i++) { %>
-          <div class="todo-card" draggable="true">
+          <div
+            id="<%= results[results.length - 1 - i].todoID %>"
+            class="todo-card"
+            draggable="true"
+          >
             <div class="todo-content">
               <input type="checkbox" />
               <p class="todo-description">
