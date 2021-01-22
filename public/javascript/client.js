@@ -134,5 +134,18 @@ function isMouseAboveMiddle(e) {
     return y < bounds.height / 2;
 }
 
+// function getTodoCardNode(node) {
+//     // const idRegex = /card-/;
+//     // if (idRegex.test(node.id)) {
+//     //     return node;
+//     // } else if (idRegex.test(node.parentNode.id)) {
+//     //     return node.parentNode;
+//     // } else if (idRegex.test(node.parentNode.parentNode.id)) {
+//     //     return node.parentNode.parentNode;
+//     // } else {
+//     //     return node.parentNode.parentNode.parentNode;
+//     // }
+// }
+
 dropZone.addEventListener('drop', handleDrop);
 dropZone.addEventListener('dragover', handleDragOver);
