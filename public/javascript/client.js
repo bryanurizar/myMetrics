@@ -8,11 +8,11 @@ for (let i = 0; i < todoItems.length; i++) {
 
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
-    const todoDescription = todoTag.getElementsByClassName('todo-description')[0].innerText;
+    const todoDescription = todoTag.querySelectorAll('.todo-description')[0].innerText;
     const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
 
     if (todoCheckbox.checked) {
-        todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'line-through';
+        todoTag.querySelectorAll('.todo-description')[0].style.textDecoration = 'line-through';
 
         const completedTodo = {
             completedTodo: todoDescription
@@ -32,7 +32,7 @@ function handleClick(e) {
             }
         })();
     } else {
-        todoTag.getElementsByClassName('todo-description')[0].style.textDecoration = 'none';
+        todoTag.querySelectorAll('.todo-description')[0].style.textDecoration = 'none';
     }
 
     const isTrashClicked = e.target.className === 'trash';
@@ -115,7 +115,7 @@ const handleDragOver = e => {
 const handleDrop = e => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
-    const dropNode = getTodoCardNode(e.target);
+    const dropNode = e.target.closest('.todo-card');
 
     if (isMouseAboveMiddle(e)) {
         dropNode.insertAdjacentElement('beforebegin', document.querySelector(`#${cardId}`));
@@ -132,19 +132,6 @@ function isMouseAboveMiddle(e) {
     const bounds = e.target.getBoundingClientRect();
     const y = e.clientY - bounds.top;
     return y < bounds.height / 2;
-}
-
-function getTodoCardNode(node) {
-    const idRegex = /card-/;
-    if (idRegex.test(node.id)) {
-        return node;
-    } else if (idRegex.test(node.parentNode.id)) {
-        return node.parentNode;
-    } else if (idRegex.test(node.parentNode.parentNode.id)) {
-        return node.parentNode.parentNode;
-    } else {
-        return node.parentNode.parentNode.parentNode;
-    }
 }
 
 dropZone.addEventListener('drop', handleDrop);

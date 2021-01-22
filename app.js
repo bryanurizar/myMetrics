@@ -69,7 +69,7 @@ app.route('/board')
         db.connection.query('SELECT todoID, todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
-            res.render('home', { results: results });
+            res.render('board', { results: results });
             console.log(results);
         });
     })
