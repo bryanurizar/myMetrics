@@ -8,7 +8,6 @@ for (let i = 0; i < todoItems.length; i++) {
 
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
-    console.log(todoTag.id);
     const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
 
     if (todoCheckbox.checked) {
@@ -39,7 +38,7 @@ function handleClick(e) {
 
     if (isTrashClicked) {
         const deletedTodo = {
-            todoDescription: todoDescription
+            id: todoTag.id
         };
 
         (async () => {
