@@ -70,7 +70,6 @@ app.route('/board')
             if (err) throw err;
             console.log('Todos read from database');
             res.render('board', { results: results });
-            console.log(results);
         });
     })
     .post((req, res) => {
