@@ -83,18 +83,17 @@ app.route('/board')
         });
     })
     .put((req, res) => {
-        const originalTodo = req.body.originalTodo;
         const updatedTodo = req.body.updatedTodo;
-        const todoId = Number(req.body.id.slice(5,));
+        const completedTodoId = Number(req.body.compltedTodoId);
+        const editedTodoId = Number(req.body.editedTodoId);
 
-        if (todoId) {
-            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoID=?', todoId, err => {
+        if (completedTodoId) {
+            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoID=?', completedTodoId, err => {
                 if (err) throw err;
                 console.log('Todo updated from database.');
             });
-
         } else {
-            db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoDescription=?', [updatedTodo, originalTodo], err => {
+            db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoID=?', [updatedTodo, editedTodoId], err => {
                 if (err) throw err;
                 console.log('Todo updated from database.');
             });
@@ -102,7 +101,7 @@ app.route('/board')
         res.redirect(303, '/board');
     })
     .delete((req, res) => {
-        const todoId = Number(req.body.id.slice(5,));
+        const todoId = Number(req.body.id);
 
         db.connection.query('DELETE FROM Todos WHERE todoId=?', todoId, err => {
             if (err) throw err;

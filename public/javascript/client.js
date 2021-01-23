@@ -14,7 +14,7 @@ function handleClick(e) {
         todoTag.querySelectorAll('.todo-description')[0].style.textDecoration = 'line-through';
 
         const completedTodo = {
-            id: todoTag.id
+            compltedTodoId: todoTag.id.slice(5,)
         };
 
         (async () => {
@@ -38,7 +38,7 @@ function handleClick(e) {
 
     if (isTrashClicked) {
         const deletedTodo = {
-            id: todoTag.id
+            id: todoTag.id.slice(5,)
         };
 
         (async () => {
@@ -59,7 +59,8 @@ function handleClick(e) {
     const isEditClicked = e.target.className === 'edit';
 
     if (isEditClicked) {
-
+        const todoTag = e.target.closest('.todo-card');
+        console.log(todoTag);
         const todoInputTag = todoTag.getElementsByClassName('todo-description')[0];
         todoInputTag.setAttribute('contenteditable', true);
         todoInputTag.focus();
@@ -71,13 +72,13 @@ function handleClick(e) {
 
         todoInputTag.addEventListener('blur', e => {
             const editedTodo = {
-                originalTodo: todoInputTagText,
+                editedTodoId: todoTag.id.slice(5,),
                 updatedTodo: e.target.innerText
             };
 
             (async () => {
                 try {
-                    let response = await fetch('http://localhost:3000/board', {
+                    const response = await fetch('http://localhost:3000/board', {
                         method: 'PUT',
                         body: JSON.stringify(editedTodo),
                         headers: { 'Content-type': 'application/json; charset=UTF-8' }
