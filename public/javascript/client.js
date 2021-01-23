@@ -64,7 +64,6 @@ function handleClick(e) {
         const todoInputTag = todoTag.getElementsByClassName('todo-description')[0];
         todoInputTag.setAttribute('contenteditable', true);
         todoInputTag.focus();
-        const todoInputTagText = todoInputTag.innerText;
 
         todoInputTag.addEventListener('keypress', e => {
             if (e.key === 'Enter') todoInputTag.removeAttribute('contenteditable');
