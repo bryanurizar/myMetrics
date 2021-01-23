@@ -85,10 +85,10 @@ app.route('/board')
     .put((req, res) => {
         const originalTodo = req.body.originalTodo;
         const updatedTodo = req.body.updatedTodo;
-        const completedTodo = req.body.completedTodo;
+        const todoId = Number(req.body.id.slice(5,));
 
-        if (completedTodo) {
-            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoDescription=?', completedTodo, err => {
+        if (todoId) {
+            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoID=?', todoId, err => {
                 if (err) throw err;
                 console.log('Todo updated from database.');
             });
