@@ -60,8 +60,8 @@ app.route('/')
     });
 
 app.route('/dashboard')
-    .get((req, res) => {
-        res.render('dashboard');
+    .get((_, res) => {
+        res.render('pages/dashboard');
     });
 
 app.route('/board')
@@ -69,7 +69,7 @@ app.route('/board')
         db.connection.query('SELECT todoID, todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
-            res.render('board', { results: results });
+            res.render('pages/board', { results: results });
         });
     })
     .post((req, res) => {
@@ -78,7 +78,7 @@ app.route('/board')
         db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoDescription, err => {
             if (err) throw err;
             console.log('Todo inserted into database.');
-            res.redirect('/board');
+            res.redirect('pages/board');
         });
     })
     .put((req, res) => {
@@ -97,7 +97,7 @@ app.route('/board')
                 console.log('Todo updated from database.');
             });
         }
-        res.redirect(303, '/board');
+        res.redirect(303, 'pages/board');
     })
     .delete((req, res) => {
         const todoId = Number(req.body.id);
@@ -106,7 +106,7 @@ app.route('/board')
             if (err) throw err;
             console.log('Todo deleted from database.');
         });
-        res.redirect(303, '/board');
+        res.redirect(303, 'pages/board');
     });
 
 app.route('/completed')
