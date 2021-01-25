@@ -135,3 +135,5 @@ function isMouseAboveMiddle(e) {
 
 dropZone.addEventListener('drop', handleDrop);
 dropZone.addEventListener('dragover', handleDragOver);
+
+
