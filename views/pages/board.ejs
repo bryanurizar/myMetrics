@@ -8,15 +8,6 @@
     <section id="board">
       <div class="todo-list-container">
         <h4>Todo List</h4>
-        <form action="/board" method="POST">
-          <input
-            name="todoDescription"
-            type="text"
-            autofocus
-            autocomplete="off"
-          />
-        </form>
-
         <div class="todos">
           <% for (i = 0; i < results.length; i++) { %>
           <div
@@ -44,6 +35,15 @@
           </div>
           <% } %>
         </div>
+        <form action="/board" method="POST">
+          <input
+            name="todoDescription"
+            class="add-card"
+            type="text"
+            autocomplete="off"
+            placeholder="Add new card.."
+          />
+        </form>
         <!-- <p class="completed-tag">Show Completed..</p> -->
       </div>
       <div>

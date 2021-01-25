@@ -5,7 +5,7 @@ body {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
   color: #182a4e;
-  background-color: #3b89dd;
+  background-color: #242423;
   padding: 1%;
 }
 
@@ -62,15 +62,32 @@ input {
   padding: 0.3% 1.5%;
   margin: 5px 20px 40px;
   width: 260px;
-  background-color: #e5eff5;
+  background-color: #ebecf0;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
     0 22.3px 17.9px rgba(0, 0, 0, 0.072), 0 41.8px 33.4px rgba(0, 0, 0, 0.086),
     0 100px 80px rgba(0, 0, 0, 0.12);
 }
 
+.add-list {
+  background-color: #ebecf0;
+}
+
+.add-list:hover {
+  background-color: #d5dade;
+}
+
+.add-card {
+  background-color: #ebecf0;
+  border: none;
+}
+
+.add-card:hover {
+  background-color: #d5dade;
+}
+
 .todos {
-  overflow-y: auto;
+  overflow-y: scroll;
   margin-bottom: 5%;
 }
 
@@ -78,15 +95,15 @@ input {
   flex-direction: row;
   align-items: center;
   margin: 5px;
-  padding: 10% 5%;
+  padding: 0% 5%;
   flex: 1;
   border-radius: 5px;
   background-color: white;
-  box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034);
+  box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
 }
 
 .todo-card:hover {
-  background-color: rgb(240, 240, 240);
+  background-color: #f4f5f7;
 }
 
 .todo-content {
