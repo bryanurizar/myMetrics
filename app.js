@@ -44,6 +44,8 @@ const db = require('./database/db_init');
 //     });
 // }));
 
+// Express configurations
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -54,6 +56,8 @@ app.use(express.json({
 }));
 app.set('view engine', 'ejs');
 
+
+// Routes
 app.route('/')
     .get((_, res) => {
         res.render('pages/landing');
@@ -66,11 +70,17 @@ app.route('/dashboard')
 
 app.route('/board')
     .get((_, res) => {
-        db.connection.query('SELECT todoID, todoDescription FROM Todos WHERE isTodoCompleted=0', (err, results) => {
+        db.connection.query('SELECT * FROM Todos', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
             res.render('pages/board', { results: results });
+            console.log(results);
         });
+        // db.connection.query('SELECT todoID, todoDescription FROM Todos WHERE isTodoCompleted=0 And', (err, results) => {
+        //     if (err) throw err;
+        //     console.log('Todos read from database');
+        //     res.render('pages/board', { results: results });
+        // });
     })
     .post((req, res) => {
         const todoDescription = req.body.todoDescription;
