@@ -8,7 +8,7 @@
     <section id="board">
       <div class="todo-list-container">
         <h4>Todo List</h4>
-        <div class="todos">
+        <div id="todo-list-1" class="todos">
           <% for (i = 0; i < results.length; i++) { %>
           <div
             id="card-<%= results[results.length - 1 - i].todoID %>"
@@ -47,12 +47,14 @@
         <!-- <p class="completed-tag">Show Completed..</p> -->
       </div>
       <div>
-        <input
-          type="text"
-          class="add-list"
-          name="newlist"
-          value="Add new list"
-        />
+        <form action="/board" method="POST">
+          <input
+            name="newList"
+            type="text"
+            class="add-list"
+            placeholder="Add new list"
+          />
+        </form>
       </div>
     </section>
 

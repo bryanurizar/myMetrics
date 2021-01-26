@@ -84,12 +84,23 @@ app.route('/board')
     })
     .post((req, res) => {
         const todoDescription = req.body.todoDescription;
+        const newTodoList = req.body.newList;
+        console.log(newTodoList);
 
-        db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoDescription, err => {
-            if (err) throw err;
-            console.log('Todo inserted into database.');
-            res.redirect('board');
-        });
+        if (todoDescription) {
+            db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoDescription, err => {
+                if (err) throw err;
+                console.log('Todo inserted into database.');
+                res.redirect('board');
+            });
+        } else if (newTodoList) {
+            db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', newTodoList, err => {
+                if (err) throw err;
+                console.log('Todo inserted into database.');
+                res.redirect('board');
+            });
+        }
+
     })
     .put((req, res) => {
         const updatedTodo = req.body.updatedTodo;
