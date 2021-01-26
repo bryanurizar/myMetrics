@@ -136,4 +136,13 @@ function isMouseAboveMiddle(e) {
 dropZone.addEventListener('drop', handleDrop);
 dropZone.addEventListener('dragover', handleDragOver);
 
+// Add new list functionality
+
+const newListElement = document.querySelector('.add-list');
+newListElement.addEventListener('click', handleNewList);
+
+function handleNewList() {
+
+}
+
 

@@ -56,7 +56,7 @@ app.set('view engine', 'ejs');
 
 app.route('/')
     .get((_, res) => {
-        res.render('landing');
+        res.render('pages/landing');
     });
 
 app.route('/dashboard')
