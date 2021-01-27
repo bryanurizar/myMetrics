@@ -47,7 +47,7 @@ const db = require('./database/db_init');
 // Express configurations
 
 const app = express();
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 8080;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -70,21 +70,14 @@ app.route('/dashboard')
 
 app.route('/board')
     .get((_, res) => {
-        db.connection.query('SELECT * FROM Todos', (err, results) => {
+        db.connection.query('SELECT * FROM TodoLists', (err, todoLists) => {
             if (err) throw err;
-            console.log('Todos read from database');
-            res.render('pages/board', { todos: results });
-            console.log(results);
+
+            db.connection.query('SELECT * FROM Todos', (err, todos) => {
+                if (err) throw err;
+                res.render('pages/board', { todoLists: todoLists, todos: todos, });
+            });
         });
-
-        db.connection.query('SELECT * FROM TodoLists', (err, results) => {
-            if (err) throw err;
-            console.log('Todos read from database');
-            res.render('pages/board', { todoLists: results });
-            console.log(results);
-        });
-
-
     })
     .post((req, res) => {
         const todoDescription = req.body.todoDescription;
