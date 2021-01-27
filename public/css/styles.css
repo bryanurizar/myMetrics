@@ -55,10 +55,7 @@ input {
 }
 
 .todo-list-container {
-  flex: 1;
   display: flex;
-  /* justify-content: center;
-  align-content: center; */
   flex-direction: column;
   border-radius: 5px;
   padding: 0.3% 1.5%;
