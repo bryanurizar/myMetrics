@@ -42,6 +42,7 @@ a {
   justify-content: start;
   align-content: center;
   margin-top: 50px;
+  flex-direction: row;
 }
 
 input {
@@ -54,6 +55,7 @@ input {
 }
 
 .todo-list-container {
+  flex: 1;
   display: flex;
   /* justify-content: center;
   align-content: center; */
