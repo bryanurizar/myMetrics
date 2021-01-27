@@ -80,12 +80,15 @@ app.route('/board')
         });
     })
     .post((req, res) => {
-        const todoDescription = req.body.todoDescription;
+        const todoDescription = req.body.name;
+        const todoListID = req.body.id;
+        console.log(req.body.todoDescription);
+        console.log(todoListID);
+
         const newTodoList = req.body.newList;
-        console.log(newTodoList);
 
         if (todoDescription) {
-            db.connection.query('INSERT INTO Todos (todoDescription) VALUES (?)', todoDescription, err => {
+            db.connection.query('INSERT INTO Todos (todoDescription, todoListID) VALUES (', [todoDescription, todoListID], err => {
                 if (err) throw err;
                 console.log('Todo inserted into database.');
                 res.redirect('board');

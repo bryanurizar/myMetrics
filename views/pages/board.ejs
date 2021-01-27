@@ -37,6 +37,7 @@
         </div>
 
         <form action="/board" method="POST">
+          <input type="hidden" name="id" value="<%= j+1%>" />
           <input
             name="todoDescription"
             class="add-card"
