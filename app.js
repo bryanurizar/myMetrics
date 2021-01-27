@@ -73,14 +73,18 @@ app.route('/board')
         db.connection.query('SELECT * FROM Todos', (err, results) => {
             if (err) throw err;
             console.log('Todos read from database');
-            res.render('pages/board', { results: results });
+            res.render('pages/board', { todos: results });
             console.log(results);
         });
-        // db.connection.query('SELECT todoID, todoDescription FROM Todos WHERE isTodoCompleted=0 And', (err, results) => {
-        //     if (err) throw err;
-        //     console.log('Todos read from database');
-        //     res.render('pages/board', { results: results });
-        // });
+
+        db.connection.query('SELECT * FROM TodoLists', (err, results) => {
+            if (err) throw err;
+            console.log('Todos read from database');
+            res.render('pages/board', { todoLists: results });
+            console.log(results);
+        });
+
+
     })
     .post((req, res) => {
         const todoDescription = req.body.todoDescription;
