@@ -7,6 +7,8 @@ body {
   color: #182a4e;
   background-color: #242423;
   padding: 1%;
+  overflow-y: hidden;
+  overscroll-behavior-y: none;
 }
 
 nav {
@@ -43,6 +45,7 @@ a {
   align-content: center;
   margin-top: 50px;
   flex-direction: row;
+  overflow: scroll;
 }
 
 input {
@@ -60,7 +63,7 @@ input {
   border-radius: 5px;
   padding: 0.3% 1.5%;
   margin: 5px 20px 40px;
-  width: 260px;
+  min-width: 250px;
   background-color: #ebecf0;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -70,6 +73,7 @@ input {
 
 .add-list {
   background-color: #ebecf0;
+  min-width: 200px;
 }
 
 .add-list:hover {

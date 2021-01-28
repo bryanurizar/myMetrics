@@ -47,7 +47,7 @@ const db = require('./database/db_init');
 // Express configurations
 
 const app = express();
-const port = process.env.PORT || 8080;
+const port = process.env.PORT || 3000;
 
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
@@ -88,7 +88,7 @@ app.route('/board')
         const newTodoList = req.body.newList;
 
         if (todoDescription) {
-            db.connection.query('INSERT INTO Todos (todoDescription, todoListID) VALUES (', [todoDescription, todoListID], err => {
+            db.connection.query('INSERT INTO Todos (todoDescription, todoListID) VALUES', [todoDescription, todoListID], err => {
                 if (err) throw err;
                 console.log('Todo inserted into database.');
                 res.redirect('board');
