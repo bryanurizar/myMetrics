@@ -35,6 +35,7 @@ function handleClick(e) {
     }
 
     const isTrashClicked = e.target.className === 'trash';
+    console.log(isTrashClicked);
 
     if (isTrashClicked) {
         const deletedTodo = {

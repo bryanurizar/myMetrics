@@ -61,9 +61,10 @@ input {
   display: flex;
   flex-direction: column;
   border-radius: 5px;
-  padding: 0.3% 1.5%;
-  margin: 5px 20px 40px;
-  min-width: 250px;
+  padding: 0.3% 1%;
+  margin: 5px 5px 40px;
+  min-width: 272px;
+  max-width: 272px;
   background-color: #eaecf1;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -83,6 +84,7 @@ input {
 .add-card {
   background-color: #ebecf0;
   border: none;
+  margin-top: 0;
 }
 
 .add-card:hover {
@@ -97,8 +99,8 @@ input {
 .todo-card {
   flex-direction: row;
   align-items: center;
-  margin: 5px;
-  padding: 0% 5%;
+  margin-bottom: 9px;
+  padding: 0% 3%;
   flex: 1;
   border-radius: 5px;
   background-color: white;

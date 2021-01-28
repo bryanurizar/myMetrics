@@ -8,7 +8,7 @@
     <section id="board">
       <% for (let j = 0; j < todoLists.length; j++) { %>
       <div class="todo-list-container">
-        <h4><%= todoLists[j].todoListDescription %></h4>
+        <h4 contenteditable><%= todoLists[j].todoListDescription %></h4>
         <div id="todo-list-<%=j+1%>" class="todos">
           <% for (let i = 0; i < todos.length; i++) { %> <% if
           (todos[i].todoListID === j + 1) { %>
