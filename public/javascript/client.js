@@ -1,6 +1,6 @@
 'use strict';
 
-let todoItems = document.getElementsByClassName('todo-card');
+let todoItems = document.querySelectorAll('.todo-card');
 
 for (let i = 0; i < todoItems.length; i++) {
     todoItems[i].addEventListener('click', handleClick);
@@ -8,6 +8,8 @@ for (let i = 0; i < todoItems.length; i++) {
 
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
+    console.log(todoTag);
+
     const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
 
     if (todoCheckbox.checked) {
@@ -41,6 +43,7 @@ function handleClick(e) {
         const deletedTodo = {
             id: todoTag.id.slice(5,)
         };
+        console.log(deletedTodo);
 
         (async () => {
             try {
@@ -58,10 +61,14 @@ function handleClick(e) {
     }
 
     const isEditClicked = e.target.className === 'edit';
+    console.log(isEditClicked);
 
     if (isEditClicked) {
         const todoTag = e.target.closest('.todo-card');
-        console.log(todoTag);
+        console.log(e.target);
+        console.log(todoTag.outerHTML);
+        console.log(todoTag.id.slice(5,));
+
         const todoInputTag = todoTag.getElementsByClassName('todo-description')[0];
         todoInputTag.setAttribute('contenteditable', true);
         todoInputTag.focus();

@@ -13,7 +13,7 @@
           <% for (let i = 0; i < todos.length; i++) { %> <% if
           (todos[i].todoListID === j + 1) { %>
           <div
-            id="card-<%= todos[todos.length - 1 - i].todoID %>"
+            id="card-<%= todos[i].todoID %>"
             class="todo-card"
             draggable="true"
           >

@@ -119,9 +119,9 @@ app.route('/board')
         res.redirect(303, 'board');
     })
     .delete((req, res) => {
-        const todoId = Number(req.body.id);
+        const deletedTodo = Number(req.body.id);
 
-        db.connection.query('DELETE FROM Todos WHERE todoId=?', todoId, err => {
+        db.connection.query('DELETE FROM Todos WHERE todoId=?', deletedTodo, err => {
             if (err) throw err;
             console.log('Todo deleted from database.');
         });
