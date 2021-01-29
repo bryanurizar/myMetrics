@@ -1,6 +1,7 @@
 * {
   max-height: 85vh;
 }
+
 body {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
@@ -41,11 +42,10 @@ a {
 
 #board {
   display: flex;
-  justify-content: start;
-  align-content: center;
   margin-top: 50px;
   flex-direction: row;
   overflow: scroll;
+  align-items: flex-start;
 }
 
 input {
@@ -119,7 +119,6 @@ input {
 .todo-description {
   flex: 6;
   margin-right: 2%;
-  align-self: center;
   font-size: 12px;
 }
 
