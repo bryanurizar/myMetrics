@@ -64,6 +64,7 @@ input {
   margin: 5px 5px 40px;
   min-width: 272px;
   max-width: 272px;
+  max-height: 80vh;
   background-color: #eaecf1;
   box-shadow: 0 2.8px 2.2px rgba(0, 0, 0, 0.034),
     0 6.7px 5.3px rgba(0, 0, 0, 0.048), 0 12.5px 10px rgba(0, 0, 0, 0.06),
@@ -148,4 +149,39 @@ img:hover {
 .completed-tag {
   color: red;
   font-size: 12px;
+}
+
+.list-header {
+  display: flex;
+  direction: row;
+  padding: 0;
+}
+
+.list-name {
+  flex: 10;
+}
+
+.list-functionality {
+  text-align: center;
+  vertical-align: top;
+  line-height: 1;
+}
+
+/* .modal {
+  position: absolute;
+  padding: 15px;
+  /* display: none; */
+/* border-radius: 5px;
+  height: 200px;
+  width: 200px;
+  top: 160px;
+  left: 300px;
+  background-color: white;
+  box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
+  border-color: none;
+} */
+
+.modal {
+  display: none;
+  position: absolute;
 }

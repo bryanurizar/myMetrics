@@ -146,4 +146,14 @@ function handleNewList() {
 
 }
 
+function handleModal(e) {
+    console.log(e.target);
+}
+
+const modals = document.querySelectorAll('.modal');
+console.log(modals);
+
+modals.forEach(modal => {
+    modal.addEventListener('click', handleModal);
+});
 
