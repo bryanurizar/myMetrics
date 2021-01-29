@@ -8,8 +8,6 @@ body {
   color: #182a4e;
   background-color: #242423;
   padding: 1%;
-  overflow-y: hidden;
-  overscroll-behavior-y: none;
 }
 
 nav {
@@ -44,8 +42,9 @@ a {
   display: flex;
   margin-top: 50px;
   flex-direction: row;
-  overflow: scroll;
+  overflow-x: scroll;
   align-items: flex-start;
+  overflow-y: hidden;
 }
 
 input {

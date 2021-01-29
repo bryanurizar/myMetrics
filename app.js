@@ -73,7 +73,7 @@ app.route('/board')
         db.connection.query('SELECT * FROM TodoLists', (err, todoLists) => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Todos', (err, todos) => {
+            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0', (err, todos) => {
                 if (err) throw err;
                 res.render('pages/board', { todoLists: todoLists, todos: todos, });
             });
@@ -139,7 +139,6 @@ app.route('/login')
         res.render('login');
     })
     .post((req, res) => {
-        console.log(req.body);
         res.redirect('/board');
     });
 

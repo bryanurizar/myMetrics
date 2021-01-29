@@ -8,7 +8,6 @@ for (let i = 0; i < todoItems.length; i++) {
 
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
-    console.log(todoTag);
 
     const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
 
@@ -37,13 +36,11 @@ function handleClick(e) {
     }
 
     const isTrashClicked = e.target.className === 'trash';
-    console.log(isTrashClicked);
 
     if (isTrashClicked) {
         const deletedTodo = {
             id: todoTag.id.slice(5,)
         };
-        console.log(deletedTodo);
 
         (async () => {
             try {
@@ -55,19 +52,15 @@ function handleClick(e) {
                 await response.text();
                 window.location.reload();
             } catch (err) {
-                console.log('this is being executed:' + err);
+                console.log(err);
             }
         })();
     }
 
     const isEditClicked = e.target.className === 'edit';
-    console.log(isEditClicked);
 
     if (isEditClicked) {
         const todoTag = e.target.closest('.todo-card');
-        console.log(e.target);
-        console.log(todoTag.outerHTML);
-        console.log(todoTag.id.slice(5,));
 
         const todoInputTag = todoTag.getElementsByClassName('todo-description')[0];
         todoInputTag.setAttribute('contenteditable', true);
@@ -91,7 +84,7 @@ function handleClick(e) {
                         headers: { 'Content-type': 'application/json; charset=UTF-8' }
                     });
                     response.text();
-                    window.location.reload();
+                    document.location.reload(false);
                 } catch (err) {
                     console.log(err);
                 }
