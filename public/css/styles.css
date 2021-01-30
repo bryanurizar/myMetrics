@@ -155,33 +155,30 @@ img:hover {
   display: flex;
   direction: row;
   padding: 0;
+  position: relative;
 }
 
 .list-name {
   flex: 10;
 }
 
-.list-functionality {
+.list-popup {
   text-align: center;
   vertical-align: top;
   line-height: 1;
 }
 
-/* .modal {
-  position: absolute;
-  padding: 15px;
-  /* display: none; */
-/* border-radius: 5px;
-  height: 200px;
-  width: 200px;
-  top: 160px;
-  left: 300px;
-  background-color: white;
-  box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
-  border-color: none;
-} */
-
 .modal {
   display: none;
+}
+
+.modal-styles {
   position: absolute;
+  padding: 15px;
+  height: 200px;
+  width: 200px;
+  top: 38px;
+  left: 259px;
+  background-color: white;
+  box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
 }

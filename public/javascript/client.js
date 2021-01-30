@@ -147,13 +147,17 @@ function handleNewList() {
 }
 
 function handleModal(e) {
-    console.log(e.target);
+    console.log(e.target.id);
+    const modalID = '#modal-' + e.target.id;
+    console.log(modalID);
+    const modal = document.querySelector(modalID);
+    modal.classList.remove('modal');
+    modal.classList.add('modal-styles');
 }
 
-const modals = document.querySelectorAll('.modal');
-console.log(modals);
+const modalLinks = document.querySelectorAll('.list-popup');
 
-modals.forEach(modal => {
-    modal.addEventListener('click', handleModal);
+modalLinks.forEach(modalLink => {
+    modalLink.addEventListener('click', handleModal);
 });
 

@@ -12,12 +12,12 @@
           <h4 class="list-name" contenteditable>
             <%= todoLists[j].todoListDescription %>
           </h4>
-          <h4 class="list-functionality">...</h4>
-        </div>
-        <div id="modal-<%=j+1%>" class="modal modal-styles">
-          <h4>List Actions</h4>
-          <hr />
-          <p>Delete List..</p>
+          <h4 id="<%=j+1%>" class="list-popup">...</h4>
+          <div id="modal-<%=j+1%>" class="modal">
+            <h4>List Actions</h4>
+            <hr />
+            <p>Delete List..</p>
+          </div>
         </div>
         <div id="todo-list-<%=j+1%>" class="todos">
           <% for (let i = 0; i < todos.length; i++) { %> <% if
