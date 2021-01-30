@@ -147,12 +147,16 @@ function handleNewList() {
 }
 
 function handleModal(e) {
-    console.log(e.target.id);
-    const modalID = '#modal-' + e.target.id;
-    console.log(modalID);
-    const modal = document.querySelector(modalID);
-    modal.classList.remove('modal');
-    modal.classList.add('modal-styles');
+    const modalId = '#modal-' + e.target.id;
+    const modal = document.querySelector(modalId);
+
+    if (modal.classList.contains('modal-styles')) {
+        modal.classList.remove('modal-styles');
+        modal.classList.add('modal');
+    } else {
+        modal.classList.add('modal-styles');
+        modal.classList.remove('modal');
+    }
 }
 
 const modalLinks = document.querySelectorAll('.list-popup');
@@ -160,4 +164,19 @@ const modalLinks = document.querySelectorAll('.list-popup');
 modalLinks.forEach(modalLink => {
     modalLink.addEventListener('click', handleModal);
 });
+
+const deleteList = document.querySelectorAll('#delete-list');
+
+deleteList.forEach(list => {
+    list.addEventListener('click', handleDeleteListClick);
+});
+
+function handleDeleteListClick(e) {
+
+
+}
+
+
+
+
 

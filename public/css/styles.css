@@ -173,12 +173,23 @@ img:hover {
 }
 
 .modal-styles {
+  border-radius: 5px;
+  font-size: 12px;
   position: absolute;
   padding: 15px;
-  height: 200px;
-  width: 200px;
+  width: 272px;
   top: 38px;
   left: 259px;
-  background-color: white;
+  background-color: #ffffff;
   box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
+}
+
+#modal-title {
+  font-weight: 400;
+  text-align: center;
+  margin: 0;
+}
+
+hr {
+  border: solid 0.3px #dfe2e7;
 }
