@@ -171,7 +171,7 @@ deleteList.forEach(list => {
     list.addEventListener('click', handleDeleteListClick);
 });
 
-function handleDeleteListClick(e) {
+function handleDeleteListClick() {
 
 
 }
