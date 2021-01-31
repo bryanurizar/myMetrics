@@ -165,7 +165,7 @@ app.route('/board/delete-list')
                                 throw err;
                             });
                         }
-                        console.log('todolist removed along with all todos');
+                        console.log('Todo List removed along with todos');
                     });
                 });
             });
