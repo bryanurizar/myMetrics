@@ -105,6 +105,7 @@ input {
   border-radius: 5px;
   background-color: white;
   box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
+  cursor: pointer;
 }
 
 .todo-card:hover {
@@ -166,17 +167,17 @@ img:hover {
   text-align: center;
   vertical-align: top;
   line-height: 1;
+  cursor: pointer;
 }
-
 .modal {
   display: none;
 }
 
 .modal-styles {
   border-radius: 5px;
+  border: 1px solid #dfe2e7;
   font-size: 12px;
   position: absolute;
-  padding: 15px;
   width: 272px;
   top: 38px;
   left: 259px;
@@ -185,11 +186,21 @@ img:hover {
 }
 
 #modal-title {
-  font-weight: 400;
+  font-weight: 500;
   text-align: center;
-  margin: 0;
+  margin: 12px;
 }
 
-hr {
-  border: solid 0.3px #dfe2e7;
+span {
+  border-bottom: solid 1px #dfe2e7;
+}
+
+.delete-list {
+  padding: 5px;
+  width: 272px;
+  cursor: pointer;
+}
+
+.delete-list:hover {
+  background-color: #f7f7f7;
 }

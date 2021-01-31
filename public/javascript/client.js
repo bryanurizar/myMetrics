@@ -138,7 +138,6 @@ dropZone.addEventListener('drop', handleDrop);
 dropZone.addEventListener('dragover', handleDragOver);
 
 // Add new list functionality
-
 const newListElement = document.querySelector('.add-list');
 newListElement.addEventListener('click', handleNewList);
 
@@ -147,10 +146,8 @@ function handleNewList() {
 }
 
 function handleModal(e) {
-    console.log(e.target.id);
     const modalId = `#modal-${e.target.id}`;
     const modal = document.querySelector(modalId);
-    console.log(modal);
 
     if (modal.classList.contains('modal-styles')) {
         modal.classList.remove('modal-styles');
