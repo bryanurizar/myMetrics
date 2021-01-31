@@ -142,4 +142,35 @@ app.route('/login')
         res.redirect('/board');
     });
 
+app.route('/board/delete-list')
+    .post((req, res) => {
+        const todoListId = req.body.id;
+        db.connection.beginTransaction(function (err) {
+            if (err) { throw err; }
+            db.connection.query('DELETE FROM Todos Where todoListID=?', todoListId, function (error, results) {
+                if (error) {
+                    return db.connection.rollback(function () {
+                        throw error;
+                    });
+                }
+                db.connection.query('DELETE FROM TodoLists WHERE todoListID=?', todoListId, function (error, results) {
+                    if (error) {
+                        return db.connection.rollback(function () {
+                            throw error;
+                        });
+                    }
+                    db.connection.commit(function (err) {
+                        if (err) {
+                            return db.connection.rollback(function () {
+                                throw err;
+                            });
+                        }
+                        console.log('todolist removed along with all todos');
+                    });
+                });
+            });
+            res.redirect('/board');
+        });
+    });
+
 app.listen(port, () => console.log(`Listening on port ${port}.`));

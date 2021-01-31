@@ -84,7 +84,7 @@ function handleClick(e) {
                         headers: { 'Content-type': 'application/json; charset=UTF-8' }
                     });
                     response.text();
-                    document.location.reload(false);
+                    window.location.reload();
                 } catch (err) {
                     console.log(err);
                 }
@@ -147,8 +147,10 @@ function handleNewList() {
 }
 
 function handleModal(e) {
-    const modalId = '#modal-' + e.target.id;
+    console.log(e.target.id);
+    const modalId = `#modal-${e.target.id}`;
     const modal = document.querySelector(modalId);
+    console.log(modal);
 
     if (modal.classList.contains('modal-styles')) {
         modal.classList.remove('modal-styles');
@@ -165,16 +167,32 @@ modalLinks.forEach(modalLink => {
     modalLink.addEventListener('click', handleModal);
 });
 
-const deleteList = document.querySelectorAll('#delete-list');
+const deleteList = document.querySelectorAll('.delete-list');
 
 deleteList.forEach(list => {
     list.addEventListener('click', handleDeleteListClick);
 });
 
-function handleDeleteListClick() {
+function handleDeleteListClick(e) {
+    const todoListId = {
+        id: e.target.id
+    };
 
-
+    (async () => {
+        try {
+            const response = await fetch('http://localhost:3000/board/delete-list', {
+                method: 'POST',
+                body: JSON.stringify(todoListId),
+                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+            });
+            response.text();
+            window.location.reload();
+        } catch (err) {
+            console.log(err);
+        }
+    })();
 }
+
 
 
 
