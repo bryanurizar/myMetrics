@@ -108,6 +108,10 @@ input {
   cursor: pointer;
 }
 
+.opaque {
+  opacity: 1;
+}
+
 .todo-card:hover {
   background-color: #f4f5f7;
 }

@@ -190,6 +190,32 @@ function handleDeleteListClick(e) {
     })();
 }
 
+const createTargetListBtn = document.querySelector('#create-list-btn');
+
+createTargetListBtn.addEventListener('click', handleCreateTargetListClick);
+
+function handleCreateTargetListClick() {
+    document.body.style.opacity = 0.5;
+
+    const todoCards = document.querySelectorAll('.todo-card');
+
+    todoCards.forEach(todoCard => {
+        todoCard.addEventListener('click', handleTodoCardClick);
+    });
+
+    function handleTodoCardClick(e) {
+
+        const todoCard = e.target.closest('.todo-card');
+        todoCard.classList.add('.opaque');
+
+
+
+        // todoCard.style.opacity = 1;
+    }
+
+
+}
+
 
 
 

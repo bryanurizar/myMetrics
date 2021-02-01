@@ -128,12 +128,6 @@ app.route('/board')
         res.redirect(303, 'board');
     });
 
-app.route('/completed')
-    .get((_, res) => {
-        res.render('completed');
-    });
-
-
 app.route('/login')
     .get((_, res) => {
         res.render('login');
