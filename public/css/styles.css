@@ -6,7 +6,7 @@ body {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
   color: #182a4e;
-  background-color: #4f6467;
+  background-color: #222831;
   padding: 1%;
 }
 
@@ -40,11 +40,12 @@ a {
 
 #board {
   display: flex;
-  margin-top: 50px;
+  margin-top: 8px;
   flex-direction: row;
   overflow-x: scroll;
   align-items: flex-start;
   overflow-y: hidden;
+  padding: 0;
 }
 
 input {
@@ -61,7 +62,7 @@ input {
   flex-direction: column;
   border-radius: 5px;
   padding: 0.3% 1%;
-  margin: 5px 5px 40px;
+  margin: 0px 5px 40px;
   min-width: 272px;
   max-width: 272px;
   max-height: 80vh;
@@ -69,11 +70,13 @@ input {
   box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
 }
 
-.add-list {
-  background-color: #ebecf0;
-  min-width: 200px;
+.todo-list-container:first-child {
+  margin-left: 0;
 }
 
+.add-list {
+  margin-top: 0;
+}
 .add-list:hover {
   background-color: #d5dade;
 }
@@ -107,6 +110,16 @@ input {
 
 .todo-card:hover {
   background-color: #f4f5f7;
+}
+
+.targeted {
+  background-color: #fc5185;
+  color: white;
+}
+
+.targeted:hover {
+  background-color: #fc5185;
+  color: white;
 }
 
 .todo-content {
@@ -201,6 +214,13 @@ span {
   background-color: #f7f7f7;
 }
 
-button {
-  background-color: #f05454;
+#create-list-btn {
+  margin-top: 50px;
+  margin-bottom: 0px;
+  background-color: #00adb5;
+  border-radius: 5px;
+  padding: 12px 10px;
+  border: none;
+  color: white;
+  box-shadow: 0 2.8px 2.2px rgba(0.5, 1.5, 1, 1);
 }

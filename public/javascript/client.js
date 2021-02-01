@@ -205,12 +205,13 @@ function handleCreateTargetListClick() {
     function handleTodoCardClick(e) {
 
         const todoCard = e.target.closest('.todo-card');
-        todoCard.style.backgroundColor = '#f05454';
-        todoCard.style.color = 'white';
+        todoCard.classList.toggle('targeted');
 
-
-
-        // todoCard.style.opacity = 1;
+        if (document.querySelectorAll('.targeted') !== null) {
+            createTargetListBtn.innerText = 'Create Target List';
+        } else if (document.querySelectorAll('.targeted').length === 0) {
+            createTargetListBtn.innerText = 'Select Target Items';
+        }
     }
 
 
