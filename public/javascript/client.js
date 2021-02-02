@@ -194,7 +194,7 @@ const createTargetListBtn = document.querySelector('#create-list-btn');
 
 createTargetListBtn.addEventListener('click', handleCreateTargetListClick);
 
-function handleCreateTargetListClick() {
+function handleCreateTargetListClick(e) {
 
     const todoCards = document.querySelectorAll('.todo-card');
 
@@ -203,22 +203,11 @@ function handleCreateTargetListClick() {
     });
 
     function handleTodoCardClick(e) {
-
         const todoCard = e.target.closest('.todo-card');
         todoCard.classList.toggle('targeted');
 
-        if (document.querySelectorAll('.targeted') !== null) {
-            createTargetListBtn.innerText = 'Create Target List';
-        } else if (document.querySelectorAll('.targeted').length === 0) {
-            createTargetListBtn.innerText = 'Select Target Items';
-        }
+        const areTodoCardsSelected = document.querySelectorAll('.targeted').length === 0;
+
+        areTodoCardsSelected ? createTargetListBtn.innerText = 'Select Items to Target' : createTargetListBtn.innerText = 'Start Timer';
     }
-
-
 }
-
-
-
-
-
-
