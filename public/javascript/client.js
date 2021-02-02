@@ -208,6 +208,10 @@ function handleCreateTargetListClick(e) {
 
         const areTodoCardsSelected = document.querySelectorAll('.targeted').length === 0;
 
-        areTodoCardsSelected ? createTargetListBtn.innerText = 'Select Items to Target' : createTargetListBtn.innerText = 'Start Timer';
+        if (areTodoCardsSelected) {
+            createTargetListBtn.innerText = 'Select Tasks to Target';
+        } else {
+            createTargetListBtn.innerText = 'Start Timer';
+        }
     }
 }
