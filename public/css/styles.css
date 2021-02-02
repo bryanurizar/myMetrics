@@ -1,7 +1,6 @@
-* {
-  max-height: 85vh;
+html {
+  overflow-y: hidden;
 }
-
 body {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
@@ -65,7 +64,7 @@ input {
   margin: 0px 5px 40px;
   min-width: 272px;
   max-width: 272px;
-  max-height: 80vh;
+  max-height: 77vh;
   background-color: #eaecf1;
   box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
 }
@@ -215,7 +214,7 @@ span {
 }
 
 #create-list-btn {
-  margin-top: 50px;
+  margin-top: 30px;
   margin-bottom: 0px;
   background-color: #00adb5;
   border-radius: 5px;
@@ -223,4 +222,8 @@ span {
   border: none;
   color: white;
   box-shadow: 0 2.8px 2.2px rgba(0.5, 1.5, 1, 1);
+}
+
+#create-list-btn:hover {
+  box-shadow: 0 5px 15px rgba(0, 173, 181, 0.4);
 }
