@@ -191,10 +191,10 @@ function handleDeleteListClick(e) {
 }
 
 const createTargetListBtn = document.querySelector('#create-list-btn');
-
 createTargetListBtn.addEventListener('click', handleCreateTargetListClick);
+const targetTasksArray = [];
 
-function handleCreateTargetListClick(e) {
+function handleCreateTargetListClick() {
 
     const todoCards = document.querySelectorAll('.todo-card');
 
@@ -204,14 +204,24 @@ function handleCreateTargetListClick(e) {
 
     function handleTodoCardClick(e) {
         const todoCard = e.target.closest('.todo-card');
+        console.log(todoCard.id);
         todoCard.classList.toggle('targeted');
 
-        const areTodoCardsSelected = document.querySelectorAll('.targeted').length === 0;
-
-        if (areTodoCardsSelected) {
-            createTargetListBtn.innerText = 'Select Tasks to Target';
+        if (targetTasksArray.includes(todoCard.id)) {
+            const index = targetTasksArray.indexOf(todoCard);
+            targetTasksArray.splice(index, 1);
         } else {
-            createTargetListBtn.innerText = 'Start Timer';
+            targetTasksArray.push(todoCard.id);
         }
+        console.log(targetTasksArray);
     }
+
+}
+
+const areTodoCardsSelected = document.querySelectorAll('.targeted').length === 0;
+
+if (areTodoCardsSelected) {
+    createTargetListBtn.innerText = 'Select Tasks to Target';
+} else {
+    createTargetListBtn.innerText = 'Start Timer';
 }

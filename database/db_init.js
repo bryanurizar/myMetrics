@@ -38,4 +38,10 @@ module.exports.connection.connect((err) => {
         if (err) throw err;
         console.log('Table created.');
     });
+
+    // // Creates the todos table
+    // module.exports.connection.query('ALTER TABLE Todos ADD COLUMN isOnTargetList BOOLEAN DEFAULT FALSE AFTER isTodoCompleted', err => {
+    //     if (err) throw err;
+    //     console.log('Table created.');
+    // });
 });
