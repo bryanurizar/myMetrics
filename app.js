@@ -167,4 +167,15 @@ app.route('/board/delete-list')
         });
     });
 
+app.route('/create-target-list')
+    .put((req, res) => {
+        const targetTaskIds = [236, 241];
+        for (let i = 0; i < targetTaskIds.length; i++) {
+            db.connection.query('UPDATE Todos SET isOnTargetList=1 WHERE todoID=?', targetTaskIds[i], err => {
+                if (err) throw err;
+                console.log('Todo updated from database.');
+            });
+        }
+    });
+
 app.listen(port, () => console.log(`Listening on port ${port}.`));

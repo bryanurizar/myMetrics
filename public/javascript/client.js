@@ -213,7 +213,6 @@ function handleCreateTargetListClick() {
         } else {
             targetTasksArray.push(todoCard.id);
         }
-        console.log(targetTasksArray);
     }
 
 }
