@@ -209,18 +209,18 @@ function handleCreateTargetListClick() {
 
         if (targetTasksArray.includes(todoCard.id)) {
             const index = targetTasksArray.indexOf(todoCard);
+            console.log('index is ' + index);
             targetTasksArray.splice(index, 1);
         } else {
             targetTasksArray.push(todoCard.id);
         }
+
+        console.log(targetTasksArray);
+
+        if (document.querySelectorAll('.targeted').length === 0) {
+            createTargetListBtn.innerText = 'Select Tasks to Target';
+        } else {
+            createTargetListBtn.innerText = 'Start Timer';
+        }
     }
-
-}
-
-const areTodoCardsSelected = document.querySelectorAll('.targeted').length === 0;
-
-if (areTodoCardsSelected) {
-    createTargetListBtn.innerText = 'Select Tasks to Target';
-} else {
-    createTargetListBtn.innerText = 'Start Timer';
 }
