@@ -204,15 +204,15 @@ function handleCreateTargetListClick() {
 
     function handleTodoCardClick(e) {
         const todoCard = e.target.closest('.todo-card');
-        console.log(todoCard.id);
+        const todoCardId = Number(todoCard.id.substring(6,));
         todoCard.classList.toggle('targeted');
 
-        if (targetTasksArray.includes(todoCard.id)) {
-            const index = targetTasksArray.indexOf(todoCard);
+        if (targetTasksArray.includes(todoCardId)) {
+            const index = targetTasksArray.indexOf(todoCardId);
             console.log('index is ' + index);
             targetTasksArray.splice(index, 1);
         } else {
-            targetTasksArray.push(todoCard.id);
+            targetTasksArray.push(todoCardId);
         }
 
         console.log(targetTasksArray);
