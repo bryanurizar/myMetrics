@@ -204,23 +204,44 @@ function handleCreateTargetListClick() {
 
     function handleTodoCardClick(e) {
         const todoCard = e.target.closest('.todo-card');
-        const todoCardId = Number(todoCard.id.substring(6,));
+        const todoCardId = Number(todoCard.id.substring(5,));
         todoCard.classList.toggle('targeted');
 
         if (targetTasksArray.includes(todoCardId)) {
             const index = targetTasksArray.indexOf(todoCardId);
-            console.log('index is ' + index);
             targetTasksArray.splice(index, 1);
         } else {
             targetTasksArray.push(todoCardId);
         }
 
-        console.log(targetTasksArray);
-
         if (document.querySelectorAll('.targeted').length === 0) {
             createTargetListBtn.innerText = 'Select Tasks to Target';
         } else {
+            const buttonTag = document.querySelector('#create-list-btn');
+
+
+            const hours = document.createElement('INPUT');
+            hours.setAttribute('type', 'text');
+            buttonTag.insertAdjacentElement('beforebegin', hours);
+
+            const minutes = document.createElement('INPUT');
+            minutes.setAttribute('type', 'text');
+            buttonTag.insertAdjacentElement('beforebegin', minutes);
             createTargetListBtn.innerText = 'Start Timer';
         }
+
+        (async () => {
+            try {
+                const response = await fetch('http://localhost:3000/board/create-target-list', {
+                    method: 'PUT',
+                    body: JSON.stringify(targetTasksArray),
+                    headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                });
+                response.text();
+            } catch (err) {
+                console.log(err);
+            }
+        })();
     }
 }
+
