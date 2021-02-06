@@ -219,7 +219,6 @@ function handleCreateTargetListClick() {
         } else {
             const buttonTag = document.querySelector('#create-list-btn');
 
-
             const hours = document.createElement('INPUT');
             hours.setAttribute('type', 'text');
             buttonTag.insertAdjacentElement('beforebegin', hours);
@@ -244,4 +243,13 @@ function handleCreateTargetListClick() {
         })();
     }
 }
+
+// test of backend api to get todos - I need to rewrite the frontend to not use EJS templating to render all the todo lists. These should probably be a class which can then render the lists using vanilla JavaScript!
+(async () => {
+    const response = await fetch('http://localhost:3000/getTodos');
+    const todos = await response.text();
+    console.log(todos);
+
+})();
+
 

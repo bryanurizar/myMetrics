@@ -179,4 +179,17 @@ app.route('/board/create-target-list')
         }
     });
 
+app.route('/getTodos')
+    .get((req, res) => {
+        db.connection.query('SELECT * FROM TodoLists', (err, todoLists) => {
+            if (err) throw err;
+
+            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0', (err, todos) => {
+                if (err) throw err;
+                res.send(todos);
+            });
+        });
+    });
+
+
 app.listen(port, () => console.log(`Listening on port ${port}.`));
