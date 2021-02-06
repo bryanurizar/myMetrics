@@ -141,13 +141,13 @@ app.route('/board/delete-list')
         const todoListId = req.body.id;
         db.connection.beginTransaction(function (err) {
             if (err) { throw err; }
-            db.connection.query('DELETE FROM Todos Where todoListID=?', todoListId, function (error, results) {
+            db.connection.query('DELETE FROM Todos Where todoListID=?', todoListId, function (error) {
                 if (error) {
                     return db.connection.rollback(function () {
                         throw error;
                     });
                 }
-                db.connection.query('DELETE FROM TodoLists WHERE todoListID=?', todoListId, function (error, results) {
+                db.connection.query('DELETE FROM TodoLists WHERE todoListID=?', todoListId, function (error) {
                     if (error) {
                         return db.connection.rollback(function () {
                             throw error;
@@ -168,7 +168,7 @@ app.route('/board/delete-list')
     });
 
 app.route('/board/create-target-list')
-    .put((req, res) => {
+    .put((req) => {
         const targetTasksArray = req.body;
 
         for (let i = 0; i < targetTasksArray.length; i++) {
