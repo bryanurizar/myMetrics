@@ -251,3 +251,19 @@ function handleCreateTargetListClick() {
     console.log(todos);
 
 })();
+
+class List {
+    constructor() {
+        // What do I really want here?
+        // Perhaps it should have a render method so that it will render the HTML dynamically
+        // It should allow for arguments which will be the items created from the ListItme class
+    }
+    render() { }
+}
+
+class ListItem {
+    constructor() {
+        // What do I really want here?
+    }
+    render() { }
+}
