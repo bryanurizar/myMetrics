@@ -251,5 +251,3 @@ function handleCreateTargetListClick() {
     console.log(todos);
 
 })();
-
-
