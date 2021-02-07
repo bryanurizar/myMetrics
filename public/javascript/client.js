@@ -258,8 +258,18 @@ class List {
         // Perhaps it should have a render method so that it will render the HTML dynamically
         // It should allow for arguments which will be the items created from the ListItme class
     }
-    render() { }
+    render() {
+        const boardSection = document.querySelector('#board');
+        const btn = document.createElement('BUTTON');
+        btn.innerHTML = 'Click me!';
+        boardSection.appendChild(btn);
+    }
 }
+
+const button1 = new List();
+button1.render();
+
+
 
 class ListItem {
     constructor() {
