@@ -259,15 +259,21 @@ class List {
         // It should allow for arguments which will be the items created from the ListItme class
     }
     render() {
-        const boardSection = document.querySelector('#board');
-        const btn = document.createElement('BUTTON');
-        btn.innerHTML = 'Click me!';
-        boardSection.appendChild(btn);
+        const list = document.createElement('div');
+        list.classList.add('todo-list-container');
+        list.innerHTML = document.createElement('div');
+
+
+
+        const board = document.querySelector('#board');
+
+        board.insertAdjacentElement('afterbegin', list);
+
     }
 }
 
-const button1 = new List();
-button1.render();
+const list = new List();
+list.render();
 
 
 
