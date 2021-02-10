@@ -254,6 +254,7 @@ function handleCreateTargetListClick() {
 
 class List {
     constructor() {
+
     }
     render() {
         const list = document.createElement('div');
@@ -277,6 +278,11 @@ list.render();
 class ListItem {
     constructor() {
         // What do I really want here?
+        // How do I get data from the backend?
+        // I want it to be able to feed in the cards?
+        // Do I use the rest parameters to allow any number of arguments?
+        // But how do I feed them in and collect the ones specifically for each card?
+        // Request for each card or reques tall the cards and then process them in the frontend?
     }
     render() { }
 }
