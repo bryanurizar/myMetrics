@@ -240,8 +240,7 @@ function handleCreateTargetListClick() {
 (async () => {
     const response = await fetch('http://localhost:3000/getTodos');
     const todos = await response.text();
-    // console.log(todos);
-
+    console.log(todos);
 })();
 
 class List {
@@ -250,6 +249,7 @@ class List {
         this.listName = listName;
         this.todos = [...listItems];
     }
+
     render() {
         const list = document.createElement('div');
         list.classList.add('todo-list-container');
