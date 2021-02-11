@@ -1,0 +1,30 @@
+<div class="todo-list-container">
+  <div class="list-header">
+    <h4 class="list-name" contenteditable>
+      <%= todoLists[j].todoListDescription %>
+    </h4>
+    <h4 id="<%= todoLists[j].todoListID%>" class="list-popup">...</h4>
+    <div id="modal-<%=todoLists[j].todoListID%>" class="modal">
+      <h4 id="modal-title"><span>List Actions</span></h4>
+      <p id="<%= todoLists[j].todoListID%>" class="delete-list">
+        Delete This List..
+      </p>
+    </div>
+  </div>
+
+  <div id="todo-list-<%= todoLists[j].todoListID%>" class="todos">
+    <% for (let i = 0; i < todos.length; i++) { %> <% if (todos[i].todoListID
+    === todoLists[j].todoListID) { %>
+    <div id="card-<%= todos[i].todoID %>" class="todo-card" draggable="true">
+      <div class="todo-content">
+        <input type="checkbox" />
+        <p class="todo-description"><%= todos[i].todoDescription %></p>
+        <br />
+        <div class="flaticons">
+          <img class="edit" src= /> <img class="trash" src= />
+        </div>
+      </div>
+    </div>
+    <% } %> <%}%>
+  </div>
+</div>
