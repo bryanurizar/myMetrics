@@ -92,7 +92,7 @@ input {
 }
 
 .todos {
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
   margin-bottom: 5%;
 }
 

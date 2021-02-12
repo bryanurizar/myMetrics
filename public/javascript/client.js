@@ -1,5 +1,115 @@
 'use strict';
 
+// test of backend api to get todos - I need to rewrite the frontend to not use EJS templating to render all the todo lists. These should probably be a class which can then render the lists using vanilla JavaScript!
+(async () => {
+    const response = await fetch('http://localhost:3000/getTodos');
+    const todos = await response.text();
+})();
+
+class List {
+    constructor(id, listName, ...listItems) {
+        this.id = id;
+        this.listName = listName;
+        this.todos = [...listItems];
+    }
+
+    render() {
+        const list = document.createElement('div');
+        list.classList.add('todo-list-container');
+
+        const header = document.createElement('div');
+        header.classList.add('list-header');
+        list.appendChild(header);
+
+        const listTitle = document.createElement('h4');
+        listTitle.classList.add('list-name');
+        listTitle.contentEditable = true;
+        listTitle.innerText = this.listName;
+        header.appendChild(listTitle);
+
+        const listModal = document.createElement('h4');
+        listModal.id = this.id;
+        listModal.classList.add('list-popup');
+        listModal.innerText = '...';
+        header.appendChild(listModal);
+
+        const modal = document.createElement('div');
+        modal.innerHTML =
+            `<div id="modal-${this.id}" class="modal">
+                <h4 id="modal-title"><span>List Actions</span></h4>
+                <p id="${this.id}" class="delete-list">Delete This List..</p>
+            </div>`;
+        header.appendChild(modal);
+
+        const board = document.querySelector('#board');
+        board.insertAdjacentElement('beforeend', list);
+
+        const todosDiv = document.createElement('div');
+        todosDiv.id = `todo-list-${this.id}`;
+        todosDiv.classList.add('todos');
+        list.appendChild(todosDiv);
+
+        for (let i = 0; i < this.todos.length; i++) {
+
+            const todoCard = document.createElement('div');
+            todoCard.id = `card-${this.todos[i].todoID}`;
+            todoCard.classList.add('todo-card');
+            todoCard.draggable = true;
+
+            const todoCardContent = document.createElement('div');
+            todoCardContent.classList.add('todo-content');
+            todoCardContent.innerHTML =
+                `<input type="checkbox" />
+                 <p class="todo-description">${this.todos[i].todoDescription}</p>
+                 <div class="flaticons">
+                    <img class="edit" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDM4My45NDcgMzgzLjk0NyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Zz4KCQkJPHBvbHlnb24gcG9pbnRzPSIwLDMwMy45NDcgMCwzODMuOTQ3IDgwLDM4My45NDcgMzE2LjA1MywxNDcuODkzIDIzNi4wNTMsNjcuODkzICAgICIgZmlsbD0iIzYyNjI2MiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiI+PC9wb2x5Z29uPgoJCQk8cGF0aCBkPSJNMzc3LjcwNyw1Ni4wNTNMMzI3Ljg5Myw2LjI0Yy04LjMyLTguMzItMjEuODY3LTguMzItMzAuMTg3LDBsLTM5LjA0LDM5LjA0bDgwLDgwbDM5LjA0LTM5LjA0ICAgICBDMzg2LjAyNyw3Ny45MiwzODYuMDI3LDY0LjM3MywzNzcuNzA3LDU2LjA1M3oiIGZpbGw9IiM2MjYyNjIiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiPjwvcGF0aD4KCQk8L2c+Cgk8L2c+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPC9nPjwvc3ZnPg==" /> 
+                    <img class="trash" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDM4NCAzODQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiIGNsYXNzPSIiPjxnPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPGc+CgkJCTxwYXRoIGQ9Ik02NCwzNDEuMzMzQzY0LDM2NC45MDcsODMuMDkzLDM4NCwxMDYuNjY3LDM4NGgxNzAuNjY3QzMwMC45MDcsMzg0LDMyMCwzNjQuOTA3LDMyMCwzNDEuMzMzdi0yNTZINjRWMzQxLjMzM3oiIGZpbGw9IiM2MjYyNjIiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD4KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgICAgIiBmaWxsPSIjNjI2MjYyIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L3BvbHlnb24+CgkJPC9nPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjwvZz48L3N2Zz4=" />
+                 </div>`;
+
+            console.log(this.todos[i].todoDescription);
+
+            todoCard.insertAdjacentElement('afterbegin', todoCardContent);
+            todosDiv.insertAdjacentElement('afterbegin', todoCard);
+        }
+
+    }
+}
+
+const list1 = new List(1, 'UI/UX Features',
+    {
+        todoID: 261,
+        todoDescription: 'Improve the modal functionality (i.e. only allow one modal and if user clicks outside of modal, close modal)',
+        isTodoCompleted: 0,
+        isOnTargetList: 0,
+        createdAt: '2021-02-02T02:36:16.000Z',
+        updatedAt: '2021-02-02T02:36:16.000Z',
+        userID: null,
+        todoListID: 21
+    },
+    {
+        todoID: 262,
+        todoDescription: 'Improve click events so that they are more independent from each other',
+        isTodoCompleted: 0,
+        isOnTargetList: 0,
+        createdAt: '2021-02-02T02:36:28.000Z',
+        updatedAt: '2021-02-02T02:36:28.000Z',
+        userID: null,
+        todoListID: 21
+    });
+
+list1.render();
+
+const list2 = new List(2, 'Reading List', 'hello');
+list2.render();
+
+// class ListItem {
+//     constructor(listId, itemId, itemDescription) {
+//         this.listId = listId;
+//         this.itemId = itemId;
+//         this.itemDescription = itemDescription;
+//     }
+// }
+
 let todoItems = document.querySelectorAll('.todo-card');
 
 for (let i = 0; i < todoItems.length; i++) {
@@ -236,66 +346,3 @@ function handleCreateTargetListClick() {
     }
 }
 
-// test of backend api to get todos - I need to rewrite the frontend to not use EJS templating to render all the todo lists. These should probably be a class which can then render the lists using vanilla JavaScript!
-(async () => {
-    const response = await fetch('http://localhost:3000/getTodos');
-    const todos = await response.text();
-    console.log(todos);
-})();
-
-class List {
-    constructor(id, listName, ...listItems) {
-        this.id = id;
-        this.listName = listName;
-        this.todos = [...listItems];
-    }
-
-    render() {
-        const list = document.createElement('div');
-        list.classList.add('todo-list-container');
-
-        const header = document.createElement('div');
-        header.classList.add('list-header');
-        list.appendChild(header);
-
-        const listTitle = document.createElement('h4');
-        listTitle.classList.add('list-name');
-        listTitle.contentEditable = true;
-        listTitle.innerText = this.listName;
-        header.appendChild(listTitle);
-
-        const listModal = document.createElement('h4');
-        listModal.id = this.id;
-        listModal.classList.add('list-popup');
-        listModal.innerText = '...';
-        header.appendChild(listModal);
-
-        const modal = document.createElement('div');
-        modal.innerHTML =
-            `<div id="${this.id}" class="modal">
-                <h4 id="modal-title"><span>List Actions</span></h4>
-                <p id="${this.id}" class="delete-list">Delete This List..</p>
-            </div>`;
-        header.appendChild(modal);
-
-        const board = document.querySelector('#board');
-        board.insertAdjacentElement('beforeend', list);
-    }
-}
-
-const list1 = new List(1, 'UI/UX Features', {});
-list1.render();
-
-const list2 = new List(2, 'Reading List', 'hello');
-list2.render();
-
-class ListItem {
-    constructor(listId, itemId, itemDescription) {
-        this.listId = listId;
-        this.itemId = itemId;
-        this.itemDescription = itemDescription;
-    }
-}
-
-const item = new ListItem(2, 251, 'Read JavaScript: The Definitive Guide');
-console.log(item);
