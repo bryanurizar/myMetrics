@@ -1,5 +1,7 @@
 'use strict';
 
+import { editIcon, trashIcon } from './icons.js';
+
 // test of backend api to get todos - I need to rewrite the frontend to not use EJS templating to render all the todo lists. These should probably be a class which can then render the lists using vanilla JavaScript!
 (async () => {
     const response = await fetch('http://localhost:3000/getTodos');
@@ -62,16 +64,33 @@ class List {
                 `<input type="checkbox" />
                  <p class="todo-description">${this.todos[i].todoDescription}</p>
                  <div class="flaticons">
-                    <img class="edit" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDM4My45NDcgMzgzLjk0NyIgc3R5bGU9ImVuYWJsZS1iYWNrZ3JvdW5kOm5ldyAwIDAgNTEyIDUxMiIgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIgY2xhc3M9IiI+PGc+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+Cgk8Zz4KCQk8Zz4KCQkJPHBvbHlnb24gcG9pbnRzPSIwLDMwMy45NDcgMCwzODMuOTQ3IDgwLDM4My45NDcgMzE2LjA1MywxNDcuODkzIDIzNi4wNTMsNjcuODkzICAgICIgZmlsbD0iIzYyNjI2MiIgZGF0YS1vcmlnaW5hbD0iIzAwMDAwMCIgc3R5bGU9IiI+PC9wb2x5Z29uPgoJCQk8cGF0aCBkPSJNMzc3LjcwNyw1Ni4wNTNMMzI3Ljg5Myw2LjI0Yy04LjMyLTguMzItMjEuODY3LTguMzItMzAuMTg3LDBsLTM5LjA0LDM5LjA0bDgwLDgwbDM5LjA0LTM5LjA0ICAgICBDMzg2LjAyNyw3Ny45MiwzODYuMDI3LDY0LjM3MywzNzcuNzA3LDU2LjA1M3oiIGZpbGw9IiM2MjYyNjIiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiPjwvcGF0aD4KCQk8L2c+Cgk8L2c+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPC9nPjwvc3ZnPg==" /> 
-                    <img class="trash" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZlcnNpb249IjEuMSIgeG1sbnM6eGxpbms9Imh0dHA6Ly93d3cudzMub3JnLzE5OTkveGxpbmsiIHhtbG5zOnN2Z2pzPSJodHRwOi8vc3ZnanMuY29tL3N2Z2pzIiB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgeD0iMCIgeT0iMCIgdmlld0JveD0iMCAwIDM4NCAzODQiIHN0eWxlPSJlbmFibGUtYmFja2dyb3VuZDpuZXcgMCAwIDUxMiA1MTIiIHhtbDpzcGFjZT0icHJlc2VydmUiIGNsYXNzPSIiPjxnPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgoJPGc+CgkJPGc+CgkJCTxwYXRoIGQ9Ik02NCwzNDEuMzMzQzY0LDM2NC45MDcsODMuMDkzLDM4NCwxMDYuNjY3LDM4NGgxNzAuNjY3QzMwMC45MDcsMzg0LDMyMCwzNjQuOTA3LDMyMCwzNDEuMzMzdi0yNTZINjRWMzQxLjMzM3oiIGZpbGw9IiM2MjYyNjIiIGRhdGEtb3JpZ2luYWw9IiMwMDAwMDAiIHN0eWxlPSIiIGNsYXNzPSIiPjwvcGF0aD4KCQkJPHBvbHlnb24gcG9pbnRzPSIyNjYuNjY3LDIxLjMzMyAyNDUuMzMzLDAgMTM4LjY2NywwIDExNy4zMzMsMjEuMzMzIDQyLjY2NywyMS4zMzMgNDIuNjY3LDY0IDM0MS4zMzMsNjQgMzQxLjMzMywyMS4zMzMgICAgIiBmaWxsPSIjNjI2MjYyIiBkYXRhLW9yaWdpbmFsPSIjMDAwMDAwIiBzdHlsZT0iIiBjbGFzcz0iIj48L3BvbHlnb24+CgkJPC9nPgoJPC9nPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjxnIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CjwvZz4KPGcgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPC9nPgo8ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8L2c+CjwvZz48L3N2Zz4=" />
+                    <img class="edit" src=${editIcon} /> 
+                    <img class="trash" src=${trashIcon} />
                  </div>`;
 
             console.log(this.todos[i].todoDescription);
 
             todoCard.insertAdjacentElement('afterbegin', todoCardContent);
             todosDiv.insertAdjacentElement('afterbegin', todoCard);
-        }
 
+        }
+        const newCardForm = document.createElement('form');
+        const hiddenInput = document.createElement('input');
+        hiddenInput.setAttribute('type', 'hidden');
+        hiddenInput.name = 'id';
+        hiddenInput.value = this.id;
+        const newCardInput = document.createElement('input');
+        newCardInput.setAttribute('type', 'text');
+        newCardInput.name = 'todoDescription';
+        newCardInput.className = 'add-card';
+        newCardInput.autoComplete = 'true';
+        newCardInput.placeholder = 'Add new card..';
+
+
+        newCardForm.insertAdjacentElement('afterbegin', newCardInput);
+        newCardForm.insertAdjacentElement('afterbegin', hiddenInput);
+
+        list.insertAdjacentElement('beforeend', newCardForm);
     }
 }
 
@@ -100,6 +119,7 @@ const list1 = new List(1, 'UI/UX Features',
 list1.render();
 
 const list2 = new List(2, 'Reading List', 'hello');
+list2.render();
 list2.render();
 
 // class ListItem {
@@ -136,7 +156,7 @@ function handleClick(e) {
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 response.text();
-                window.location.reload();
+                // window.location.reload();
             } catch (err) {
                 console.log(err);
             }
@@ -203,49 +223,49 @@ function handleClick(e) {
     }
 }
 
-// /*
-// ***
-// *** Drag and Drop API Implementation
-// ***
-// */
+/*
+***
+*** Drag and Drop API Implementation
+***
+*/
 
-// const draggableCards = document.querySelectorAll('.todo-card');
-// const dropZone = document.querySelector('.todos');
+const draggableCards = document.querySelectorAll('.todo-card');
+const dropZone = document.querySelector('.todos');
 
-// const handleDragStart = e => {
-//     e.dataTransfer.setData('text/plain', e.target.id);
-//     e.dataTransfer.dropEffect = 'move';
-// };
+const handleDragStart = e => {
+    e.dataTransfer.setData('text/plain', e.target.id);
+    e.dataTransfer.dropEffect = 'move';
+};
 
-// const handleDragOver = e => {
-//     e.preventDefault();
-//     e.dataTransfer.dropEffect = 'move';
-// };
+const handleDragOver = e => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+};
 
-// const handleDrop = e => {
-//     e.preventDefault();
-//     const cardId = e.dataTransfer.getData('text/plain');
-//     const dropNode = e.target.closest('.todo-card');
+const handleDrop = e => {
+    e.preventDefault();
+    const cardId = e.dataTransfer.getData('text/plain');
+    const dropNode = e.target.closest('.todo-card');
 
-//     if (isMouseAboveMiddle(e)) {
-//         dropNode.insertAdjacentElement('beforebegin', document.querySelector(`#${cardId}`));
-//     } else {
-//         dropNode.insertAdjacentElement('afterend', document.querySelector(`#${cardId}`));
-//     }
-// };
+    if (isMouseAboveMiddle(e)) {
+        dropNode.insertAdjacentElement('beforebegin', document.querySelector(`#${cardId}`));
+    } else {
+        dropNode.insertAdjacentElement('afterend', document.querySelector(`#${cardId}`));
+    }
+};
 
-// draggableCards.forEach(draggableCard => {
-//     draggableCard.addEventListener('dragstart', handleDragStart);
-// });
+draggableCards.forEach(draggableCard => {
+    draggableCard.addEventListener('dragstart', handleDragStart);
+});
 
-// function isMouseAboveMiddle(e) {
-//     const bounds = e.target.getBoundingClientRect();
-//     const y = e.clientY - bounds.top;
-//     return y < bounds.height / 2;
-// }
+function isMouseAboveMiddle(e) {
+    const bounds = e.target.getBoundingClientRect();
+    const y = e.clientY - bounds.top;
+    return y < bounds.height / 2;
+}
 
-// dropZone.addEventListener('drop', handleDrop);
-// dropZone.addEventListener('dragover', handleDragOver);
+dropZone.addEventListener('drop', handleDrop);
+dropZone.addEventListener('dragover', handleDragOver);
 
 function handleModal(e) {
     const modalId = `#modal-${e.target.id}`;
