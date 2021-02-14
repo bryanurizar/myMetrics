@@ -1,135 +1,5 @@
 'use strict';
 
-import { editIcon, trashIcon } from './icons.js';
-
-// test of backend api to get todos - I need to rewrite the frontend to not use EJS templating to render all the todo lists. These should probably be a class which can then render the lists using vanilla JavaScript!
-(async () => {
-    const response = await fetch('http://localhost:3000/getTodos');
-    const todos = await response.text();
-})();
-
-class List {
-    constructor(id, listName, ...listItems) {
-        this.id = id;
-        this.listName = listName;
-        this.todos = [...listItems];
-    }
-
-    render() {
-        const list = document.createElement('div');
-        list.classList.add('todo-list-container');
-
-        const header = document.createElement('div');
-        header.classList.add('list-header');
-        list.appendChild(header);
-
-        const listTitle = document.createElement('h4');
-        listTitle.classList.add('list-name');
-        listTitle.contentEditable = true;
-        listTitle.innerText = this.listName;
-        header.appendChild(listTitle);
-
-        const listModal = document.createElement('h4');
-        listModal.id = this.id;
-        listModal.classList.add('list-popup');
-        listModal.innerText = '...';
-        header.appendChild(listModal);
-
-        const modal = document.createElement('div');
-        modal.innerHTML =
-            `<div id="modal-${this.id}" class="modal">
-                <h4 id="modal-title"><span>List Actions</span></h4>
-                <p id="${this.id}" class="delete-list">Delete This List..</p>
-            </div>`;
-        header.appendChild(modal);
-
-        const board = document.querySelector('#board');
-        board.insertAdjacentElement('beforeend', list);
-
-        const todosDiv = document.createElement('div');
-        todosDiv.id = `todo-list-${this.id}`;
-        todosDiv.classList.add('todos');
-        list.appendChild(todosDiv);
-
-        for (let i = 0; i < this.todos.length; i++) {
-
-            const todoCard = document.createElement('div');
-            todoCard.id = `card-${this.todos[i].todoID}`;
-            todoCard.classList.add('todo-card');
-            todoCard.draggable = true;
-
-            const todoCardContent = document.createElement('div');
-            todoCardContent.classList.add('todo-content');
-            todoCardContent.innerHTML =
-                `<input type="checkbox" />
-                 <p class="todo-description">${this.todos[i].todoDescription}</p>
-                 <div class="flaticons">
-                    <img class="edit" src=${editIcon} /> 
-                    <img class="trash" src=${trashIcon} />
-                 </div>`;
-
-            console.log(this.todos[i].todoDescription);
-
-            todoCard.insertAdjacentElement('afterbegin', todoCardContent);
-            todosDiv.insertAdjacentElement('afterbegin', todoCard);
-
-        }
-        const newCardForm = document.createElement('form');
-        const hiddenInput = document.createElement('input');
-        hiddenInput.setAttribute('type', 'hidden');
-        hiddenInput.name = 'id';
-        hiddenInput.value = this.id;
-        const newCardInput = document.createElement('input');
-        newCardInput.setAttribute('type', 'text');
-        newCardInput.name = 'todoDescription';
-        newCardInput.className = 'add-card';
-        newCardInput.autoComplete = 'true';
-        newCardInput.placeholder = 'Add new card..';
-
-
-        newCardForm.insertAdjacentElement('afterbegin', newCardInput);
-        newCardForm.insertAdjacentElement('afterbegin', hiddenInput);
-
-        list.insertAdjacentElement('beforeend', newCardForm);
-    }
-}
-
-const list1 = new List(1, 'UI/UX Features',
-    {
-        todoID: 261,
-        todoDescription: 'Improve the modal functionality (i.e. only allow one modal and if user clicks outside of modal, close modal)',
-        isTodoCompleted: 0,
-        isOnTargetList: 0,
-        createdAt: '2021-02-02T02:36:16.000Z',
-        updatedAt: '2021-02-02T02:36:16.000Z',
-        userID: null,
-        todoListID: 21
-    },
-    {
-        todoID: 262,
-        todoDescription: 'Improve click events so that they are more independent from each other',
-        isTodoCompleted: 0,
-        isOnTargetList: 0,
-        createdAt: '2021-02-02T02:36:28.000Z',
-        updatedAt: '2021-02-02T02:36:28.000Z',
-        userID: null,
-        todoListID: 21
-    });
-
-list1.render();
-
-const list2 = new List(2, 'Reading List', 'hello');
-list2.render();
-list2.render();
-
-// class ListItem {
-//     constructor(listId, itemId, itemDescription) {
-//         this.listId = listId;
-//         this.itemId = itemId;
-//         this.itemDescription = itemDescription;
-//     }
-// }
-
 let todoItems = document.querySelectorAll('.todo-card');
 
 for (let i = 0; i < todoItems.length; i++) {
@@ -156,7 +26,7 @@ function handleClick(e) {
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 response.text();
-                // window.location.reload();
+                window.location.reload();
             } catch (err) {
                 console.log(err);
             }
@@ -172,6 +42,8 @@ function handleClick(e) {
             id: todoTag.id.slice(5,)
         };
 
+        todoTag.remove();
+
         (async () => {
             try {
                 const response = await fetch('http://localhost:3000/board', {
@@ -180,7 +52,7 @@ function handleClick(e) {
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 await response.text();
-                window.location.reload();
+                // window.location.reload();
             } catch (err) {
                 console.log(err);
             }

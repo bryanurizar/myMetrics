@@ -75,7 +75,7 @@ app.route('/board')
 
             db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0', (err, todos) => {
                 if (err) throw err;
-                res.render('pages/board2', { todoLists: todoLists, todos: todos, });
+                res.render('pages/board', { todoLists: todoLists, todos: todos, });
             });
         });
     })
