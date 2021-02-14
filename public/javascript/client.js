@@ -18,6 +18,8 @@ function handleClick(e) {
             compltedTodoId: todoTag.id.slice(5,)
         };
 
+        todoTag.remove();
+
         (async () => {
             try {
                 const response = await fetch('http://localhost:3000/board', {
@@ -26,7 +28,6 @@ function handleClick(e) {
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 response.text();
-                window.location.reload();
             } catch (err) {
                 console.log(err);
             }
@@ -52,7 +53,6 @@ function handleClick(e) {
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 await response.text();
-                // window.location.reload();
             } catch (err) {
                 console.log(err);
             }
@@ -86,7 +86,6 @@ function handleClick(e) {
                         headers: { 'Content-type': 'application/json; charset=UTF-8' }
                     });
                     response.text();
-                    window.location.reload();
                 } catch (err) {
                     console.log(err);
                 }
