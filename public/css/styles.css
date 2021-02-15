@@ -1,6 +1,7 @@
 html {
   overflow-y: hidden;
 }
+
 body {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
@@ -40,11 +41,10 @@ a {
 #board {
   display: flex;
   margin-top: 8px;
-  margin-right: 0px;
   flex-direction: row;
   align-items: flex-start;
   overflow-y: hidden;
-  padding: 0;
+  width: 100vw;
 }
 
 input {
@@ -69,9 +69,9 @@ input {
   box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
 }
 
-.todo-list-container:first-child {
+/* .todo-list-container:first-child {
   margin-left: 0;
-}
+} */
 
 .add-list {
   margin-top: 0;

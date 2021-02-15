@@ -212,14 +212,14 @@ function handleCreateTargetListClick() {
         } else {
             const buttonTag = document.querySelector('#create-list-btn');
 
-            const hours = document.createElement('INPUT');
-            hours.setAttribute('type', 'text');
-            buttonTag.insertAdjacentElement('beforebegin', hours);
+            // const hours = document.createElement('INPUT');
+            // hours.setAttribute('type', 'text');
+            // buttonTag.insertAdjacentElement('beforebegin', hours);
 
-            const minutes = document.createElement('INPUT');
-            minutes.setAttribute('type', 'text');
-            buttonTag.insertAdjacentElement('beforebegin', minutes);
-            createTargetListBtn.innerText = 'Start Timer';
+            // const minutes = document.createErslement('INPUT');
+            // minutes.setAttribute('type', 'text');
+            // buttonTag.insertAdjacentElement('beforebegin', minutes);
+            createTargetListBtn.innerText = 'Create Target List';
         }
 
         (async () => {
