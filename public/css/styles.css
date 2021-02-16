@@ -44,6 +44,8 @@ a {
   flex-direction: row;
   align-items: flex-start;
   overflow-y: hidden;
+  overflow-x: auto;
+  left: 0;
   width: 100vw;
 }
 
