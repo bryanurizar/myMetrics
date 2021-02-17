@@ -2,50 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const db = require('./database/db_init');
 
-//RSA private / public key generated
-// const { generateKeyPairSync } = require('crypto');
-// const { publicKey, privateKey } = generateKeyPairSync('rsa', {
-//     modulusLength: 4096,
-//     publicKeyEncoding: {
-//         type: 'spki',
-//         format: 'pem'
-//     },
-//     privateKeyEncoding: {
-//         type: 'pkcs8',
-//         format: 'pem',
-//         cipher: 'aes-256-cbc',
-//         passphrase: 'top secret'
-//     }
-// });
-
-// console.log(publicKey);
-// console.log(privateKey);
-
-// JWT implementation
-// const JwtStrategy = require('passport-jwt').Strategy;
-// const ExtractJwt = require('passport-jwt').ExtractJwt;
-
-// const opts = {
-//     jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-//     secretOrKey: process.env.JWT_SECRET
-// };
-
-// passport.use(new JwtStrategy(opts, function (jwt_payload, done) {
-//     User.findOne({ id: jwt_payload.sub }, function (err, user) {
-//         if (err) {
-//             return done(err, false);
-//         }
-//         if (user) {
-//             return done(null, user);
-//         } else {
-//             return done(null, false);
-//             or you could create a new account
-//         }
-//     });
-// }));
-
-// Express configurations
-
 const app = express();
 const port = process.env.PORT || 3000;
 
