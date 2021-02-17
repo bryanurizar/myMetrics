@@ -101,19 +101,23 @@ function handleClick(e) {
 */
 
 const draggableCards = document.querySelectorAll('.todo-card');
-const dropZone = document.querySelector('.todos');
+const dropZones = document.querySelectorAll('.todos');
+console.log(dropZones);
 
 const handleDragStart = e => {
+    console.log('dragstart', e.target);
     e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDragOver = e => {
+    console.log('dragover', e.target);
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDrop = e => {
+    console.log('dragdrop', e.target);
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.todo-card');
@@ -135,9 +139,10 @@ function isMouseAboveMiddle(e) {
     return y < bounds.height / 2;
 }
 
-dropZone.addEventListener('drop', handleDrop);
-dropZone.addEventListener('dragover', handleDragOver);
-
+dropZones.forEach(dropZone => {
+    dropZone.addEventListener('drop', handleDrop);
+    dropZone.addEventListener('dragover', handleDragOver);
+});
 
 /*
 ***
