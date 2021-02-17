@@ -102,7 +102,6 @@ function handleClick(e) {
 
 const draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.todos');
-console.log(dropZones);
 
 const handleDragStart = e => {
     console.log('dragstart', e.target);
