@@ -138,6 +138,12 @@ function isMouseAboveMiddle(e) {
 dropZone.addEventListener('drop', handleDrop);
 dropZone.addEventListener('dragover', handleDragOver);
 
+
+/*
+***
+**** List modal that appears when user clicks on the "..."
+***
+*/
 function handleModal(e) {
     const modalId = `#modal-${e.target.id}`;
     const modal = document.querySelector(modalId);
@@ -183,6 +189,12 @@ function handleDeleteListClick(e) {
     })();
 }
 
+/*
+***
+*** Create target list when user clicks the selectiona button
+***
+*/
+
 const createTargetListBtn = document.querySelector('#create-list-btn');
 createTargetListBtn.addEventListener('click', handleCreateTargetListClick);
 const targetTasksArray = [];
@@ -210,15 +222,7 @@ function handleCreateTargetListClick() {
         if (document.querySelectorAll('.targeted').length === 0) {
             createTargetListBtn.innerText = 'Select Tasks to Target';
         } else {
-            const buttonTag = document.querySelector('#create-list-btn');
 
-            const hours = document.createElement('INPUT');
-            hours.setAttribute('type', 'text');
-            buttonTag.insertAdjacentElement('beforebegin', hours);
-
-            const minutes = document.createErslement('INPUT');
-            minutes.setAttribute('type', 'text');
-            buttonTag.insertAdjacentElement('beforebegin', minutes);
             createTargetListBtn.innerText = 'Create Target List';
         }
 
