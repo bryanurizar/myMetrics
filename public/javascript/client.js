@@ -85,7 +85,7 @@ function handleClick(e) {
                         body: JSON.stringify(editedTodo),
                         headers: { 'Content-type': 'application/json; charset=UTF-8' }
                     });
-                    response.text();
+                    await response.text();
                 } catch (err) {
                     console.log(err);
                 }
@@ -185,8 +185,10 @@ function handleDeleteListClick(e) {
                 body: JSON.stringify(todoListId),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
-            response.text();
-            window.location.reload();
+            await response.text();
+            const deletedTodoList = document.querySelector(`#todo-list-${e.target.id}`).closest('.todo-list-container');
+            deletedTodoList.remove();
+            console.log(e.target.nodeType);
         } catch (err) {
             console.log(err);
         }
@@ -237,7 +239,7 @@ function handleCreateTargetListClick() {
                     body: JSON.stringify(targetTasksArray),
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
-                response.text();
+                await response.text();
             } catch (err) {
                 console.log(err);
             }
