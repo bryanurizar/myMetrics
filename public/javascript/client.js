@@ -247,3 +247,60 @@ function handleCreateTargetListClick() {
     }
 }
 
+// Create new list using JavaScript object
+const newListInput = document.querySelector('.add-list');
+
+newListInput.addEventListener('keypress', e => {
+    if (e.key === 'Enter') {
+        console.log(e.key);
+        createList();
+    }
+});
+
+function createList() {
+    const id = 10;
+
+    const list = document.createElement('div');
+    list.classList.add('todo-list-container');
+
+    const header = document.createElement('div');
+    header.classList.add('list-header');
+    list.appendChild(header);
+
+    const listTitle = document.createElement('h4');
+    listTitle.classList.add('list-name');
+    listTitle.contentEditable = true;
+    listTitle.innerText = 'Test';
+    header.appendChild(listTitle);
+
+    const listModal = document.createElement('h4');
+    listModal.id = id;
+    listModal.classList.add('list-popup');
+    listModal.innerText = '...';
+    header.appendChild(listModal);
+
+    const modal = document.createElement('div');
+    modal.innerHTML =
+        `<div id="modal-${id}" class="modal">	
+                <h4 id="modal-title"><span>List Actions</span></h4>	
+                <p id="${id}" class="delete-list">Delete This List..</p>	
+            </div>`;
+    header.appendChild(modal);
+
+    const board = document.querySelector('#board');
+    board.insertAdjacentElement('beforeend', list);
+
+    const todosDiv = document.createElement('div');
+    todosDiv.id = `todo-list-${id}`;
+    todosDiv.classList.add('todos');
+    list.appendChild(todosDiv);
+
+    const newListInput = document.createElement('input');
+    newListInput.name = 'todoDescription';
+    newListInput.type = 'text';
+    newListInput.classList.add('add-card');
+    newListInput.placeholder = 'Add new card';
+
+    list.appendChild(newListInput);
+}
+
