@@ -1,6 +1,6 @@
 'use strict';
 
-import icons from './icons';
+import { edit, trash } from './icons.js';
 
 let todoItems = document.querySelectorAll('.todo-card');
 
@@ -254,12 +254,27 @@ const newListInput = document.querySelector('.add-list');
 
 newListInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') {
-        console.log(e.key);
-        createList();
+        createList(newListInput.value);
+        console.log('entered');
     }
 });
 
-function createList() {
+function createList(listName) {
+
+    (async () => {
+        try {
+            const response = await fetch('http://localhost:3000/board/create-list', {
+                method: 'POST',
+                body: JSON.stringify(listName),
+                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+            });
+            await response.text();
+        } catch (err) {
+            console.log(err);
+        }
+    })();
+
+
     const id = 10;
 
     const list = document.createElement('div');
@@ -306,32 +321,32 @@ function createList() {
     list.appendChild(newListInput);
 }
 
-// Add new item Implementation
+// // Add new item Implementation
 
-const addCardInputs = document.querySelectorAll('.add-card');
+// const addCardInputs = document.querySelectorAll('.add-card');
 
-addCardInputs.forEach(addCardInput => {
-    addCardInput.addEventListener('kepress', e => {
-        if (e.key === 'Enter') addCard();
-    });
-});
+// addCardInputs.forEach(addCardInput => {
+//     addCardInput.addEventListener('kepress', e => {
+//         if (e.key === 'Enter') addCard();
+//     });
+// });
 
-function addCard() {
+// function addCard() {
 
-    async () => {
+//     async () => {
 
-    }
+//     }
 
 
-    <div class="todo-content">
-        <input type="checkbox" />
-        <p class="todo-description"><%= todos[i].todoDescription %></p>
-        <br />
-        <div class="flaticons">
-            <img class="edit" src="`${icons.edit}`" />
-            <img
-                class="trash"
-                src=`${</div>
-    </div>
+//     <div class="todo-content">
+//         <input type="checkbox" />
+//         <p class="todo-description"><%= todos[i].todoDescription %></p>
+//         <br />
+//         <div class="flaticons">
+//             <img class="edit" src="`${edit}`" />
+//             <img
+//                 class="trash"
+//                 src=`${</div>
+//     </div>
 
-}
+// }

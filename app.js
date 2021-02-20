@@ -92,6 +92,15 @@ app.route('/login')
         res.redirect('/board');
     });
 
+app.route('/board/create-list')
+    .post((req, res) => {
+        console.log(req.body);
+        const id = { listID: 123 };
+        const jsonData = id.stringify(id);
+        res.send(jsonData);
+    });
+
+
 app.route('/board/delete-list')
     .post((req, res) => {
         const todoListId = req.body.id;
@@ -146,6 +155,5 @@ app.route('/getTodos')
             });
         });
     });
-
 
 app.listen(port, () => console.log(`Listening on port ${port}.`));
