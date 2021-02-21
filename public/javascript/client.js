@@ -190,7 +190,6 @@ function handleDeleteListClick(e) {
             await response.text();
             const deletedTodoList = document.querySelector(`#todo-list-${e.target.id}`).closest('.todo-list-container');
             deletedTodoList.remove();
-            console.log(e.target.nodeType);
         } catch (err) {
             console.log(err);
         }
@@ -255,25 +254,27 @@ const newListInput = document.querySelector('.add-list');
 newListInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') {
         createList(newListInput.value);
-        console.log('entered');
     }
 });
 
 function createList(listName) {
+    const newList = {
+        name: listName
+    };
 
     (async () => {
         try {
             const response = await fetch('http://localhost:3000/board/create-list', {
                 method: 'POST',
-                body: JSON.stringify(listName),
+                body: JSON.stringify(newList),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
-            await response.text();
+            await aresponse.text();
+
         } catch (err) {
             console.log(err);
         }
     })();
-
 
     const id = 10;
 

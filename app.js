@@ -94,10 +94,7 @@ app.route('/login')
 
 app.route('/board/create-list')
     .post((req, res) => {
-        console.log(req.body);
-        const id = { listID: 123 };
-        const jsonData = id.stringify(id);
-        res.send(jsonData);
+        console.log(req.body.name);
     });
 
 
