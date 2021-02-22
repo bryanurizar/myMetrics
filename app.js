@@ -1,6 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const db = require('./database/db_init');
+const cors = require('cors');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,6 +11,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json({
     type: ['application/json', 'text/plain']
 }));
+app.use(cors());
 app.set('view engine', 'ejs');
 
 
@@ -94,9 +96,14 @@ app.route('/login')
 
 app.route('/board/create-list')
     .post((req, res) => {
-        console.log(req.body.name);
-    });
+        const listName = req.body.name;
+        db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', listName, (err, result) => {
+            if (err) throw err;
+            return res.send(result.insertId);
+        });
 
+
+    });
 
 app.route('/board/delete-list')
     .post((req, res) => {

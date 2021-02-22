@@ -269,8 +269,8 @@ function createList(listName) {
                 body: JSON.stringify(newList),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
-            await aresponse.text();
-
+            await response.json();
+            console.log(response.data);
         } catch (err) {
             console.log(err);
         }
@@ -288,7 +288,7 @@ function createList(listName) {
     const listTitle = document.createElement('h4');
     listTitle.classList.add('list-name');
     listTitle.contentEditable = true;
-    listTitle.innerText = 'Test';
+    listTitle.innerText = 'test';
     header.appendChild(listTitle);
 
     const listModal = document.createElement('h4');
