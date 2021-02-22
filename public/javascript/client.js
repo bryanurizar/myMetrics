@@ -270,7 +270,7 @@ function createList(listName) {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
             const res = await response.json();
-            renderList(res.id);
+            renderList(listName, res.id);
         } catch (err) {
             console.log(err);
         }
@@ -278,7 +278,7 @@ function createList(listName) {
 
 }
 
-function renderList(id) {
+function renderList(listName, id) {
 
     const list = document.createElement('div');
     list.classList.add('todo-list-container');
@@ -290,7 +290,7 @@ function renderList(id) {
     const listTitle = document.createElement('h4');
     listTitle.classList.add('list-name');
     listTitle.contentEditable = true;
-    listTitle.innerText = 'test';
+    listTitle.innerText = listName;
     header.appendChild(listTitle);
 
     const listModal = document.createElement('h4');
@@ -323,7 +323,10 @@ function renderList(id) {
     newListInput.classList.add('add-card');
     newListInput.placeholder = 'Add new card...';
 
-    list.appendChild(newListInput);
+    const boardSection = document.querySelector('#board');
+    const newListElement = document.querySelector('.add-list').parentNode;
+    console.log(newListElement);
+    boardSection.insertBefore(list, newListElement);
 }
 
 // // Add new item Implementation
