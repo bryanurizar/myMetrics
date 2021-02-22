@@ -269,14 +269,16 @@ function createList(listName) {
                 body: JSON.stringify(newList),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
-            await response.json();
-            console.log(response.data);
+            const res = await response.json();
+            renderList(res.id);
         } catch (err) {
             console.log(err);
         }
     })();
 
-    const id = 10;
+}
+
+function renderList(id) {
 
     const list = document.createElement('div');
     list.classList.add('todo-list-container');
@@ -298,11 +300,12 @@ function createList(listName) {
     header.appendChild(listModal);
 
     const modal = document.createElement('div');
+    modal.id = `modal-${id}`;
+    modal.classList.add('modal');
     modal.innerHTML =
-        `<div id="modal-${id}" class="modal">	
-                <h4 id="modal-title"><span>List Actions</span></h4>	
-                <p id="${id}" class="delete-list">Delete This List..</p>	
-            </div>`;
+        `<h4 id="modal-title"><span>List Actions</span></h4>	
+         <p id="${id}" class="delete-list">Delete This List..</p>`;
+
     header.appendChild(modal);
 
     const board = document.querySelector('#board');
@@ -314,10 +317,11 @@ function createList(listName) {
     list.appendChild(todosDiv);
 
     const newListInput = document.createElement('input');
+    newListInput.id = id;
     newListInput.name = 'todoDescription';
     newListInput.type = 'text';
     newListInput.classList.add('add-card');
-    newListInput.placeholder = 'Add new card';
+    newListInput.placeholder = 'Add new card...';
 
     list.appendChild(newListInput);
 }

@@ -99,10 +99,8 @@ app.route('/board/create-list')
         const listName = req.body.name;
         db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', listName, (err, result) => {
             if (err) throw err;
-            return res.send(result.insertId);
+            res.json({ id: result.insertId });
         });
-
-
     });
 
 app.route('/board/delete-list')
