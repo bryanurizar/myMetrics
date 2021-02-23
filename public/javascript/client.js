@@ -327,6 +327,8 @@ function renderList(listName, id) {
     const newListElement = document.querySelector('.add-list').parentNode;
     console.log(newListElement);
     boardSection.insertBefore(list, newListElement);
+
+    boardSection.scrollLeft = 1000000;
 }
 
 // // Add new item Implementation
