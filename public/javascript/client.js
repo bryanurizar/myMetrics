@@ -151,6 +151,9 @@ dropZones.forEach(dropZone => {
 ***
 */
 function handleModal(e) {
+
+    console.log()
+
     const modalId = `#modal-${e.target.id}`;
     const modal = document.querySelector(modalId);
 
@@ -308,6 +311,9 @@ function renderList(listName, id) {
 
     header.appendChild(modal);
 
+    const modalLink = document.getElementById(`${id}`);
+    modalLink.addEventListener('click', handleModal);
+
     const board = document.querySelector('#board');
     board.insertAdjacentElement('beforeend', list);
 
@@ -319,17 +325,18 @@ function renderList(listName, id) {
     const newListInput = document.createElement('input');
     newListInput.id = id;
     newListInput.name = 'todoDescription';
-    newListInput.type = 'text';
     newListInput.classList.add('add-card');
+    newListInput.type = 'text';
+    newListInput.autoComplete = 'off';
     newListInput.placeholder = 'Add new card...';
     todosDiv.appendChild(newListInput);
 
     const boardSection = document.querySelector('#board');
     const newListElement = document.querySelector('.add-list').parentNode;
-    console.log(newListElement);
     boardSection.insertBefore(list, newListElement);
 
     boardSection.scrollLeft = 100000000000000000000;
+
 }
 
 // // Add new item Implementation
