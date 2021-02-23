@@ -322,13 +322,14 @@ function renderList(listName, id) {
     newListInput.type = 'text';
     newListInput.classList.add('add-card');
     newListInput.placeholder = 'Add new card...';
+    todosDiv.appendChild(newListInput);
 
     const boardSection = document.querySelector('#board');
     const newListElement = document.querySelector('.add-list').parentNode;
     console.log(newListElement);
     boardSection.insertBefore(list, newListElement);
 
-    boardSection.scrollLeft = 1000000;
+    boardSection.scrollLeft = 100000000000000000000;
 }
 
 // // Add new item Implementation
