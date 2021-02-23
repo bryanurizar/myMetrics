@@ -152,9 +152,8 @@ dropZones.forEach(dropZone => {
 */
 function handleModal(e) {
 
-    console.log()
-
     const modalId = `#modal-${e.target.id}`;
+    console.log(modalId);
     const modal = document.querySelector(modalId);
 
     if (modal.classList.contains('modal-styles')) {
@@ -257,6 +256,7 @@ const newListInput = document.querySelector('.add-list');
 newListInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') {
         createList(newListInput.value);
+        newListInput.value = '';
     }
 });
 
@@ -311,8 +311,8 @@ function renderList(listName, id) {
 
     header.appendChild(modal);
 
-    const modalLink = document.getElementById(`${id}`);
-    modalLink.addEventListener('click', handleModal);
+    // const modalLink = document.getElementById(`${id}`);
+    // modalLink.addEventListener('click', handleModal);
 
     const board = document.querySelector('#board');
     board.insertAdjacentElement('beforeend', list);
@@ -335,7 +335,16 @@ function renderList(listName, id) {
     const newListElement = document.querySelector('.add-list').parentNode;
     boardSection.insertBefore(list, newListElement);
 
-    boardSection.scrollLeft = 100000000000000000000;
+    boardSection.scrollLeft = 1000000000000000;
+
+    const modalLink = document.querySelector(`[id="${id}"]`);
+    modalLink.addEventListener('click', handleModal);
+
+    const deleteList = document.querySelector(`#modal-${id}`);
+    console.log(deleteList);
+    const deleteListLink = deleteList.querySelector('p');
+
+    deleteListLink.addEventListener('click', handleDeleteListClick);
 
 }
 
