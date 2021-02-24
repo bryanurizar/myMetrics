@@ -130,15 +130,15 @@ const handleDrop = e => {
     }
 };
 
-draggableCards.forEach(draggableCard => {
-    draggableCard.addEventListener('dragstart', handleDragStart);
-});
-
 function isMouseAboveMiddle(e) {
     const bounds = e.target.getBoundingClientRect();
     const y = e.clientY - bounds.top;
     return y < bounds.height / 2;
 }
+
+draggableCards.forEach(draggableCard => {
+    draggableCard.addEventListener('dragstart', handleDragStart);
+});
 
 dropZones.forEach(dropZone => {
     dropZone.addEventListener('drop', handleDrop);
@@ -343,6 +343,10 @@ function renderList(id, listName) {
 
     deleteListLink.addEventListener('click', handleDeleteListClick);
 
+    // Adding event listeners for the drag and drop API
+    todosDiv.addEventListener('drop', handleDrop);
+    todosDiv.addEventListener('dragover', handleDragOver);
+
 }
 
 // Add new item Implementation
@@ -404,4 +408,6 @@ function renderCard(listId, cardId, cardContent) {
 
     list.appendChild(todoCard);
 
+    // Adding event listener for the drag and drop API
+    todoCard.addEventListener('dragstart', handleDragStart);
 }
