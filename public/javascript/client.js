@@ -273,7 +273,7 @@ function createList(listName) {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
             const res = await response.json();
-            renderList(listName, res.id);
+            renderList(res.id, listName);
         } catch (err) {
             console.log(err);
         }
@@ -281,7 +281,7 @@ function createList(listName) {
 
 }
 
-function renderList(listName, id) {
+function renderList(id, listName) {
 
     const list = document.createElement('div');
     list.classList.add('todo-list-container');
@@ -310,9 +310,6 @@ function renderList(listName, id) {
          <p id="${id}" class="delete-list">Delete This List..</p>`;
 
     header.appendChild(modal);
-
-    // const modalLink = document.getElementById(`${id}`);
-    // modalLink.addEventListener('click', handleModal);
 
     const board = document.querySelector('#board');
     board.insertAdjacentElement('beforeend', list);
@@ -348,32 +345,56 @@ function renderList(listName, id) {
 
 }
 
-// // Add new item Implementation
+// Add new item Implementation
 
-// const addCardInputs = document.querySelectorAll('.add-card');
+const addCardInputs = document.querySelectorAll('.add-card');
 
-// addCardInputs.forEach(addCardInput => {
-//     addCardInput.addEventListener('kepress', e => {
-//         if (e.key === 'Enter') addCard();
-//     });
-// });
+addCardInputs.forEach(addCardInput => {
+    addCardInput.addEventListener('keypress', e => {
+        if (e.key == 'Enter') {
+            const cardContent = e.target.value;
+            const listId = e.target.id;
+            addCard(listId, cardContent);
+            e.target.value = '';
+        }
+    });
+});
 
-// function addCard() {
+function addCard(listId, cardContent) {
 
-//     async () => {
+    const card = {
+        listId: listId,
+        content: cardContent
+    };
 
-//     }
+    (async () => {
+        const response = await fetch('http://localhost:3000/board/add-item', {
+            method: 'POST',
+            body: JSON.stringify(card),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        });
+        const res = await response.json();
+        const cardId = res.id;
+        console.log(cardId);
+        renderCard(listId, cardId, cardContent);
+    })();
+}
 
 
-//     <div class="todo-content">
-//         <input type="checkbox" />
-//         <p class="todo-description"><%= todos[i].todoDescription %></p>
-//         <br />
-//         <div class="flaticons">
-//             <img class="edit" src="`${edit}`" />
-//             <img
-//                 class="trash"
-//                 src=`${</div>
-//     </div>
+function renderCard(listId, cardId, cardContent) {
+    console.log('in render function');
+    // const list = document.querySelector(`.todo-list-${listId}`);
+    // console.log(list);
 
-// }
+    // < div class="todo-content" >
+    //     <input type="checkbox" />
+    //     <p class="todo-description"><%= todos[i].todoDescription %></p>
+    //     <br />
+    //     <div class="flaticons">
+    //         <img class="edit" src="`${edit}`" />
+    //         <img
+    //             class="trash"
+    //             src=`${</div>
+    // </div >
+
+}

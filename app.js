@@ -134,6 +134,31 @@ app.route('/board/delete-list')
         });
     });
 
+app.route('/board/add-item')
+    .post((req, res) => {
+        const listId = req.body.listId;
+        const itemDescription = req.body.content;
+        console.log(listId, itemDescription);
+        db.connection.query('INSERT INTO Todos (todoDescription, todoListID) VALUES (?, ?)', [itemDescription, listId], (err, result) => {
+            if (err) throw err;
+            console.log('New ajax card added to DB');
+            res.json({ id: result.insertId });
+        });
+    });
+
+app.route('/board/create-list')
+    .post((req, res) => {
+        const listName = req.body.name;
+        db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', listName, (err, result) => {
+            if (err) throw err;
+            res.json({ id: result.insertId });
+        });
+    });
+
+
+
+
+
 app.route('/board/create-target-list')
     .put((req) => {
         const targetTasksArray = req.body;
