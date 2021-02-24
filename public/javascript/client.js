@@ -354,6 +354,7 @@ addCardInputs.forEach(addCardInput => {
         if (e.key == 'Enter') {
             const cardContent = e.target.value;
             const listId = e.target.id;
+            console.log(listId);
             addCard(listId, cardContent);
             e.target.value = '';
         }
@@ -367,6 +368,8 @@ function addCard(listId, cardContent) {
         content: cardContent
     };
 
+    console.log(card);
+
     (async () => {
         const response = await fetch('http://localhost:3000/board/add-item', {
             method: 'POST',
@@ -374,27 +377,31 @@ function addCard(listId, cardContent) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
         const res = await response.json();
-        const cardId = res.id;
-        console.log(cardId);
-        renderCard(listId, cardId, cardContent);
+        renderCard(card.listId, res.id, card.content);
     })();
 }
 
 
 function renderCard(listId, cardId, cardContent) {
     console.log('in render function');
-    // const list = document.querySelector(`.todo-list-${listId}`);
-    // console.log(list);
+    const list = document.querySelector(`#todo-list-${listId}`);
+    console.log(list);
 
-    // < div class="todo-content" >
-    //     <input type="checkbox" />
-    //     <p class="todo-description"><%= todos[i].todoDescription %></p>
-    //     <br />
-    //     <div class="flaticons">
-    //         <img class="edit" src="`${edit}`" />
-    //         <img
-    //             class="trash"
-    //             src=`${</div>
-    // </div >
+    const todoCard = document.createElement('div');
+    todoCard.id = `card-${cardId}`;
+    todoCard.classList.add('todo-card');
+    todoCard.draggable = 'true';
+    todoCard.innerHTML = `
+        <div class="todo-content" >
+           <input type="checkbox"/>
+           <p class="todo-description">${cardContent}</p>
+           <br />
+           <div class="flaticons">
+               <img class="edit" src=${edit} />
+               <img class="trash" src=${trash} />
+           </div>
+        </div>`;
+
+    list.appendChild(todoCard);
 
 }
