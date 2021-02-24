@@ -158,9 +158,9 @@ app.route('/board/create-target-list')
         }
     });
 
-app.route('/getTodos')
+app.route('/get-todos')
     .get((req, res) => {
-        db.connection.query('SELECT * FROM TodoLists', (err, todoLists) => {
+        db.connection.query('SELECT * FROM TodoLists', err => {
             if (err) throw err;
 
             db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0', (err, todos) => {
