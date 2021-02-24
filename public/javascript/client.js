@@ -2,11 +2,11 @@
 
 import { edit, trash } from './icons.js';
 
-let todoItems = document.querySelectorAll('.todo-card');
+// let todoItems = document.querySelectorAll('.todo-card');
 
-for (let i = 0; i < todoItems.length; i++) {
-    todoItems[i].addEventListener('click', handleClick);
-}
+// for (let i = 0; i < todoItems.length; i++) {
+//     todoItems[i].addEventListener('click', handleClick);
+// }
 
 function handleClick(e) {
     const todoTag = e.target.closest('.todo-card');
@@ -410,4 +410,5 @@ function renderCard(listId, cardId, cardContent) {
 
     // Adding event listener for the drag and drop API
     todoCard.addEventListener('dragstart', handleDragStart);
+    todoCard.addEventListener('click', handleClick);
 }
