@@ -351,19 +351,19 @@ function renderList(id, listName) {
 
 // Add new item Implementation
 
-const addCardInputs = document.querySelectorAll('.add-card');
+// const addCardInputs = document.querySelectorAll('.add-card');
 
-addCardInputs.forEach(addCardInput => {
-    addCardInput.addEventListener('keypress', e => {
-        if (e.key == 'Enter') {
-            const cardContent = e.target.value;
-            const listId = e.target.id;
-            console.log(listId);
-            addCard(listId, cardContent);
-            e.target.value = '';
-        }
-    });
-});
+// addCardInputs.forEach(addCardInput => {
+//     addCardInput.addEventListener('keypress', e => {
+//         if (e.key == 'Enter') {
+//             const cardContent = e.target.value;
+//             const listId = e.target.id;
+//             console.log(listId);
+//             addCard(listId, cardContent);
+//             e.target.value = '';
+//         }
+//     });
+// });
 
 function addCard(listId, cardContent) {
 
@@ -412,3 +412,16 @@ function renderCard(listId, cardId, cardContent) {
     todoCard.addEventListener('dragstart', handleDragStart);
     todoCard.addEventListener('click', handleClick);
 }
+
+const board = document.querySelector('#board');
+console.log(board);
+
+board.addEventListener('keypress', e => {
+    if (e.target.tagName === 'INPUT' && e.key === 'Enter') {
+        const cardContent = e.target.value;
+        const listId = e.target.id;
+        console.log(listId);
+        addCard(listId, cardContent);
+        e.target.value = '';
+    }
+});
