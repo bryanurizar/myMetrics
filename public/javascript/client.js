@@ -106,19 +106,16 @@ const draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.todos');
 
 const handleDragStart = e => {
-    console.log('dragstart', e.target);
     e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDragOver = e => {
-    console.log('dragover', e.target);
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDrop = e => {
-    console.log('dragdrop', e.target);
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.todo-card');
@@ -153,7 +150,6 @@ dropZones.forEach(dropZone => {
 function handleModal(e) {
 
     const modalId = `#modal-${e.target.id}`;
-    console.log(modalId);
     const modal = document.querySelector(modalId);
 
     if (modal.classList.contains('modal-styles')) {
@@ -338,7 +334,6 @@ function renderList(id, listName) {
     modalLink.addEventListener('click', handleModal);
 
     const deleteList = document.querySelector(`#modal-${id}`);
-    console.log(deleteList);
     const deleteListLink = deleteList.querySelector('p');
 
     deleteListLink.addEventListener('click', handleDeleteListClick);
@@ -358,7 +353,6 @@ function renderList(id, listName) {
 //         if (e.key == 'Enter') {
 //             const cardContent = e.target.value;
 //             const listId = e.target.id;
-//             console.log(listId);
 //             addCard(listId, cardContent);
 //             e.target.value = '';
 //         }
@@ -371,8 +365,6 @@ function addCard(listId, cardContent) {
         listId: listId,
         content: cardContent
     };
-
-    console.log(card);
 
     (async () => {
         const response = await fetch('http://localhost:3000/board/add-item', {
@@ -387,9 +379,7 @@ function addCard(listId, cardContent) {
 
 
 function renderCard(listId, cardId, cardContent) {
-    console.log('in render function');
     const list = document.querySelector(`#todo-list-${listId}`);
-    console.log(list);
 
     const todoCard = document.createElement('div');
     todoCard.id = `card-${cardId}`;
@@ -414,13 +404,11 @@ function renderCard(listId, cardId, cardContent) {
 }
 
 const board = document.querySelector('#board');
-console.log(board);
 
 board.addEventListener('keypress', e => {
     if (e.target.tagName === 'INPUT' && e.key === 'Enter') {
         const cardContent = e.target.value;
         const listId = e.target.id;
-        console.log(listId);
         addCard(listId, cardContent);
         e.target.value = '';
     }
