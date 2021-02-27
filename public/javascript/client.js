@@ -322,7 +322,7 @@ function renderList(id, listName) {
     newListInput.type = 'text';
     newListInput.autoComplete = 'off';
     newListInput.placeholder = 'Add new card...';
-    todosDiv.appendChild(newListInput);
+    list.appendChild(newListInput);
 
     const boardSection = document.querySelector('#board');
     const newListElement = document.querySelector('.add-list').parentNode;
@@ -406,7 +406,7 @@ function renderCard(listId, cardId, cardContent) {
 const board = document.querySelector('#board');
 
 board.addEventListener('keypress', e => {
-    if (e.target.tagName === 'INPUT' && e.key === 'Enter') {
+    if (e.target.className === 'add-card' && e.key === 'Enter') {
         const cardContent = e.target.value;
         const listId = e.target.id;
         addCard(listId, cardContent);
