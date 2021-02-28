@@ -344,23 +344,7 @@ function renderList(id, listName) {
 
 }
 
-// Add new item Implementation
-
-// const addCardInputs = document.querySelectorAll('.add-card');
-
-// addCardInputs.forEach(addCardInput => {
-//     addCardInput.addEventListener('keypress', e => {
-//         if (e.key == 'Enter') {
-//             const cardContent = e.target.value;
-//             const listId = e.target.id;
-//             addCard(listId, cardContent);
-//             e.target.value = '';
-//         }
-//     });
-// });
-
 function addCard(listId, cardContent) {
-
     const card = {
         listId: listId,
         content: cardContent
@@ -403,6 +387,7 @@ function renderCard(listId, cardId, cardContent) {
     todoCard.addEventListener('click', handleClick);
 }
 
+// Added event listner to the input elements of the list by using event delegation
 const board = document.querySelector('#board');
 
 board.addEventListener('keypress', e => {
