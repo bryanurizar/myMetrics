@@ -231,6 +231,8 @@ function handleCreateTargetListClick() {
             createTargetListBtn.innerText = 'Create Target List';
         }
 
+        console.log(targetTasksArray);
+
         (async () => {
             try {
                 const response = await fetch('http://localhost:3000/board/create-target-list', {
@@ -245,6 +247,10 @@ function handleCreateTargetListClick() {
         })();
     }
 }
+
+
+
+
 
 // Create new list using JavaScript object
 const newListInput = document.querySelector('.add-list');
