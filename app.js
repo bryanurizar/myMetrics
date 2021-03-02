@@ -1,9 +1,8 @@
 require('dotenv').config();
+
 const express = require('express');
 const db = require('./database/db_init');
 const cors = require('cors');
-const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const passport = require('passport');
 
 const app = express();
 const port = process.env.PORT || 3000;
