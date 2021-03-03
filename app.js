@@ -88,7 +88,7 @@ app.route('/board')
 
 app.route('/login')
     .get((_, res) => {
-        res.render('login');
+        res.render('pages/login');
     })
     .post((req, res) => {
         res.redirect('/board');
