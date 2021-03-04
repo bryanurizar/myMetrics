@@ -33,15 +33,18 @@
         const id_token = googleUser.getAuthResponse().id_token;
         console.log("ID Token: " + id_token);
 
-        (async () => {
-          let response = await fetch("http://localhost:3000/login", {
+        async function postGoogleId(url = "", data = {}) {
+          const response = await fetch("http://localhost:3000/login", {
             method: "POST",
             headers: {
               "content-type": "application/json",
             },
-            body: JSON.stringify({ token: id_token }),
+            body: JSON.stringify(data),
           });
-        })();
+          return response.text();
+        }
+
+        postGoogleId("http://localhost:3000/login", { token: id_token });
       }
     </script>
   </body>
