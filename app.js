@@ -7,6 +7,9 @@ const cors = require('cors');
 const app = express();
 const port = process.env.PORT || 3000;
 
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({
@@ -91,10 +94,17 @@ app.route('/login')
         res.render('pages/login');
     })
     .post((req, res) => {
-        console.log(req.body.token);
-        res.redirect('/board');
+        async function verify() {
+            const ticket = await client.verifyIdToken({
+                idToken: req.body.token,
+                audience: process.env.GOOGLE_CLIENT_ID
+            });
+            const payload = ticket.getPayload();
+            const userid = payload['sub'];
+        }
+        verify().catch(console.error);
+        res.redirect('/pages/dashboard');
     });
-
 app.route('/board/create-list')
     .post((req, res) => {
         const listName = req.body.name;
