@@ -87,10 +87,11 @@ app.route('/board')
     });
 
 app.route('/login')
-    .get((_, res) => {
+    .get((req, res) => {
         res.render('pages/login');
     })
     .post((req, res) => {
+        console.log(req.body.token);
         res.redirect('/board');
     });
 
