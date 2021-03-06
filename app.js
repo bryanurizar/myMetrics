@@ -9,7 +9,9 @@ const port = process.env.PORT || 3000;
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+const cookieParser = require('cookie-parser');
 
+app.use(cookieParser());
 app.use(express.static('public'));
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json({
@@ -93,18 +95,57 @@ app.route('/login')
     .get((req, res) => {
         res.render('pages/login');
     })
-    .post((req, res) => {
+    .post(async (req, res) => {
         async function verify() {
             const ticket = await client.verifyIdToken({
                 idToken: req.body.token,
                 audience: process.env.GOOGLE_CLIENT_ID
             });
+
             const payload = ticket.getPayload();
-            const userid = payload['sub'];
+            console.log(payload);
+
+            const userId = payload.sub;
+            console.log(typeof userId);
+            const userFirstName = payload.given_name;
+            const userLastName = payload.family_name;
+            const userEmail = payload.email;
+            // const userImage = payload.picture;
+
+            doesUserExist(userId, userFirstName, userLastName, userEmail);
         }
-        verify().catch(console.error);
-        res.redirect('/pages/dashboard');
+
+        await verify();
+
+        async function doesUserExist(userId, userFirstName, userLastName, userEmail) {
+            console.log('enetered doesUserExist function');
+            try {
+                console.log('user verified');
+
+                db.connection.query('SELECT * FROM Users WHERE userID = ?', userId, (err, results) => {
+                    if (err) throw err;
+                    console.log(results.length);
+
+                    if (results.length > 0) {
+                        console.log('user validated');
+                        res.redirect('/pages/dashboard');
+                    } else {
+                        db.connection.query('INSERT INTO Users (userID, firstName, lastName, email) VALUES (?, ?, ?, ?)', [userId, userFirstName, userLastName, userEmail], (err, results) => {
+                            if (err) throw err;
+                            console.log('user added to db and validated');
+                            res.redirect('/pages/dashboard');
+                        });
+                    }
+                });
+            } catch (err) {
+                console.log(err);
+            } finally {
+                //empty
+            }
+        }
+
     });
+
 app.route('/board/create-list')
     .post((req, res) => {
         const listName = req.body.name;
