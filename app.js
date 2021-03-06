@@ -106,42 +106,39 @@ app.route('/login')
             console.log(payload);
 
             const userId = payload.sub;
-            console.log(typeof userId);
             const userFirstName = payload.given_name;
             const userLastName = payload.family_name;
             const userEmail = payload.email;
-            // const userImage = payload.picture;
+            const userImage = payload.picture;
 
             doesUserExist(userId, userFirstName, userLastName, userEmail);
         }
 
-        await verify();
+        try {
+            await verify();
+            console.log('user authenticated by google');
+        } catch (err) {
+            console.log('user not authenticated by google');
+            res.redirect('pages/login');
+        }
 
-        async function doesUserExist(userId, userFirstName, userLastName, userEmail) {
-            console.log('enetered doesUserExist function');
-            try {
-                console.log('user verified');
+        async function doesUserExist(userId, userFirstName, userLastName, userEmail, userImage) {
+            db.connection.query('SELECT * FROM Users WHERE userID = ?', userId, (err, results) => {
+                if (err) throw err;
 
-                db.connection.query('SELECT * FROM Users WHERE userID = ?', userId, (err, results) => {
-                    if (err) throw err;
-                    console.log(results.length);
+                const isUserFound = results.length === 1;
 
-                    if (results.length > 0) {
-                        console.log('user validated');
-                        res.redirect('/pages/dashboard');
-                    } else {
-                        db.connection.query('INSERT INTO Users (userID, firstName, lastName, email) VALUES (?, ?, ?, ?)', [userId, userFirstName, userLastName, userEmail], (err, results) => {
-                            if (err) throw err;
-                            console.log('user added to db and validated');
-                            res.redirect('/pages/dashboard');
-                        });
-                    }
-                });
-            } catch (err) {
-                console.log(err);
-            } finally {
-                //empty
-            }
+                if (isUserFound) {
+                    console.log('user already exists - redirected to dashboard');
+                    res.redirect('/pages/dashboard');
+                } else {
+                    db.connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [userId, userFirstName, userLastName, userEmail, userImage], (err, results) => {
+                        if (err) throw err;
+                        console.log('user added to db and redirected to dashboard');
+                    });
+                    res.redirect('pages/dashboard');
+                }
+            });
         }
 
     });

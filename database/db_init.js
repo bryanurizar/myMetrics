@@ -22,7 +22,7 @@ module.exports.connection.connect((err) => {
     });
 
     //creates the user table
-    module.exports.connection.query('CREATE TABLE IF NOT EXISTS Users (userID CHAR(255) NOT NULL, firstName CHAR(255) NOT NULL, lastName CHAR(255) NOT NULL, email CHAR(255) NOT NULL, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (userID))', err => {
+    module.exports.connection.query('CREATE TABLE IF NOT EXISTS Users (userID CHAR(255) NOT NULL, firstName CHAR(255) NOT NULL, lastName CHAR(255) NOT NULL, email CHAR(255) NOT NULL, userImage CHAR(255), createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (userID))', err => {
         if (err) throw err;
         console.log('Table created.');
     });
