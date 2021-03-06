@@ -111,7 +111,7 @@ app.route('/login')
             const userEmail = payload.email;
             const userImage = payload.picture;
 
-            doesUserExist(userId, userFirstName, userLastName, userEmail);
+            doesUserExist(userId, userFirstName, userLastName, userEmail, userImage);
         }
 
         try {
