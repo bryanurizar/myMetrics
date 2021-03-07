@@ -3,13 +3,13 @@ require('dotenv').config();
 const express = require('express');
 const db = require('./database/db_init');
 const cors = require('cors');
+const cookieParser = require('cookie-parser');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 const { OAuth2Client } = require('google-auth-library');
 const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-const cookieParser = require('cookie-parser');
 
 app.use(cookieParser());
 app.use(express.static('public'));
@@ -26,13 +26,13 @@ app.route('/')
         res.render('pages/landing');
     });
 
-app.route('/dashboard')
-    .get((_, res) => {
+app.route('/dashboard', isUserAuthenticated)
+    .get((req, res) => {
         res.render('pages/dashboard');
     });
 
 app.route('/board')
-    .get((_, res) => {
+    .get(isUserAuthenticated, (req, res) => {
         db.connection.query('SELECT * FROM TodoLists', (err, todoLists) => {
             if (err) throw err;
 
@@ -61,7 +61,6 @@ app.route('/board')
                 res.redirect('board');
             });
         }
-
     })
     .put((req, res) => {
         const updatedTodo = req.body.updatedTodo;
@@ -96,54 +95,55 @@ app.route('/login')
         res.render('pages/login');
     })
     .post(async (req, res) => {
-        async function verify() {
-            const ticket = await client.verifyIdToken({
-                idToken: req.body.token,
-                audience: process.env.GOOGLE_CLIENT_ID
-            });
-
-            const payload = ticket.getPayload();
-            console.log(payload);
-
-            const userId = payload.sub;
-            const userFirstName = payload.given_name;
-            const userLastName = payload.family_name;
-            const userEmail = payload.email;
-            const userImage = payload.picture;
-
-            doesUserExist(userId, userFirstName, userLastName, userEmail, userImage);
-        }
+        const token = req.body.token;
+        const user = {};
 
         try {
             await verify();
+            databaseValidation(user);
             console.log('user authenticated by google');
+            res.cookie('session-cookie', token);
+            res.send('user authenticated');
         } catch (err) {
             console.log('user not authenticated by google');
-            res.redirect('pages/login');
         }
 
-        async function doesUserExist(userId, userFirstName, userLastName, userEmail, userImage) {
-            db.connection.query('SELECT * FROM Users WHERE userID = ?', userId, (err, results) => {
+        async function verify() {
+            const ticket = await client.verifyIdToken({
+                idToken: token,
+                audience: process.env.GOOGLE_CLIENT_ID
+            });
+
+            console.log('first verify', token);
+
+            const payload = ticket.getPayload();
+
+            user.id = payload.sub;
+            user.firstName = payload.given_name;
+            user.lastName = payload.family_name;
+            user.email = payload.email;
+            user.image = payload.picture;
+        }
+
+        function databaseValidation(user) {
+            db.connection.query('SELECT * FROM Users WHERE userID = ?', user.id, (err, results) => {
                 if (err) throw err;
 
                 const isUserFound = results.length === 1;
 
                 if (isUserFound) {
                     console.log('user already exists - redirected to dashboard');
-                    res.redirect('/pages/dashboard');
                 } else {
-                    db.connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [userId, userFirstName, userLastName, userEmail, userImage], (err, results) => {
+                    db.connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [user.id, user.firstName, user.lastName, user.email, user.image], (err, results) => {
                         if (err) throw err;
                         console.log('user added to db and redirected to dashboard');
                     });
-                    res.redirect('pages/dashboard');
                 }
             });
         }
-
     });
 
-app.route('/board/create-list')
+app.route('/board/create-list', isUserAuthenticated)
     .post((req, res) => {
         const listName = req.body.name;
         db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', listName, (err, result) => {
@@ -152,7 +152,7 @@ app.route('/board/create-list')
         });
     });
 
-app.route('/board/delete-list')
+app.route('/board/delete-list', isUserAuthenticated)
     .post((req, res) => {
         const todoListId = req.body.id;
         db.connection.beginTransaction(function (err) {
@@ -183,7 +183,7 @@ app.route('/board/delete-list')
         });
     });
 
-app.route('/board/add-item')
+app.route('/board/add-item', isUserAuthenticated)
     .post((req, res) => {
         const listId = req.body.listId;
         const itemDescription = req.body.content;
@@ -195,7 +195,7 @@ app.route('/board/add-item')
         });
     });
 
-app.route('/board/create-target-list')
+app.route('/board/create-target-list', isUserAuthenticated)
     .put((req) => {
         const targetTasksArray = req.body;
 
@@ -207,7 +207,7 @@ app.route('/board/create-target-list')
         }
     });
 
-app.route('/get-todos')
+app.route('/get-todos', isUserAuthenticated)
     .get((req, res) => {
         db.connection.query('SELECT * FROM TodoLists', err => {
             if (err) throw err;
@@ -220,3 +220,34 @@ app.route('/get-todos')
     });
 
 app.listen(port, () => console.log(`Listening on port ${port}.`));
+
+async function isUserAuthenticated(req, res, next) {
+    console.log('entered isUserAuthenticated function');
+
+    const token = req.cookies['session-cookie'];
+    console.log('isUserAuthenticated', token);
+    const user = {};
+
+    async function verify() {
+        const ticket = await client.verifyIdToken({
+            idToken: token,
+            audience: process.env.GOOGLE_CLIENT_ID
+        });
+
+        const payload = ticket.getPayload();
+
+        user.id = payload.sub;
+        user.firstName = payload.given_name;
+        user.lastName = payload.family_name;
+        user.email = payload.email;
+        user.image = payload.picture;
+    }
+
+    try {
+        await verify();
+        console.log('user verified again');
+
+    } catch (err) {
+        console.log(err);
+    }
+}
