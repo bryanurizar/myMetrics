@@ -248,10 +248,6 @@ function handleCreateTargetListClick() {
     }
 }
 
-
-
-
-
 // Create new list using JavaScript object
 const newListInput = document.querySelector('.add-list');
 

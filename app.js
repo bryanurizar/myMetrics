@@ -143,6 +143,12 @@ app.route('/login')
         }
     });
 
+
+app.route('/logout')
+    .get((req, res) => {
+        res.render('pages/landing');
+    });
+
 app.route('/board/create-list', isUserAuthenticated)
     .post((req, res) => {
         const listName = req.body.name;
@@ -225,7 +231,6 @@ async function isUserAuthenticated(req, res, next) {
     console.log('entered isUserAuthenticated function');
 
     const token = req.cookies['session-cookie'];
-    console.log('isUserAuthenticated', token);
     const user = {};
 
     async function verify() {
@@ -246,7 +251,7 @@ async function isUserAuthenticated(req, res, next) {
     try {
         await verify();
         console.log('user verified again');
-
+        next();
     } catch (err) {
         console.log(err);
     }
