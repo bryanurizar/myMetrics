@@ -144,10 +144,10 @@ app.route('/login')
     });
 
 
-app.route('/logout')
-    .get((req, res) => {
-        res.render('pages/landing');
-    });
+// app.route('/logout')
+//     .get((req, res) => {
+//         res.redirect('/login');
+//     });
 
 app.route('/board/create-list', isUserAuthenticated)
     .post((req, res) => {

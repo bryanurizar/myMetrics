@@ -1,12 +1,5 @@
 <html lang="en">
-  <head>
-    <meta name="google-signin-scope" content="profile email" />
-    <meta
-      name="google-signin-client_id"
-      content="949496674355-4i348lsnm0fgu1f074nnpdhvq3qpe05g.apps.googleusercontent.com"
-    />
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
-  </head>
+  <%- include('../partials/head'); %>>
   <body>
     <div class="g-signin2" data-onsuccess="onSignIn" data-theme="dark"></div>
     <a href="#" onclick="signOut();">Sign out</a>
@@ -17,8 +10,7 @@
           console.log("User signed out.");
         });
       }
-    </script>
-    <script>
+
       function onSignIn(googleUser) {
         // Useful data for your client-side scripts:
         const profile = googleUser.getBasicProfile();
