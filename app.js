@@ -94,7 +94,7 @@ app.route('/login')
     .get((req, res) => {
         res.render('pages/login');
     })
-    .post(isUserAuthenticated, async (req, res) => {
+    .post(async (req, res) => {
         const token = req.body.token;
         const user = {};
 
@@ -231,6 +231,7 @@ async function isUserAuthenticated(req, res, next) {
     console.log('entered isUserAuthenticated function');
 
     const token = req.cookies['session-cookie'];
+    console.log(token);
     const user = {};
 
     async function verify() {
