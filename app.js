@@ -26,8 +26,8 @@ app.route('/')
         res.render('pages/landing');
     });
 
-app.route('/dashboard', isUserAuthenticated)
-    .get((req, res) => {
+app.route('/dashboard')
+    .get(isUserAuthenticated, (req, res) => {
         res.render('pages/dashboard');
     });
 
@@ -42,7 +42,7 @@ app.route('/board')
             });
         });
     })
-    .post((req, res) => {
+    .post(isUserAuthenticated, (req, res) => {
         const todoDescription = req.body.todoDescription;
         const todoListID = req.body.id;
         const newTodoList = req.body.newList;
@@ -62,7 +62,7 @@ app.route('/board')
             });
         }
     })
-    .put((req, res) => {
+    .put(isUserAuthenticated, (req, res) => {
         const updatedTodo = req.body.updatedTodo;
         const completedTodoId = Number(req.body.compltedTodoId);
         const editedTodoId = Number(req.body.editedTodoId);
@@ -80,7 +80,7 @@ app.route('/board')
         }
         res.redirect(303, 'board');
     })
-    .delete((req, res) => {
+    .delete(isUserAuthenticated, (req, res) => {
         const deletedTodo = Number(req.body.id);
 
         db.connection.query('DELETE FROM Todos WHERE todoId=?', deletedTodo, err => {
@@ -91,10 +91,10 @@ app.route('/board')
     });
 
 app.route('/login')
-    .get((req, res) => {
+    .get(isUserAuthenticated, (req, res) => {
         res.render('pages/login');
     })
-    .post(async (req, res) => {
+    .post(isUserAuthenticated, async (req, res) => {
         const token = req.body.token;
         const user = {};
 
@@ -149,8 +149,8 @@ app.route('/login')
 //         res.redirect('/login');
 //     });
 
-app.route('/board/create-list', isUserAuthenticated)
-    .post((req, res) => {
+app.route('/board/create-list')
+    .post(isUserAuthenticated, (req, res) => {
         const listName = req.body.name;
         db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', listName, (err, result) => {
             if (err) throw err;
@@ -158,8 +158,8 @@ app.route('/board/create-list', isUserAuthenticated)
         });
     });
 
-app.route('/board/delete-list', isUserAuthenticated)
-    .post((req, res) => {
+app.route('/board/delete-list')
+    .post(isUserAuthenticated, (req, res) => {
         const todoListId = req.body.id;
         db.connection.beginTransaction(function (err) {
             if (err) { throw err; }
@@ -189,8 +189,8 @@ app.route('/board/delete-list', isUserAuthenticated)
         });
     });
 
-app.route('/board/add-item', isUserAuthenticated)
-    .post((req, res) => {
+app.route('/board/add-item')
+    .post(isUserAuthenticated, (req, res) => {
         const listId = req.body.listId;
         const itemDescription = req.body.content;
         console.log(listId, itemDescription);
@@ -201,8 +201,8 @@ app.route('/board/add-item', isUserAuthenticated)
         });
     });
 
-app.route('/board/create-target-list', isUserAuthenticated)
-    .put((req) => {
+app.route('/board/create-target-list')
+    .put(isUserAuthenticated, (req) => {
         const targetTasksArray = req.body;
 
         for (let i = 0; i < targetTasksArray.length; i++) {
@@ -213,8 +213,8 @@ app.route('/board/create-target-list', isUserAuthenticated)
         }
     });
 
-app.route('/get-todos', isUserAuthenticated)
-    .get((req, res) => {
+app.route('/get-todos')
+    .get(isUserAuthenticated, (req, res) => {
         db.connection.query('SELECT * FROM TodoLists', err => {
             if (err) throw err;
 
