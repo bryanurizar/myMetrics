@@ -144,10 +144,11 @@ app.route('/login')
     });
 
 
-// app.route('/logout')
-//     .get((req, res) => {
-//         res.redirect('/login');
-//     });
+app.route('/logout')
+    .get((req, res) => {
+        res.clearCookie('session-cookie');
+        res.redirect('/login');
+    });
 
 app.route('/board/create-list')
     .post(isUserAuthenticated, (req, res) => {
@@ -255,5 +256,7 @@ async function isUserAuthenticated(req, res, next) {
         next();
     } catch (err) {
         console.log(err);
+        res.redirect('pages/login');
+
     }
 }
