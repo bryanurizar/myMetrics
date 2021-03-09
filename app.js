@@ -134,7 +134,7 @@ app.route('/login')
                 if (isUserFound) {
                     console.log('user already exists - redirected to dashboard');
                 } else {
-                    db.connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [user.id, user.firstName, user.lastName, user.email, user.image], (err, results) => {
+                    db.connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [user.id, user.firstName, user.lastName, user.email, user.image], (err) => {
                         if (err) throw err;
                         console.log('user added to db and redirected to dashboard');
                     });
