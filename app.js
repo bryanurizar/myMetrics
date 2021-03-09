@@ -91,7 +91,7 @@ app.route('/board')
     });
 
 app.route('/login')
-    .get(isUserAuthenticated, (req, res) => {
+    .get((req, res) => {
         res.render('pages/login');
     })
     .post(isUserAuthenticated, async (req, res) => {
