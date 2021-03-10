@@ -256,7 +256,7 @@ async function isUserAuthenticated(req, res, next) {
         next();
     } catch (err) {
         console.log(err);
-        res.redirect('pages/login');
+        res.redirect('login');
 
     }
 }
