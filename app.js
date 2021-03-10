@@ -34,7 +34,6 @@ app.route('/dashboard')
 app.route('/board')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
-        console.log(req.user);
         db.connection.query('SELECT * FROM TodoLists WHERE userID=?', loggedInUser, (err, todoLists) => {
             if (err) throw err;
 
