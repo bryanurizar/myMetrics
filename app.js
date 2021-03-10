@@ -33,10 +33,12 @@ app.route('/dashboard')
 
 app.route('/board')
     .get(isUserAuthenticated, (req, res) => {
-        db.connection.query('SELECT * FROM TodoLists', (err, todoLists) => {
+        const loggedInUser = req.user.id;
+        console.log(req.user);
+        db.connection.query('SELECT * FROM TodoLists WHERE userID=?', loggedInUser, (err, todoLists) => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0', (err, todos) => {
+            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUser, (err, todos) => {
                 if (err) throw err;
                 res.render('pages/board', { todoLists: todoLists, todos: todos, });
             });
@@ -46,16 +48,17 @@ app.route('/board')
         const todoDescription = req.body.todoDescription;
         const todoListID = req.body.id;
         const newTodoList = req.body.newList;
+        const loggedInUser = req.user.id;
 
         if (todoDescription) {
-            db.connection.query('INSERT INTO Todos (todoDescription, todoListID) VALUES (?, ?)', [todoDescription, todoListID], err => {
+            db.connection.query('INSERT INTO Todos (todoDescription, todoListID, userID) VALUES (?, ?, ?)', [todoDescription, todoListID, loggedInUser], err => {
                 if (err) throw err;
                 console.log('Todo inserted into database.');
                 res.redirect('board');
             });
         } else if (newTodoList) {
             console.log('entered the new todo list else?');
-            db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', newTodoList, err => {
+            db.connection.query('INSERT INTO TodoLists (todoListDescription, userID) VALUES (?, ?)', [newTodoList, loggedInUser], err => {
                 if (err) throw err;
                 console.log('Todo inserted into database.');
                 res.redirect('board');
@@ -153,7 +156,9 @@ app.route('/logout')
 app.route('/board/create-list')
     .post(isUserAuthenticated, (req, res) => {
         const listName = req.body.name;
-        db.connection.query('INSERT INTO TodoLists (todoListDescription) VALUES (?)', listName, (err, result) => {
+        const loggedInUser = req.user.id;
+
+        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID) VALUES (?, ?)', [listName, loggedInUser], (err, result) => {
             if (err) throw err;
             res.json({ id: result.insertId });
         });
@@ -194,8 +199,9 @@ app.route('/board/add-item')
     .post(isUserAuthenticated, (req, res) => {
         const listId = req.body.listId;
         const itemDescription = req.body.content;
-        console.log(listId, itemDescription);
-        db.connection.query('INSERT INTO Todos (todoDescription, todoListID) VALUES (?, ?)', [itemDescription, listId], (err, result) => {
+        const loggedInUser = req.user.id;
+
+        db.connection.query('INSERT INTO Todos (todoDescription, todoListID, userID) VALUES (?, ?, ?)', [itemDescription, listId, loggedInUser], (err, result) => {
             if (err) throw err;
             console.log('New ajax card added to DB');
             res.json({ id: result.insertId });
@@ -216,10 +222,12 @@ app.route('/board/create-target-list')
 
 app.route('/get-todos')
     .get(isUserAuthenticated, (req, res) => {
-        db.connection.query('SELECT * FROM TodoLists', err => {
+        const loggedInUser = req.body.id;
+
+        db.connection.query('SELECT * FROM TodoLists WHERE userID=?', loggedInUser, err => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0', (err, todos) => {
+            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUser, (err, todos) => {
                 if (err) throw err;
                 res.send(todos);
             });
@@ -252,6 +260,7 @@ async function isUserAuthenticated(req, res, next) {
 
     try {
         await verify();
+        req.user = user;
         console.log('user verified again');
         next();
     } catch (err) {
