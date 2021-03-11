@@ -29,7 +29,9 @@
           });
           const res = await response.text();
           if (res === "user authenticated") {
-            window.location.href = "http://localhost:3000/dashboard";
+            window.location.href = `http://localhost:3000/${(
+              profile.getGivenName() + profile.getFamilyName()
+            ).toLowerCase()}/dashboard`;
           }
         }
 
