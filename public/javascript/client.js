@@ -280,7 +280,6 @@ function createList(listName) {
 }
 
 function renderList(id, listName) {
-
     const list = document.createElement('div');
     list.classList.add('todo-list-container');
 
@@ -303,9 +302,10 @@ function renderList(id, listName) {
     const modal = document.createElement('div');
     modal.id = `modal-${id}`;
     modal.classList.add('modal');
-    modal.innerHTML =
-        `<h4 id="modal-title"><span>List Actions</span></h4>	
-         <p id="${id}" class="delete-list">Delete This List..</p>`;
+    modal.innerHTML = `
+        <h4 id="modal-title"><span>List Actions</span></h4>	
+        <p id="${id}" class="delete-list">Delete This List..</p>
+        `;
 
     header.appendChild(modal);
 
@@ -343,7 +343,6 @@ function renderList(id, listName) {
     // Adding event listeners for the drag and drop API
     todosDiv.addEventListener('drop', handleDrop);
     todosDiv.addEventListener('dragover', handleDragOver);
-
 }
 
 function addCard(listId, cardContent) {
@@ -380,7 +379,8 @@ function renderCard(listId, cardId, cardContent) {
                <img class="edit" src=${edit} />
                <img class="trash" src=${trash} />
            </div>
-        </div>`;
+        </div>
+        `;
 
     list.appendChild(todoCard);
 

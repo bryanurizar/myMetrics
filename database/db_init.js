@@ -28,7 +28,13 @@ module.exports.connection.connect((err) => {
     });
 
     // Creates the todo lists table
-    module.exports.connection.query('CREATE TABLE IF NOT EXISTS TodoLists (todoListID INT NOT NULL AUTO_INCREMENT, todoListDescription CHAR(255), isTodoListDeleted BOOLEAN DEFAULT FALSE, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, userID CHAR(255), PRIMARY KEY (todoListID), FOREIGN KEY (userID) REFERENCES Users(userID))', err => {
+    module.exports.connection.query('CREATE TABLE IF NOT EXISTS TodoLists (todoListID INT NOT NULL AUTO_INCREMENT, todoListDescription CHAR(255), isTodoListDeleted BOOLEAN DEFAULT FALSE, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, userID CHAR(255), PRIMARY KEY (todoListID), FOREIGN KEY (userID) REFERENCES Users(userID), FOREIGN KEY (boardID) REFERENCES Boards(boardID))', err => {
+        if (err) throw err;
+        console.log('Table created.');
+    });
+
+    // Creates the board table with
+    module.exports.connection.query('CREATE TABLE IF NOT EXISTS Boards (boardID CHAR(12) NOT NULL, boardName CHAR(255) NOT NULL, createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  PRIMARY KEY (boardID), FOREIGN KEY (userID) REFERENCES Users(userID))', err => {
         if (err) throw err;
         console.log('Table created.');
     });

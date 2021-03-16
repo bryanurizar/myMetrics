@@ -5,6 +5,11 @@ const db = require('./database/db_init');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
 
+const { customAlphabet } = require('nanoid');
+const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+const nanoid = customAlphabet(alphabet, 12);
+nanoid();
+
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -29,10 +34,10 @@ app.route('/')
 app.route('/:user/dashboard')
     .get(isUserAuthenticated, (req, res) => {
         console.log(req.params);
-        res.render('pages/dashboard');
+        res.render('pages/dashboard', req.user);
     });
 
-app.route('/board')
+app.route('/board/:boardId/boardName')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
         db.connection.query('SELECT * FROM TodoLists WHERE userID=?', loggedInUser, (err, todoLists) => {
