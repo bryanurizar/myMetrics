@@ -12,17 +12,17 @@ module.exports.connection.connect((err) => {
         console.error('error connecting: ' + err.stack);
         return;
     }
-    console.log('Database successfully connected.');
+    console.log('Database connection initiated.');
 
     // creates database
     module.exports.connection.query('CREATE DATABASE IF NOT EXISTS myMetricsDB', (err, result) => {
         if (err) throw err;
-        console.log('Database created: ' + result);
+        console.log('Database created successfully.');
     });
 
     module.exports.connection.query('USE myMetricsDB', err => {
         if (err) throw err;
-        console.log('myMetricsDB being used.');
+        console.log('Use myMetricsDB.');
     });
 
     //creates the user table
@@ -65,6 +65,7 @@ module.exports.connection.connect((err) => {
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
             userID CHAR(255), 
+            boardID CHAR(12) NOT NULL,
             PRIMARY KEY (todoListID), 
             FOREIGN KEY (userID) REFERENCES Users(userID), 
             FOREIGN KEY (boardID) REFERENCES Boards(boardID))`,
@@ -83,6 +84,7 @@ module.exports.connection.connect((err) => {
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
             userID CHAR(255), 
             todoListID INT, 
+            boardID CHAR(12) NOT NULL,
             PRIMARY KEY (todoID), 
             FOREIGN KEY (userID) REFERENCES Users(userID), 
             FOREIGN KEY (todoListID) REFERENCES TodoLists(todoListID), 

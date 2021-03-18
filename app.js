@@ -37,17 +37,6 @@ app.route('/:user/dashboard')
         res.render('pages/dashboard', req.user);
     });
 
-app.route('board/:boardID/boardName')
-
-
-
-
-
-
-
-
-
-
 app.route('/board')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
