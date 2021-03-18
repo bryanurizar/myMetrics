@@ -48,6 +48,7 @@ module.exports.connection.connect((err) => {
             boardName CHAR(255) NOT NULL, 
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
+            userID CHAR(255), 
             PRIMARY KEY (boardID), 
             FOREIGN KEY (userID) REFERENCES Users(userID))`,
         err => {
@@ -63,7 +64,8 @@ module.exports.connection.connect((err) => {
             isTodoListDeleted BOOLEAN DEFAULT FALSE, 
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            userID CHAR(255), PRIMARY KEY (todoListID), 
+            userID CHAR(255), 
+            PRIMARY KEY (todoListID), 
             FOREIGN KEY (userID) REFERENCES Users(userID), 
             FOREIGN KEY (boardID) REFERENCES Boards(boardID))`,
         err => {
@@ -79,7 +81,9 @@ module.exports.connection.connect((err) => {
             isTodoCompleted BOOLEAN DEFAULT FALSE,  
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            userID CHAR(255), todoListID INT, PRIMARY KEY (todoID), 
+            userID CHAR(255), 
+            todoListID INT, 
+            PRIMARY KEY (todoID), 
             FOREIGN KEY (userID) REFERENCES Users(userID), 
             FOREIGN KEY (todoListID) REFERENCES TodoLists(todoListID), 
             FOREIGN KEY (boardID) REFERENCES Boards(boardID))`,
