@@ -37,7 +37,18 @@ app.route('/:user/dashboard')
         res.render('pages/dashboard', req.user);
     });
 
-app.route('/board/:boardId/boardName')
+app.route('board/:boardID/boardName')
+
+
+
+
+
+
+
+
+
+
+app.route('/board')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
         db.connection.query('SELECT * FROM TodoLists WHERE userID=?', loggedInUser, (err, todoLists) => {
