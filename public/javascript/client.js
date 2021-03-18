@@ -260,7 +260,7 @@ newListInput.addEventListener('keypress', e => {
 
 function createList(listName) {
     const newList = {
-        name: listName
+        name: listName,
     };
 
     (async () => {

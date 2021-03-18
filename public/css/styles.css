@@ -260,3 +260,9 @@ span {
 #target-list > button {
   height: 40px;
 }
+
+/*dashboard styling*/
+
+.board-name {
+  color: white;
+}

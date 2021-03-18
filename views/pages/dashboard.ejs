@@ -2,7 +2,21 @@
 <html>
   <%- include('../partials/head'); %>
   <body>
-    <%- include('../partials/header'); %>
+    <%- include('../partials/header');%>
+
+    <section id="board-dashboard">
+      <% for (let i = 0; i < results.length; i++) { %>
+
+      <div class="board-name">
+        <% if (results) { %>
+        <a href="/board/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
+          ><%= results[i].boardName %></a
+        >
+        <% } %>
+      </div>
+      <% } %>
+    </section>
+
     <script src="" async defer></script>
   </body>
 </html>

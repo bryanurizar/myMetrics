@@ -31,19 +31,33 @@ app.route('/')
         res.render('pages/landing');
     });
 
-app.route('/:user/dashboard')
+app.route('/:userName/dashboard')
     .get(isUserAuthenticated, (req, res) => {
         console.log(req.params);
-        res.render('pages/dashboard', req.user);
+        console.log(req.user.id);
+
+        const loggedInUserId = req.user.id;
+
+        db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=?', loggedInUserId, (err, results) => {
+            if (err) throw err;
+            res.render('pages/dashboard', { user: req.user, results: results });
+            console.log(results);
+        });
     });
 
-app.route('/board')
+
+app.route('/board/:boardId/:boardName')
     .get(isUserAuthenticated, (req, res) => {
-        const loggedInUser = req.user.id;
-        db.connection.query('SELECT * FROM TodoLists WHERE userID=?', loggedInUser, (err, todoLists) => {
+        console.log(req.params);
+        const loggedInUserId = req.user.id;
+        const boardID = req.params.boardId;
+
+        console.log(loggedInUserId, boardID);
+
+        db.connection.query('SELECT * FROM TodoLists WHERE userID=? AND boardID=?', [loggedInUserId, boardID], (err, todoLists) => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUser, (err, todos) => {
+            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUserId, (err, todos) => {
                 if (err) throw err;
                 res.render('pages/board', { todoLists: todoLists, todos: todos, });
             });
@@ -162,8 +176,9 @@ app.route('/board/create-list')
     .post(isUserAuthenticated, (req, res) => {
         const listName = req.body.name;
         const loggedInUser = req.user.id;
+        const boardId = req.params.boardId;
 
-        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID) VALUES (?, ?)', [listName, loggedInUser], (err, result) => {
+        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID, boardId) VALUES (?, ?, ?)', [listName, loggedInUser, boardId], (err, result) => {
             if (err) throw err;
             res.json({ id: result.insertId });
         });
