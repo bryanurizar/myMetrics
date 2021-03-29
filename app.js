@@ -31,59 +31,60 @@ app.route('/')
         res.render('pages/landing');
     });
 
-app.route('/:userName/dashboard')
-    .get(isUserAuthenticated, (req, res) => {
-        console.log(req.params);
-        console.log(req.user.id);
 
-        const loggedInUserId = req.user.id;
+// Main api route that needs to be refactored because it should be split by using separate URIs for each HTTP verb
 
-        db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=?', loggedInUserId, (err, results) => {
+app.get('/:userName/dashboard', isUserAuthenticated, (req, res) => {
+    console.log(req.params);
+    console.log(req.user.id);
+
+    const loggedInUserId = req.user.id;
+
+    db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=?', loggedInUserId, (err, results) => {
+        if (err) throw err;
+        res.render('pages/dashboard', { user: req.user, results: results });
+        console.log(results);
+    });
+});
+
+app.get('/board/:boardId/:boardName', isUserAuthenticated, (req, res) => {
+    console.log(req.params);
+    const loggedInUserId = req.user.id;
+    const boardID = req.params.boardId;
+
+    console.log(loggedInUserId, boardID);
+
+    db.connection.query('SELECT * FROM TodoLists WHERE userID=? AND boardID=?', [loggedInUserId, boardID], (err, todoLists) => {
+        if (err) throw err;
+
+        db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUserId, (err, todos) => {
             if (err) throw err;
-            res.render('pages/dashboard', { user: req.user, results: results });
-            console.log(results);
+            res.render('pages/board', { todoLists: todoLists, todos: todos, });
         });
     });
+});
 
-
-app.route('/board/:boardId/:boardName')
-    .get(isUserAuthenticated, (req, res) => {
-        console.log(req.params);
-        const loggedInUserId = req.user.id;
-        const boardID = req.params.boardId;
-
-        console.log(loggedInUserId, boardID);
-
-        db.connection.query('SELECT * FROM TodoLists WHERE userID=? AND boardID=?', [loggedInUserId, boardID], (err, todoLists) => {
-            if (err) throw err;
-
-            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUserId, (err, todos) => {
-                if (err) throw err;
-                res.render('pages/board', { todoLists: todoLists, todos: todos, });
-            });
-        });
-    })
     .post(isUserAuthenticated, (req, res) => {
-        const todoDescription = req.body.todoDescription;
-        const todoListID = req.body.id;
-        const newTodoList = req.body.newList;
-        const loggedInUser = req.user.id;
+    const todoDescription = req.body.todoDescription;
+    const todoListID = req.body.id;
+    const newTodoList = req.body.newList;
+    const loggedInUser = req.user.id;
 
-        if (todoDescription) {
-            db.connection.query('INSERT INTO Todos (todoDescription, todoListID, userID) VALUES (?, ?, ?)', [todoDescription, todoListID, loggedInUser], err => {
-                if (err) throw err;
-                console.log('Todo inserted into database.');
-                res.redirect('board');
-            });
-        } else if (newTodoList) {
-            console.log('entered the new todo list else?');
-            db.connection.query('INSERT INTO TodoLists (todoListDescription, userID) VALUES (?, ?)', [newTodoList, loggedInUser], err => {
-                if (err) throw err;
-                console.log('Todo inserted into database.');
-                res.redirect('board');
-            });
-        }
-    })
+    if (todoDescription) {
+        db.connection.query('INSERT INTO Todos (todoDescription, todoListID, userID) VALUES (?, ?, ?)', [todoDescription, todoListID, loggedInUser], err => {
+            if (err) throw err;
+            console.log('Todo inserted into database.');
+            res.redirect('board');
+        });
+    } else if (newTodoList) {
+        console.log('entered the new todo list else?');
+        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID) VALUES (?, ?)', [newTodoList, loggedInUser], err => {
+            if (err) throw err;
+            console.log('Todo inserted into database.');
+            res.redirect('board');
+        });
+    }
+})
     .put(isUserAuthenticated, (req, res) => {
         const updatedTodo = req.body.updatedTodo;
         const completedTodoId = Number(req.body.compltedTodoId);
@@ -176,9 +177,8 @@ app.route('/board/create-list')
     .post(isUserAuthenticated, (req, res) => {
         const listName = req.body.name;
         const loggedInUser = req.user.id;
-        const boardId = req.params.boardId;
 
-        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID, boardId) VALUES (?, ?, ?)', [listName, loggedInUser, boardId], (err, result) => {
+        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID, boardId) VALUES (?, ?, ?)', [listName, loggedInUser], (err, result) => {
             if (err) throw err;
             res.json({ id: result.insertId });
         });
