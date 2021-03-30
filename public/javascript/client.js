@@ -1,7 +1,6 @@
 'use strict';
 
 import { edit, trash } from './icons.js';
-
 let todoItems = document.querySelectorAll('.todo-card');
 
 for (let i = 0; i < todoItems.length; i++) {
