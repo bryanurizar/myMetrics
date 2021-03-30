@@ -15,17 +15,17 @@ function handleClick(e) {
     if (todoCheckbox.checked) {
         todoTag.querySelectorAll('.todo-description')[0].style.textDecoration = 'line-through';
 
-        const completedTodo = {
-            compltedTodoId: todoTag.id.slice(5,)
+        const completedItem = {
+            id: todoTag.id.slice(5,)
         };
 
         todoTag.remove();
 
         (async () => {
             try {
-                const response = await fetch('http://localhost:3000/board', {
+                const response = await fetch(`http://localhost:3000/items/${completedItem.id}`, {
                     method: 'PUT',
-                    body: JSON.stringify(completedTodo),
+                    body: JSON.stringify(completedItem),
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 response.text();
@@ -74,16 +74,16 @@ function handleClick(e) {
         });
 
         todoInputTag.addEventListener('blur', e => {
-            const editedTodo = {
-                editedTodoId: todoTag.id.slice(5,),
-                updatedTodo: e.target.innerText
+            const editedItem = {
+                id: todoTag.id.slice(5,),
+                updatedItem: e.target.innerText
             };
 
             (async () => {
                 try {
                     const response = await fetch('http://localhost:3000/board', {
                         method: 'PUT',
-                        body: JSON.stringify(editedTodo),
+                        body: JSON.stringify(editedItem),
                         headers: { 'Content-type': 'application/json; charset=UTF-8' }
                     });
                     await response.text();
@@ -264,7 +264,7 @@ function createList(listName) {
 
     (async () => {
         try {
-            const response = await fetch('http://localhost:3000/board/create-list', {
+            const response = await fetch('http://localhost:3000/lists', {
                 method: 'POST',
                 body: JSON.stringify(newList),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
