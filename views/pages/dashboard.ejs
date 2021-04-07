@@ -9,12 +9,14 @@
 
       <div class="board-name">
         <% if (results) { %>
-        <a href="/board/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
+        <a href="/boards/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
           ><%= results[i].boardName %></a
         >
         <% } %>
       </div>
       <% } %>
+      <input type="text" placeholder="Create new board">
+      <button>Create</button>
     </section>
 
     <script src="" async defer></script>

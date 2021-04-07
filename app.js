@@ -106,7 +106,12 @@ app.route('/:userName/dashboard')
         });
     });
 
-// Board route
+// Board routes
+app.route('/boards')
+    .post(isUserAuthenticated, (req, res) => {
+        // Create new board with a unique ID
+    });
+
 app.route('/boards/:boardId/:boardName')
     .get(isUserAuthenticated, (req, res) => {
         console.log(req.params);
@@ -164,17 +169,17 @@ app.route('items/:itemId')
         });
     })
     .patch(isUserAuthenticated, (req, res) => {
-        const updatedTodo = req.body.updatedTodo;
-        const completedTodoId = Number(req.body.compltedTodoId);
-        const editedTodoId = Number(req.body.editedTodoId);
+        const updatedItemDescription = req.body.updatedItem;
+        const editedItemId = Number(req.body.editedItem.id);
+        const completedItemId = Number(req.body.completedItem.id);
 
-        if (completedTodoId) {
-            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoID=?', completedTodoId, err => {
+        if (completedItemId) {
+            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoID=?', completedItemId, err => {
                 if (err) throw err;
                 console.log('Todo updated from database.');
             });
         } else {
-            db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoID=?', [updatedTodo, editedTodoId], err => {
+            db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoID=?', [updatedItemDescription, editedItemId], err => {
                 if (err) throw err;
                 console.log('Todo updated from database.');
             });
@@ -197,8 +202,10 @@ app.route('/lists')
     .post(isUserAuthenticated, (req, res) => {
         const listName = req.body.name;
         const loggedInUser = req.user.id;
+        const boardId = '1';
+        console.log(req.referer);
 
-        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID, boardId) VALUES (?, ?, ?)', [listName, loggedInUser], (err, result) => {
+        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID, boardId) VALUES (?, ?, ?)', [listName, loggedInUser, boardId], (err, result) => {
             if (err) throw err;
             res.json({ id: result.insertId });
         });
