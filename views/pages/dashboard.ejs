@@ -5,6 +5,8 @@
     <%- include('../partials/header');%>
 
     <section id="board-dashboard">
+      <input type="text" placeholder="Create new board">
+      <button>Create</button>
       <% for (let i = 0; i < results.length; i++) { %>
 
       <div class="board-name">
@@ -15,10 +17,16 @@
         <% } %>
       </div>
       <% } %>
-      <input type="text" placeholder="Create new board">
-      <button>Create</button>
+    </section>
+    <section class="charts">
+      <div></div>
     </section>
 
-    <script src="" async defer></script>
+    <script
+      type="module"
+      src="../../../javascript/dashboard.js"
+      async
+      defer
+    ></script>
   </body>
 </html>

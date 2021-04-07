@@ -8,7 +8,6 @@ const cookieParser = require('cookie-parser');
 const { customAlphabet } = require('nanoid');
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 12);
-nanoid();
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -109,7 +108,16 @@ app.route('/:userName/dashboard')
 // Board routes
 app.route('/boards')
     .post(isUserAuthenticated, (req, res) => {
-        // Create new board with a unique ID
+        console.log(req.body);
+        const newBoardId = nanoid();
+        const newBoardName = req.body.newBoardName;
+        const loggedInUserId = req.user.id;
+
+        db.connection.query('INSERT INTO Boards (boardID, boardName, userID) VALUES(?, ?, ?)', [newBoardId, newBoardName, loggedInUserId], (err, result) => {
+            if (err) throw err;
+            console.log('New board inserted into Boards table');
+            res.json({ newBoardId: newBoardId });
+        });
     });
 
 app.route('/boards/:boardId/:boardName')
