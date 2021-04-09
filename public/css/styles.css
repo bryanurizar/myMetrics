@@ -263,6 +263,24 @@ span {
 
 /*dashboard styling*/
 
-.board-name {
+.create-board {
+  width: 160px;
+  height: 25px;
+}
+
+#boards-charts {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.boards {
+  color: white;
+  flex: 2;
+}
+
+.charts {
+  flex: 5;
   color: white;
 }

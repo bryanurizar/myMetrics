@@ -19,4 +19,13 @@ async function createBoard() {
     });
     const res = await response.json();
     console.log(res.newBoardId);
+    renderNewBoard(newBoardName, res.newBoardId);
+}
+
+function renderNewBoard(boardName, boardId) {
+    const newBoardElement = document.createElement('a');
+    newBoardElement.textContent = boardName;
+    newBoardElement.href = `/boards/${boardId}/${encodeURI(decodeURI(boardName.toLowerCase()).replace(/ /g, '-'))}`;
+    const boardsSection = document.querySelector('#boards');
+    boardsSection.appendChild(newBoardElement);
 }

@@ -4,23 +4,31 @@
   <body>
     <%- include('../partials/header');%>
 
-    <section id="board-dashboard">
-      <input type="text" placeholder="Create new board">
-      <button>Create</button>
-      <% for (let i = 0; i < results.length; i++) { %>
+    <div id="boards-charts">
 
-      <div class="board-name">
-        <% if (results) { %>
-        <a href="/boards/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
-          ><%= results[i].boardName %></a
-        >
+      <section id="boards">
+        <input class="create-board" type="text" placeholder="Create new board">
+        <button>Create</button>
+        <% for (let i = 0; i < results.length; i++) { %>
+        <div class="board-name">
+          <% if (results) { %>
+          <a href="/boards/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
+            ><%= results[i].boardName %></a
+          >
+          <% } %>
+        </div>
         <% } %>
-      </div>
-      <% } %>
-    </section>
-    <section class="charts">
-      <div></div>
-    </section>
+      </section>
+  
+      <section class="charts">
+        <div>
+          <h1>Just some writing!</h1>
+        </div>
+      </section>
+      
+    </div>
+
+
 
     <script
       type="module"
