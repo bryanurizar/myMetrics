@@ -98,7 +98,7 @@ app.route('/:userName/dashboard')
 
         const loggedInUserId = req.user.id;
 
-        db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=?', loggedInUserId, (err, results) => {
+        db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? ORDER BY createdAt', loggedInUserId, (err, results) => {
             if (err) throw err;
             res.render('pages/dashboard', { user: req.user, results: results });
             console.log(results);

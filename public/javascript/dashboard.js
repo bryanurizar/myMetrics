@@ -9,7 +9,6 @@ async function createBoard() {
         newBoardName: newBoardName
     };
 
-    alert('entered created board function');
     const response = await fetch('http://localhost:3000/boards', {
         method: 'POST',
         headers: {
@@ -26,6 +25,9 @@ function renderNewBoard(boardName, boardId) {
     const newBoardElement = document.createElement('a');
     newBoardElement.textContent = boardName;
     newBoardElement.href = `/boards/${boardId}/${encodeURI(decodeURI(boardName.toLowerCase()).replace(/ /g, '-'))}`;
-    const boardsSection = document.querySelector('#boards');
-    boardsSection.appendChild(newBoardElement);
+
+    const lineBreak = document.createElement('br');
+    const boardList = document.querySelector('#boards');
+    boardList.insertAdjacentElement('beforeend', newBoardElement);
+    boardList.appendChild(lineBreak);
 }
