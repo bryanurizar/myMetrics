@@ -1,7 +1,9 @@
 <nav>
-  <a id="logo" href="/dashboard">myMetrics</a>
+  <a id="logo" class="dashboard" href="" onclick="setHrefURL()">myMetrics</a>
   <div id="links">
-    <a href="http://localhost:3000/dashboard">Dashboard</a>
+    <a id="dashboard" class="dashboard" href="" onclick="setHrefURL()"
+      >Dashboard</a
+    >
     <a href="/logout" onclick="signOut();">Signout</a>
   </div>
   <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
@@ -16,6 +18,7 @@
         console.log("User signed out.");
       });
     }
+
     function onLoad() {
       gapi.load("auth2", function () {
         gapi.auth2.init();

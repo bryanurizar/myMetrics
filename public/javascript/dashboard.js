@@ -17,7 +17,6 @@ async function createBoard() {
         body: JSON.stringify(data)
     });
     const res = await response.json();
-    console.log(res.newBoardId);
     renderNewBoard(newBoardName, res.newBoardId);
 }
 
