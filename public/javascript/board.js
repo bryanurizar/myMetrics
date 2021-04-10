@@ -49,7 +49,7 @@ function handleClick(e) {
         (async () => {
             try {
                 const response = await fetch('http://localhost:3000/board', {
-                    method: 'DELETE', I
+                    method: 'DELETE',
                     body: JSON.stringify(deletedTodo),
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
