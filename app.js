@@ -91,11 +91,8 @@ app.route('/logout')
     });
 
 // Dashboard route
-app.route('/:userName/dashboard')
+app.route('/dashboard')
     .get(isUserAuthenticated, (req, res) => {
-        console.log(req.params);
-        console.log(req.user.id);
-
         const loggedInUserId = req.user.id;
 
         db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? ORDER BY createdAt', loggedInUserId, (err, results) => {
@@ -122,7 +119,6 @@ app.route('/boards')
 
 app.route('/boards/:boardId/:boardName')
     .get(isUserAuthenticated, (req, res) => {
-        console.log(req.params);
         const loggedInUserId = req.user.id;
         const boardID = req.params.boardId;
 
@@ -133,7 +129,7 @@ app.route('/boards/:boardId/:boardName')
 
             db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUserId, (err, todos) => {
                 if (err) throw err;
-                res.render('pages/board', { todoLists: todoLists, todos: todos, });
+                res.render('pages/board', { todoLists: todoLists, todos: todos });
             });
         });
     });
