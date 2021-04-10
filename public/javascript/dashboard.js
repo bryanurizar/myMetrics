@@ -30,10 +30,3 @@ function renderNewBoard(boardName, boardId) {
     boardList.insertAdjacentElement('beforeend', newBoardElement);
     boardList.appendChild(lineBreak);
 }
-
-const dashboardAnchorTags = document.querySelector('.dashboard');
-dashboardAnchorTags.addEventListener('click', () => {
-    const url = new URL(window.location);
-    const user = url.pathname.split('/')[1];
-    dashboardAnchorTags.href = `${user}/dashboard`;
-});

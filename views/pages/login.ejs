@@ -29,11 +29,7 @@
           });
           const res = await response.text();
           if (res === "user authenticated") {
-            window.location.replace(
-              `http://localhost:3000/${(
-                profile.getGivenName() + profile.getFamilyName()
-              ).toLowerCase()}/dashboard`
-            );
+            window.location.replace("http://localhost:3000/dashboard");
           }
         }
 
