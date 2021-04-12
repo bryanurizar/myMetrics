@@ -270,7 +270,7 @@ function createList(listName) {
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
             const res = await response.json();
-            renderList(res.id, listName);
+            renderList(res.listId, listName);
         } catch (err) {
             console.log(err);
         }

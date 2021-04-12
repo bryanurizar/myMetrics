@@ -28,13 +28,13 @@ module.exports.connection.connect((err) => {
     //creates the user table
     module.exports.connection.query(
         `CREATE TABLE IF NOT EXISTS Users (
-            userID CHAR(255) NOT NULL, 
-            firstName CHAR(255) NOT NULL, 
-            lastName CHAR(255) NOT NULL, 
-            email CHAR(255) NOT NULL, 
-            userImage CHAR(255), 
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
-            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
+            userID CHAR(255) NOT NULL,
+            firstName CHAR(255) NOT NULL,
+            lastName CHAR(255) NOT NULL,
+            email CHAR(255) NOT NULL,
+            userImage CHAR(255),
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (userID))`,
         err => {
             if (err) throw err;
@@ -47,9 +47,9 @@ module.exports.connection.connect((err) => {
             boardID CHAR(12) NOT NULL, 
             boardName CHAR(255) NOT NULL, 
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
-            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,  
-            userID CHAR(255), 
-            PRIMARY KEY (boardID), 
+            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            userID CHAR(255),
+            PRIMARY KEY (boardID),
             FOREIGN KEY (userID) REFERENCES Users(userID))`,
         err => {
             if (err) throw err;
@@ -58,39 +58,39 @@ module.exports.connection.connect((err) => {
 
     // Creates the todo lists table
     module.exports.connection.query(
-        `CREATE TABLE IF NOT EXISTS TodoLists (
-            todoListID INT NOT NULL AUTO_INCREMENT, 
-            todoListDescription CHAR(255), 
-            isTodoListDeleted BOOLEAN DEFAULT FALSE, 
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
-            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            userID CHAR(255), 
+        `CREATE TABLE IF NOT EXISTS Lists (
+            listID CHAR(12) NOT NULL,
+            listName CHAR(255),
+            isListDeleted BOOLEAN DEFAULT FALSE,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            userID CHAR(255),
             boardID CHAR(12) NOT NULL,
-            PRIMARY KEY (todoListID), 
-            FOREIGN KEY (userID) REFERENCES Users(userID), 
+            PRIMARY KEY (listID),
+            FOREIGN KEY (userID) REFERENCES Users(userID),
             FOREIGN KEY (boardID) REFERENCES Boards(boardID))`,
         err => {
             if (err) throw err;
-            console.log('TodoLists table created.');
+            console.log('Lists table created.');
         });
 
     // Creates the todos table
     module.exports.connection.query(
-        `CREATE TABLE IF NOT EXISTS Todos (
-            todoID INT NOT NULL AUTO_INCREMENT, 
-            todoDescription CHAR(255), 
-            isTodoCompleted BOOLEAN DEFAULT FALSE,  
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
-            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP, 
-            userID CHAR(255), 
-            todoListID INT, 
+        `CREATE TABLE IF NOT EXISTS Items (
+            itemID CHAR(12) NOT NULL,
+            itemName CHAR(255),
+            isItemCompleted BOOLEAN DEFAULT FALSE,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            userID CHAR(255),
+            listID CHAR(12),
             boardID CHAR(12) NOT NULL,
-            PRIMARY KEY (todoID), 
-            FOREIGN KEY (userID) REFERENCES Users(userID), 
-            FOREIGN KEY (todoListID) REFERENCES TodoLists(todoListID), 
+            PRIMARY KEY (itemID),
+            FOREIGN KEY (userID) REFERENCES Users(userID),
+            FOREIGN KEY (listID) REFERENCES Lists(listID),
             FOREIGN KEY (boardID) REFERENCES Boards(boardID))`,
         err => {
             if (err) throw err;
-            console.log('Todos table created.');
+            console.log('Items table created.');
         });
 });

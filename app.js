@@ -124,12 +124,12 @@ app.route('/boards/:boardId/:boardName')
 
         console.log(loggedInUserId, boardID);
 
-        db.connection.query('SELECT * FROM TodoLists WHERE userID=? AND boardID=?', [loggedInUserId, boardID], (err, todoLists) => {
+        db.connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=?', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUserId, (err, todos) => {
+            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=?', loggedInUserId, (err, items) => {
                 if (err) throw err;
-                res.render('pages/board', { todoLists: todoLists, todos: todos });
+                res.render('pages/board', { lists: lists, items: items });
             });
         });
     });
@@ -139,12 +139,12 @@ app.route('/items')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.body.id;
 
-        db.connection.query('SELECT * FROM TodoLists WHERE userID=?', loggedInUser, err => {
+        db.connection.query('SELECT * FROM Lists WHERE userID=?', loggedInUser, err => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Todos WHERE isTodoCompleted=0 AND userID=?', loggedInUser, (err, todos) => {
+            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=?', loggedInUser, (err, items) => {
                 if (err) throw err;
-                res.send(todos);
+                res.send(items);
             });
         });
     })
@@ -153,7 +153,7 @@ app.route('/items')
         const itemDescription = req.body.content;
         const loggedInUser = req.user.id;
 
-        db.connection.query('INSERT INTO Todos (todoDescription, todoListID, userID) VALUES (?, ?, ?)', [itemDescription, listId, loggedInUser], (err, result) => {
+        db.connection.query('INSERT INTO Items (itemName, ListID, userID) VALUES (?, ?, ?)', [itemDescription, listId, loggedInUser], (err, result) => {
             if (err) throw err;
             console.log('New ajax card added to DB');
             res.json({ id: result.insertId });
@@ -163,12 +163,12 @@ app.route('/items')
 app.route('items/:itemId')
     .post(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
-        const todoDescription = req.body.todoDescription;
-        const todoListID = req.body.id;
+        const itemDescription = req.body.todoDescription;
+        const listId = req.body.id;
 
-        db.connection.query('INSERT INTO Todos (todoDescription, todoListID, userID) VALUES (?, ?, ?)', [todoDescription, todoListID, loggedInUserId], err => {
+        db.connection.query('INSERT INTO Items (itemName, listID, userID) VALUES (?, ?, ?)', [itemDescription, listId, loggedInUserId], err => {
             if (err) throw err;
-            console.log('Todo inserted into database.');
+            console.log('Item inserted into database.');
             res.redirect('board');
         });
     })
@@ -178,25 +178,25 @@ app.route('items/:itemId')
         const completedItemId = Number(req.body.completedItem.id);
 
         if (completedItemId) {
-            db.connection.query('UPDATE Todos SET isTodoCompleted=1 WHERE todoID=?', completedItemId, err => {
+            db.connection.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=?', completedItemId, err => {
                 if (err) throw err;
-                console.log('Todo updated from database.');
+                console.log('Item updated from database.');
             });
         } else {
-            db.connection.query('UPDATE Todos SET todoDescription=? WHERE todoID=?', [updatedItemDescription, editedItemId], err => {
+            db.connection.query('UPDATE Items SET itemName=? WHERE itemID=?', [updatedItemDescription, editedItemId], err => {
                 if (err) throw err;
-                console.log('Todo updated from database.');
+                console.log('Item updated from database.');
             });
         }
         res.redirect(303, 'board');
 
     })
     .delete(isUserAuthenticated, (req, res) => {
-        const deletedTodo = Number(req.body.id);
+        const deletedItem = Number(req.body.id);
 
-        db.connection.query('DELETE FROM Todos WHERE todoId=?', deletedTodo, err => {
+        db.connection.query('DELETE FROM Items WHERE itemId=?', deletedItem, err => {
             if (err) throw err;
-            console.log('Todo deleted from database.');
+            console.log('Item deleted from database.');
         });
         res.redirect(303, 'board');
     });
@@ -206,38 +206,38 @@ app.route('/lists')
     .post(isUserAuthenticated, (req, res) => {
         const listName = req.body.name;
         const loggedInUser = req.user.id;
-        const boardId = '1';
-        console.log(req.referer);
+        const listId = nanoid();
+        const boardId =
+            console.log(req.referer);
 
-        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID, boardId) VALUES (?, ?, ?)', [listName, loggedInUser, boardId], (err, result) => {
+        db.connection.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES (?, ?, ?, ?)', [listId, listName, loggedInUser, boardId], (err, result) => {
             if (err) throw err;
-            res.json({ id: result.insertId });
+            res.json({ listId: listId });
         });
     });
 
 app.route('/lists/:listId')
     .post(isUserAuthenticated, (req, res) => {
-        const newTodoList = req.body.newList;
+        const newList = req.body.newList;
         const loggedInUser = req.user.id;
 
-        console.log('entered the new todo list else?');
-        db.connection.query('INSERT INTO TodoLists (todoListDescription, userID) VALUES (?, ?)', [newTodoList, loggedInUser], err => {
+        db.connection.query('INSERT INTO Lists (listDescription, userID) VALUES (?, ?)', [newList, loggedInUser], err => {
             if (err) throw err;
-            console.log('Todo inserted into database.');
+            console.log('Item inserted into database.');
             res.redirect('board');
         });
     })
     .delete(isUserAuthenticated, (req, res) => {
-        const todoListId = req.body.id;
+        const listId = req.body.id;
         db.connection.beginTransaction(function (err) {
             if (err) { throw err; }
-            db.connection.query('DELETE FROM Todos Where todoListID=?', todoListId, function (error) {
+            db.connection.query('DELETE FROM Items Where itemID=?', listId, function (error) {
                 if (error) {
                     return db.connection.rollback(function () {
                         throw error;
                     });
                 }
-                db.connection.query('DELETE FROM TodoLists WHERE todoListID=?', todoListId, function (error) {
+                db.connection.query('DELETE FROM Lists WHERE listID=?', listId, function (error) {
                     if (error) {
                         return db.connection.rollback(function () {
                             throw error;
@@ -249,7 +249,7 @@ app.route('/lists/:listId')
                                 throw err;
                             });
                         }
-                        console.log('Todo List removed along with todos');
+                        console.log('Items List removed along with items');
                     });
                 });
             });
@@ -263,9 +263,9 @@ app.route('/board/create-target-list')
         const targetTasksArray = req.body;
 
         for (let i = 0; i < targetTasksArray.length; i++) {
-            db.connection.query('UPDATE Todos SET isOnTargetList=1 WHERE todoID=?', targetTasksArray[i], err => {
+            db.connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetTasksArray[i], err => {
                 if (err) throw err;
-                console.log('Todo updated from database.');
+                console.log('Item updated from database.');
             });
         }
     });
