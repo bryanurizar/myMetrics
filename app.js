@@ -204,11 +204,10 @@ app.route('items/:itemId')
 // List routes
 app.route('/lists')
     .post(isUserAuthenticated, (req, res) => {
-        const listName = req.body.name;
+        const listName = req.body.listName;
+        const boardId = req.body.boardId;
         const loggedInUser = req.user.id;
         const listId = nanoid();
-        const boardId =
-            console.log(req.referer);
 
         db.connection.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES (?, ?, ?, ?)', [listId, listName, loggedInUser, boardId], (err, result) => {
             if (err) throw err;

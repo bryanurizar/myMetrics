@@ -12,28 +12,26 @@
       <% for (let j = 0; j < lists.length; j++) { %>
       <div class="todo-list-container">
         <div class="list-header">
-          <h4 class="list-name" contenteditable>
-            <%= todoLists[j].todoListDescription %>
-          </h4>
-          <h4 id="<%= todoLists[j].todoListID%>" class="list-popup">...</h4>
-          <div id="modal-<%=todoLists[j].todoListID%>" class="modal">
+          <h4 class="list-name" contenteditable><%= lists[j].listName %></h4>
+          <h4 id="<%= lists[j].listID%>" class="list-popup">...</h4>
+          <div id="modal-<%=lists[j].listID%>" class="modal">
             <h4 id="modal-title"><span>List Actions</span></h4>
-            <p id="<%= todoLists[j].todoListID%>" class="delete-list">
+            <p id="<%= lists[j].listID%>" class="delete-list">
               Delete This List..
             </p>
           </div>
         </div>
-        <div id="todo-list-<%= todoLists[j].todoListID%>" class="todos">
-          <% for (let i = 0; i < todos.length; i++) { %> <% if
-          (todos[i].todoListID === todoLists[j].todoListID) { %>
+        <div id="todo-list-<%= lists[j].listID%>" class="items">
+          <% for (let i = 0; i < items.length; i++) { %> <% if (items[i].listID
+          === lists[j].listID) { %>
           <div
-            id="card-<%= todos[i].todoID %>"
+            id="card-<%= items[i].itemID %>"
             class="todo-card"
             draggable="true"
           >
             <div class="todo-content">
               <input type="checkbox" />
-              <p class="todo-description"><%= todos[i].todoDescription %></p>
+              <p class="todo-description"><%= items[i].itemName %></p>
               <br />
               <div class="flaticons">
                 <img
@@ -50,8 +48,8 @@
           <% } %> <%}%>
         </div>
         <input
-          id="<%= todoLists[j].todoListID %>"
-          name="todoDescription"
+          id="<%= lists[j].listID %>"
+          name="itemName"
           class="add-card"
           type="text"
           autocomplete="off"

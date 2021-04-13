@@ -258,9 +258,17 @@ newListInput.addEventListener('keypress', e => {
 });
 
 function createList(listName) {
+    const url = new URL(window.location.href);
+    const boardId = url.pathname.split('/')[2];
+
     const newList = {
-        name: listName,
+        listName: listName,
+        boardId: boardId
     };
+
+    console.log(window.location.href);
+
+
 
     (async () => {
         try {
