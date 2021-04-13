@@ -160,6 +160,17 @@ app.route('/items')
             console.log('Item inserted into database.');
             res.json({ itemId: itemId });
         });
+    })
+    .patch(isUserAuthenticated, (req, res) => {
+        const targetListItems = req.body;
+        console.log(targetListItems);
+
+        for (let i = 0; i < targetListItems.length; i++) {
+            db.connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetListItems[i], err => {
+                if (err) throw err;
+                console.log('Item updated from database.');
+            });
+        }
     });
 
 app.route('/items/:itemId')
@@ -258,19 +269,6 @@ app.route('/lists/:listId')
             });
             res.redirect('/board');
         });
-    });
-
-// New endpoint required as it is a new resource
-app.route('/board/create-target-list')
-    .put(isUserAuthenticated, (req) => {
-        const targetTasksArray = req.body;
-
-        for (let i = 0; i < targetTasksArray.length; i++) {
-            db.connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetTasksArray[i], err => {
-                if (err) throw err;
-                console.log('Item updated from database.');
-            });
-        }
     });
 
 app.listen(port, () => console.log(`Listening on port ${port}.`));

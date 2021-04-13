@@ -202,7 +202,7 @@ function handleDeleteListClick(e) {
 
 const createTargetListBtn = document.querySelector('#create-list-btn');
 createTargetListBtn.addEventListener('click', handleCreateTargetListClick);
-const targetTasksArray = [];
+const targetListItems = [];
 
 function handleCreateTargetListClick() {
 
@@ -214,14 +214,16 @@ function handleCreateTargetListClick() {
 
     function handleTodoCardClick(e) {
         const todoCard = e.target.closest('.todo-card');
-        const todoCardId = Number(todoCard.id.substring(5,));
+        const todoCardId = todoCard.id.substring(5,);
+        console.log(todoCard);
+        console.log(todoCardId);
         todoCard.classList.toggle('targeted');
 
-        if (targetTasksArray.includes(todoCardId)) {
-            const index = targetTasksArray.indexOf(todoCardId);
-            targetTasksArray.splice(index, 1);
+        if (targetListItems.includes(todoCardId)) {
+            const index = targetListItems.indexOf(todoCardId);
+            targetListItems.splice(index, 1);
         } else {
-            targetTasksArray.push(todoCardId);
+            targetListItems.push(todoCardId);
         }
 
         if (document.querySelectorAll('.targeted').length === 0) {
@@ -231,13 +233,13 @@ function handleCreateTargetListClick() {
             createTargetListBtn.innerText = 'Create Target List';
         }
 
-        console.log(targetTasksArray);
+        console.log(targetListItems);
 
         (async () => {
             try {
-                const response = await fetch('http://localhost:3000/board/create-target-list', {
-                    method: 'PUT',
-                    body: JSON.stringify(targetTasksArray),
+                const response = await fetch('http://localhost:3000/items', {
+                    method: 'PATCH',
+                    body: JSON.stringify(targetListItems),
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 await response.text();

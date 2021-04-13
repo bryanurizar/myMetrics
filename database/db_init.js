@@ -56,7 +56,7 @@ module.exports.connection.connect((err) => {
             console.log('Board table created.');
         });
 
-    // Creates the todo lists table
+    // Creates the lists table
     module.exports.connection.query(
         `CREATE TABLE IF NOT EXISTS Lists (
             listID CHAR(12) NOT NULL,
@@ -74,7 +74,7 @@ module.exports.connection.connect((err) => {
             console.log('Lists table created.');
         });
 
-    // Creates the todos table
+    // Creates the items table
     module.exports.connection.query(
         `CREATE TABLE IF NOT EXISTS Items (
             itemID CHAR(12) NOT NULL,
@@ -82,6 +82,7 @@ module.exports.connection.connect((err) => {
             isItemCompleted BOOLEAN DEFAULT FALSE,
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            isOnTargetList BOOLEAN DEFAULT FALSE,
             userID CHAR(255),
             listID CHAR(12),
             boardID CHAR(12) NOT NULL,
