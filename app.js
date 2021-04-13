@@ -149,24 +149,27 @@ app.route('/items')
         });
     })
     .post(isUserAuthenticated, (req, res) => {
+        const loggedInUserId = req.user.id;
+        const itemName = req.body.itemName;
         const listId = req.body.listId;
-        const itemDescription = req.body.content;
-        const loggedInUser = req.user.id;
+        const itemId = nanoid();
+        const boardId = req.body.boardId;
 
-        db.connection.query('INSERT INTO Items (itemName, ListID, userID) VALUES (?, ?, ?)', [itemDescription, listId, loggedInUser], (err, result) => {
+        db.connection.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId, boardId], (err, result) => {
             if (err) throw err;
-            console.log('New ajax card added to DB');
-            res.json({ id: result.insertId });
+            console.log('Item inserted into database.');
+            res.json({ itemId: result.insertId });
         });
     });
 
 app.route('items/:itemId')
     .post(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
-        const itemDescription = req.body.todoDescription;
-        const listId = req.body.id;
+        const itemName = req.body.itemName;
+        const listId = req.body.listId;
+        const itemId = nanoid();
 
-        db.connection.query('INSERT INTO Items (itemName, listID, userID) VALUES (?, ?, ?)', [itemDescription, listId, loggedInUserId], err => {
+        db.connection.query('INSERT INTO Items (itemID, itemName, listID, userID) VALUES (?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId], err => {
             if (err) throw err;
             console.log('Item inserted into database.');
             res.redirect('board');

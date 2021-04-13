@@ -352,23 +352,26 @@ function renderList(id, listName) {
     todosDiv.addEventListener('dragover', handleDragOver);
 }
 
-function addCard(listId, cardContent) {
-    const card = {
+function addCard(listId, itemName) {
+    const url = new URL(window.location.href);
+    const boardId = url.pathname.split('/')[2]
+
+    const itemData = {
         listId: listId,
-        content: cardContent
+        itemName: itemName,
+        boardId: boardId
     };
 
     (async () => {
-        const response = await fetch('http://localhost:3000/board/add-item', {
+        const response = await fetch('http://localhost:3000/items', {
             method: 'POST',
-            body: JSON.stringify(card),
+            body: JSON.stringify(itemData),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
         const res = await response.json();
-        renderCard(card.listId, res.id, card.content);
+        renderCard(itemData.listId, res.itemId, itemData.itemName);
     })();
 }
-
 
 function renderCard(listId, cardId, cardContent) {
     const list = document.querySelector(`#todo-list-${listId}`);
