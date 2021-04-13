@@ -173,15 +173,15 @@ deleteList.forEach(list => {
 });
 
 function handleDeleteListClick(e) {
-    const todoListId = {
-        id: e.target.id
+    const listId = {
+        listId: e.target.id
     };
 
     (async () => {
         try {
-            const response = await fetch('http://localhost:3000/board/delete-list', {
-                method: 'POST',
-                body: JSON.stringify(todoListId),
+            const response = await fetch(`http://localhost:3000/lists/${listId.listId}`, {
+                method: 'DELETE',
+                body: JSON.stringify(listId),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
             });
             await response.text();

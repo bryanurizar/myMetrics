@@ -227,10 +227,12 @@ app.route('/lists/:listId')
         });
     })
     .delete(isUserAuthenticated, (req, res) => {
-        const listId = req.body.id;
+        console.log('entered deleted route');
+
+        const listId = req.body.listId;
         db.connection.beginTransaction(function (err) {
             if (err) { throw err; }
-            db.connection.query('DELETE FROM Items Where itemID=?', listId, function (error) {
+            db.connection.query('DELETE FROM Items Where listID=?', listId, function (error) {
                 if (error) {
                     return db.connection.rollback(function () {
                         throw error;
@@ -248,7 +250,7 @@ app.route('/lists/:listId')
                                 throw err;
                             });
                         }
-                        console.log('Items List removed along with items');
+                        console.log('List removed along with items');
                     });
                 });
             });
