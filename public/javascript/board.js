@@ -41,17 +41,17 @@ function handleClick(e) {
     const isTrashClicked = e.target.className === 'trash';
 
     if (isTrashClicked) {
-        const deletedTodo = {
-            id: todoTag.id.slice(5,)
+        const deletedItem = {
+            deletedItemId: todoTag.id.slice(5,)
         };
 
         todoTag.remove();
 
         (async () => {
             try {
-                const response = await fetch('http://localhost:3000/board', {
+                const response = await fetch(`http://localhost:3000/items/${deletedItem.deletedItemId}`, {
                     method: 'DELETE',
-                    body: JSON.stringify(deletedTodo),
+                    body: JSON.stringify(deletedItem),
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 await response.text();

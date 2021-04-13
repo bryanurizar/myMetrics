@@ -195,13 +195,12 @@ app.route('/items/:itemId')
         }
     })
     .delete(isUserAuthenticated, (req, res) => {
-        const deletedItem = Number(req.body.id);
+        const deletedItemId = req.body.deletedItemId;
 
-        db.connection.query('DELETE FROM Items WHERE itemId=?', deletedItem, err => {
+        db.connection.query('DELETE FROM Items WHERE itemId=?', deletedItemId, err => {
             if (err) throw err;
             console.log('Item deleted from database.');
         });
-        res.redirect(303, 'board');
     });
 
 // List routes
