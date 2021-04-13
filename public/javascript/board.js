@@ -16,7 +16,7 @@ function handleClick(e) {
         todoTag.querySelectorAll('.todo-description')[0].style.textDecoration = 'line-through';
 
         const completedItem = {
-            id: todoTag.id.slice(5,)
+            completedItemId: todoTag.id.slice(5,)
         };
         console.log(completedItem);
         todoTag.remove();
@@ -76,14 +76,14 @@ function handleClick(e) {
 
         todoInputTag.addEventListener('blur', e => {
             const editedItem = {
-                id: todoTag.id.slice(5,),
+                editedItemId: todoTag.id.slice(5,),
                 updatedItem: e.target.innerText
             };
 
             (async () => {
                 try {
-                    const response = await fetch('http://localhost:3000/board', {
-                        method: 'PUT',
+                    const response = await fetch(`http://localhost:3000/items/${editedItem.id}`, {
+                        method: 'PATCH',
                         body: JSON.stringify(editedItem),
                         headers: { 'Content-type': 'application/json; charset=UTF-8' }
                     });
@@ -370,9 +370,7 @@ function addCard(listId, itemName) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
         const res = await response.json();
-        console.log(res.itemId);
         renderCard(itemData.listId, res.itemId, itemData.itemName);
-
     })();
 }
 

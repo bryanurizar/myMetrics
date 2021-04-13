@@ -124,10 +124,10 @@ app.route('/boards/:boardId/:boardName')
 
         console.log(loggedInUserId, boardID);
 
-        db.connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=?', [loggedInUserId, boardID], (err, lists) => {
+        db.connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=? ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=?', loggedInUserId, (err, items) => {
+            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=? ORDER BY createdAt', loggedInUserId, (err, items) => {
                 if (err) throw err;
                 res.render('pages/board', { lists: lists, items: items });
             });
@@ -139,10 +139,10 @@ app.route('/items')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.body.id;
 
-        db.connection.query('SELECT * FROM Lists WHERE userID=?', loggedInUser, err => {
+        db.connection.query('SELECT * FROM Lists WHERE userID=? ORDER BY createdAt', loggedInUser, err => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=?', loggedInUser, (err, items) => {
+            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=? ORDER BY createdAt', loggedInUser, (err, items) => {
                 if (err) throw err;
                 res.send(items);
             });
@@ -178,11 +178,9 @@ app.route('/items/:itemId')
         });
     })
     .patch(isUserAuthenticated, (req, res) => {
-        console.log('patch entered');
-        console.log(req.body);
         const updatedItemDescription = req.body.updatedItem;
-        // const editedItemId = req.body.id;
-        const completedItemId = req.body.id;
+        const editedItemId = req.body.editedItemId;
+        const completedItemId = req.body.completedItemId;
 
         if (completedItemId) {
             db.connection.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=?', completedItemId, err => {
