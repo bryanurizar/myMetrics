@@ -158,11 +158,13 @@ app.route('/items')
         db.connection.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId, boardId], (err, result) => {
             if (err) throw err;
             console.log('Item inserted into database.');
-            res.json({ itemId: result.insertId });
+            res.json({ itemId: itemId });
         });
     });
 
-app.route('items/:itemId')
+app.route('/items/:itemId')
+
+    // Is the post route being used?
     .post(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
         const itemName = req.body.itemName;
@@ -176,9 +178,11 @@ app.route('items/:itemId')
         });
     })
     .patch(isUserAuthenticated, (req, res) => {
+        console.log('patch entered');
+        console.log(req.body);
         const updatedItemDescription = req.body.updatedItem;
-        const editedItemId = Number(req.body.editedItem.id);
-        const completedItemId = Number(req.body.completedItem.id);
+        // const editedItemId = req.body.id;
+        const completedItemId = req.body.id;
 
         if (completedItemId) {
             db.connection.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=?', completedItemId, err => {
@@ -191,8 +195,6 @@ app.route('items/:itemId')
                 console.log('Item updated from database.');
             });
         }
-        res.redirect(303, 'board');
-
     })
     .delete(isUserAuthenticated, (req, res) => {
         const deletedItem = Number(req.body.id);

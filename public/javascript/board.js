@@ -18,19 +18,20 @@ function handleClick(e) {
         const completedItem = {
             id: todoTag.id.slice(5,)
         };
-
+        console.log(completedItem);
         todoTag.remove();
 
         (async () => {
             try {
                 const response = await fetch(`http://localhost:3000/items/${completedItem.id}`, {
-                    method: 'PUT',
+                    method: 'PATCH',
                     body: JSON.stringify(completedItem),
                     headers: { 'Content-type': 'application/json; charset=UTF-8' }
                 });
                 response.text();
             } catch (err) {
                 console.log(err);
+
             }
         })();
     } else {
@@ -354,7 +355,7 @@ function renderList(id, listName) {
 
 function addCard(listId, itemName) {
     const url = new URL(window.location.href);
-    const boardId = url.pathname.split('/')[2]
+    const boardId = url.pathname.split('/')[2];
 
     const itemData = {
         listId: listId,
@@ -369,7 +370,9 @@ function addCard(listId, itemName) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
         const res = await response.json();
+        console.log(res.itemId);
         renderCard(itemData.listId, res.itemId, itemData.itemName);
+
     })();
 }
 
