@@ -271,8 +271,6 @@ function createList(listName) {
 
     console.log(window.location.href);
 
-
-
     (async () => {
         try {
             const response = await fetch('http://localhost:3000/lists', {
