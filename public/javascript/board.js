@@ -221,10 +221,15 @@ function handleCreateTargetListClick() {
 function handleCancelBtn(e) {
     e.target.remove();
     createTargetListBtn.addEventListener('click', handleCreateTargetListClick, { once: true });
+
+    const todoCards = document.querySelectorAll('.todo-card');
+    todoCards.forEach(todoCard => {
+        todoCard.classList.remove('targeted');
+        todoCard.removeEventListener('click', handleTodoCardClick);
+    });
 }
 
 function handleTodoCardClick(e) {
-
     const todoCard = e.target.closest('.todo-card');
     const todoCardId = todoCard.id.substring(5,);
     console.log(todoCard);
