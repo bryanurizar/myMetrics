@@ -201,54 +201,73 @@ function handleDeleteListClick(e) {
 */
 
 const createTargetListBtn = document.querySelector('#create-list-btn');
-createTargetListBtn.addEventListener('click', handleCreateTargetListClick);
+createTargetListBtn.addEventListener('click', handleCreateTargetListClick, { once: true });
 const targetListItems = [];
 
 function handleCreateTargetListClick() {
+    const targetButtonsSection = document.querySelector('#target-list');
+    const cancelBtn = document.createElement('button');
+    cancelBtn.innerText = 'Cancel';
+    targetButtonsSection.appendChild(cancelBtn);
+
+    cancelBtn.addEventListener('click', handleCancelBtn);
 
     const todoCards = document.querySelectorAll('.todo-card');
-
     todoCards.forEach(todoCard => {
         todoCard.addEventListener('click', handleTodoCardClick);
     });
-
-    function handleTodoCardClick(e) {
-        const todoCard = e.target.closest('.todo-card');
-        const todoCardId = todoCard.id.substring(5,);
-        console.log(todoCard);
-        console.log(todoCardId);
-        todoCard.classList.toggle('targeted');
-
-        if (targetListItems.includes(todoCardId)) {
-            const index = targetListItems.indexOf(todoCardId);
-            targetListItems.splice(index, 1);
-        } else {
-            targetListItems.push(todoCardId);
-        }
-
-        if (document.querySelectorAll('.targeted').length === 0) {
-            createTargetListBtn.innerText = 'Select Tasks to Target';
-        } else {
-
-            createTargetListBtn.innerText = 'Create Target List';
-        }
-
-        console.log(targetListItems);
-
-        (async () => {
-            try {
-                const response = await fetch('http://localhost:3000/items', {
-                    method: 'PATCH',
-                    body: JSON.stringify(targetListItems),
-                    headers: { 'Content-type': 'application/json; charset=UTF-8' }
-                });
-                await response.text();
-            } catch (err) {
-                console.log(err);
-            }
-        })();
-    }
 }
+
+function handleCancelBtn(e) {
+    e.target.remove();
+    createTargetListBtn.addEventListener('click', handleCreateTargetListClick, { once: true });
+}
+
+function handleTodoCardClick(e) {
+
+    const todoCard = e.target.closest('.todo-card');
+    const todoCardId = todoCard.id.substring(5,);
+    console.log(todoCard);
+    console.log(todoCardId);
+    todoCard.classList.toggle('targeted');
+
+    if (targetListItems.includes(todoCardId)) {
+        const index = targetListItems.indexOf(todoCardId);
+        targetListItems.splice(index, 1);
+    } else {
+        targetListItems.push(todoCardId);
+    }
+    console.log(targetListItems);
+}
+
+// if (document.querySelectorAll('.targeted').length === 0) {
+//     createTargetListBtn.innerText = 'Select Tasks to Target';
+// } else {
+
+//     createTargetListBtn.innerText = 'Create Target List';
+// }
+
+// return targetListItems;
+
+
+// (async () => {
+//     try {
+//         const response = await fetch('http://localhost:3000/items', {
+//             method: 'PATCH',
+//             body: JSON.stringify(targetListItems),
+//             headers: { 'Content-type': 'application/json; charset=UTF-8' }
+//         });
+//         await response.text();
+//     } catch (err) {
+//         console.log(err);
+//     }
+// })();
+
+
+// console.log(targetListItems);
+
+
+
 
 // Create new list using JavaScript object
 const newListInput = document.querySelector('.add-list');
