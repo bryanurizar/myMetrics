@@ -221,7 +221,7 @@ function enableTargetItemsSelection(buttonName) {
     buttonName.appendChild(cancelBtn);
 
     cancelBtn.addEventListener('click', handleCancelBtn);
-    createTargetListBtn.innerText = 'Start Study Session';
+    createTargetListBtn.innerText = 'Create Study Session';
 
     const todoCards = document.querySelectorAll('.todo-card');
     todoCards.forEach(todoCard => {
