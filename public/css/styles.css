@@ -7,7 +7,7 @@ body {
   height: 100%;
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
-  color: #182a4e;
+  color: #0b0e11;
   background-color: #222831;
   padding: 1%;
   margin-bottom: 0;
@@ -234,7 +234,6 @@ span {
 #target-list {
   display: flex;
   align-items: flex-end;
-  width: 150px;
 }
 
 #create-list-btn {

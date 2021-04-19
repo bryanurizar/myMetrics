@@ -201,16 +201,27 @@ function handleDeleteListClick(e) {
 */
 
 const createTargetListBtn = document.querySelector('#create-list-btn');
-createTargetListBtn.addEventListener('click', handleCreateTargetListClick, { once: true });
-const targetListItems = [];
+createTargetListBtn.addEventListener('click', handleButtonClick);
+const targetItems = [];
 
-function handleCreateTargetListClick() {
+function handleButtonClick() {
     const targetButtonsSection = document.querySelector('#target-list');
+    const buttonText = targetButtonsSection.innerText;
+
+    if (buttonText === 'Select Target Items') {
+        enableTargetItemsSelection(targetButtonsSection);
+    } else {
+        startStudySession();
+    }
+}
+
+function enableTargetItemsSelection(buttonName) {
     const cancelBtn = document.createElement('button');
     cancelBtn.innerText = 'Cancel';
-    targetButtonsSection.appendChild(cancelBtn);
+    buttonName.appendChild(cancelBtn);
 
     cancelBtn.addEventListener('click', handleCancelBtn);
+    createTargetListBtn.innerText = 'Start Study Session';
 
     const todoCards = document.querySelectorAll('.todo-card');
     todoCards.forEach(todoCard => {
@@ -218,14 +229,37 @@ function handleCreateTargetListClick() {
     });
 }
 
+function startStudySession() {
+    if (targetItems.length > 0) {
+        window.location.href = 'http://localhost:3000/study-time';
+        updateIsTargetList(targetItems);
+    } else {
+        alert('No items have been selected.');
+    }
+}
+
+async function updateIsTargetList(items) {
+    try {
+        const response = await fetch('http://localhost:3000/items', {
+            method: 'PATCH',
+            body: JSON.stringify(items),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        });
+        await response.text();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
 function handleCancelBtn(e) {
     e.target.remove();
-    createTargetListBtn.addEventListener('click', handleCreateTargetListClick, { once: true });
+    createTargetListBtn.innerText = 'Select Target Items';
+    createTargetListBtn.addEventListener('click', handleButtonClick, { once: true });
 
     const todoCards = document.querySelectorAll('.todo-card');
     todoCards.forEach(todoCard => {
         todoCard.classList.remove('targeted');
-        todoCard.removeEventListener('click', handleTodoCardClick);
+
     });
 }
 
@@ -236,43 +270,14 @@ function handleTodoCardClick(e) {
     console.log(todoCardId);
     todoCard.classList.toggle('targeted');
 
-    if (targetListItems.includes(todoCardId)) {
-        const index = targetListItems.indexOf(todoCardId);
-        targetListItems.splice(index, 1);
+    if (targetItems.includes(todoCardId)) {
+        const index = targetItems.indexOf(todoCardId);
+        targetItems.splice(index, 1);
     } else {
-        targetListItems.push(todoCardId);
+        targetItems.push(todoCardId);
     }
-    console.log(targetListItems);
+    console.log(targetItems);
 }
-
-// if (document.querySelectorAll('.targeted').length === 0) {
-//     createTargetListBtn.innerText = 'Select Tasks to Target';
-// } else {
-
-//     createTargetListBtn.innerText = 'Create Target List';
-// }
-
-// return targetListItems;
-
-
-// (async () => {
-//     try {
-//         const response = await fetch('http://localhost:3000/items', {
-//             method: 'PATCH',
-//             body: JSON.stringify(targetListItems),
-//             headers: { 'Content-type': 'application/json; charset=UTF-8' }
-//         });
-//         await response.text();
-//     } catch (err) {
-//         console.log(err);
-//     }
-// })();
-
-
-// console.log(targetListItems);
-
-
-
 
 // Create new list using JavaScript object
 const newListInput = document.querySelector('.add-list');

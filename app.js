@@ -271,6 +271,11 @@ app.route('/lists/:listId')
         });
     });
 
+app.route('/study-time')
+    .get(isUserAuthenticated, (req, res) => {
+        res.render('pages/study-time');
+    });
+
 app.listen(port, () => console.log(`Listening on port ${port}.`));
 
 async function isUserAuthenticated(req, res, next) {
