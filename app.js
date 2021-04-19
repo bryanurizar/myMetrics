@@ -87,7 +87,7 @@ app.route('/login')
 app.route('/logout')
     .get((req, res) => {
         res.clearCookie('session-cookie');
-        res.redirect('/login');
+        res.redirect('/');
     });
 
 // Dashboard route
@@ -110,7 +110,7 @@ app.route('/boards')
         const newBoardName = req.body.newBoardName;
         const loggedInUserId = req.user.id;
 
-        db.connection.query('INSERT INTO Boards (boardID, boardName, userID) VALUES(?, ?, ?)', [newBoardId, newBoardName, loggedInUserId], (err, result) => {
+        db.connection.query('INSERT INTO Boards (boardID, boardName, userID) VALUES(?, ?, ?)', [newBoardId, newBoardName, loggedInUserId], (err) => {
             if (err) throw err;
             console.log('New board inserted into Boards table');
             res.json({ newBoardId: newBoardId });
@@ -155,7 +155,7 @@ app.route('/items')
         const itemId = nanoid();
         const boardId = req.body.boardId;
 
-        db.connection.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId, boardId], (err, result) => {
+        db.connection.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId, boardId], (err) => {
             if (err) throw err;
             console.log('Item inserted into database.');
             res.json({ itemId: itemId });
@@ -222,7 +222,7 @@ app.route('/lists')
         const loggedInUser = req.user.id;
         const listId = nanoid();
 
-        db.connection.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES (?, ?, ?, ?)', [listId, listName, loggedInUser, boardId], (err, result) => {
+        db.connection.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES (?, ?, ?, ?)', [listId, listName, loggedInUser, boardId], (err) => {
             if (err) throw err;
             res.json({ listId: listId });
         });
@@ -273,7 +273,11 @@ app.route('/lists/:listId')
 
 app.route('/study-time')
     .get(isUserAuthenticated, (req, res) => {
-        res.render('pages/study-time');
+        db.connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
+            if (err) throw err;
+            console.log(items);
+            res.render('pages/study-time', { items: items });
+        });
     });
 
 app.listen(port, () => console.log(`Listening on port ${port}.`));
@@ -305,7 +309,6 @@ async function isUserAuthenticated(req, res, next) {
     } catch (err) {
         console.log('user not authenticated');
         res.redirect('login');
-
     }
 }
 

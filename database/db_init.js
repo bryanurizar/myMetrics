@@ -15,7 +15,7 @@ module.exports.connection.connect((err) => {
     console.log('Database connection initiated.');
 
     // creates database
-    module.exports.connection.query('CREATE DATABASE IF NOT EXISTS myMetricsDB', (err, result) => {
+    module.exports.connection.query('CREATE DATABASE IF NOT EXISTS myMetricsDB', (err) => {
         if (err) throw err;
         console.log('Database created successfully.');
     });
