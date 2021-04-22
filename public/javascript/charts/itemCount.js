@@ -30,19 +30,14 @@ async function getChartData() {
         }
     };
 
-    const myChart = new Chart(
+    const itemCount = new Chart(
         document.querySelector('#item-count'),
+        config
+    );
+    const studySum = new Chart(
+        document.querySelector('#board-study-hours'),
         config
     );
 }
 
 getChartData();
-
-function getRandomColor() {
-    var letters = '0123456789ABCDEF'.split('');
-    var color = '#';
-    for (var i = 0; i < 6; i++) {
-        color += letters[Math.floor(Math.random() * 16)];
-    }
-    return color;
-}
