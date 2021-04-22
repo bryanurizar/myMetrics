@@ -11,7 +11,7 @@ async function getChartData() {
     const data = {
         labels: labels,
         datasets: [{
-            label: 'Number of Items',
+            label: 'Count of Tasks',
             backgroundColor: 'rgb(48, 111, 216)',
             borderColor: 'rgb(48,111,216)',
             data: res.itemCount,
@@ -32,10 +32,6 @@ async function getChartData() {
 
     const itemCount = new Chart(
         document.querySelector('#item-count'),
-        config
-    );
-    const studySum = new Chart(
-        document.querySelector('#board-study-hours'),
         config
     );
 }
