@@ -24,52 +24,11 @@
   
       <section class="charts">
           <div>
-            <canvas id="myChart"></canvas>
+            <canvas id="item-count" class="chart" width="350" height="225"></canvas>
           </div>
-          <script>
-              const labels = [
-    'JavaScript',
-    'myMetrics App',
-    'Random Bits'
-    ];
-    const data = {
-      labels: labels,
-      datasets: [{
-        label: 'Number of Items',
-        backgroundColor: [ 
-          'rgba(255, 99, 132, 0.2)',
-          'rgba(255, 159, 64, 0.2)',
-          'rgba(255, 205, 86, 0.2)'
-        ],
-        borderColor: [
-        'rgb(255, 99, 132)',
-        'rgb(255, 159, 64)',
-        'rgb(255, 205, 86)',
-        ],
-        data: [4, 16, 1],
-      }]
-    };
-
-    const config = {
-      type: 'bar',
-      data,
-      options: {
-        scales: {
-          y: {
-            beginAtZero: true
-          }
-        }
-      }
-    };
-          </script>
-          <script>
-            // === include 'setup' then 'config' above ===
-          
-            var myChart = new Chart(
-              document.getElementById('myChart'),
-              config
-            );
-          </script>
+          <!-- <div>
+            <canvas id="board-study-hours" class="chart" width="500" height="300"></canvas>
+          </div> -->
       </section>
       
     </div>
@@ -82,5 +41,11 @@
       async
       defer
     ></script>
+    <script
+    type="module"
+    src="../../../javascript/charts/itemCount.js"
+    async
+    defer
+  ></script> 
   </body>
 </html>

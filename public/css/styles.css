@@ -274,14 +274,24 @@ span {
   justify-content: center;
 }
 
+#boards {
+  padding: 10px;
+}
+
 .boards {
   color: white;
   flex: 2;
 }
 
 .charts {
+  display: flex;
   flex: 5;
   color: white;
+  padding: 10px;
+}
+
+.chart {
+  flex: 2;
 }
 
 /* Study time styling */

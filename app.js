@@ -98,14 +98,18 @@ app.route('/dashboard')
         db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? ORDER BY createdAt', loggedInUserId, (err, results) => {
             if (err) throw err;
             res.render('pages/dashboard', { user: req.user, results: results });
-            console.log(results);
         });
     });
 
 // Board routes
 app.route('/boards')
+    .get(isUserAuthenticated, (req, res) => {
+        db.connection.query('SELECT * FROM BOARDS', (err, results) => {
+            if (err) throw err;
+            res.json(results);
+        });
+    })
     .post(isUserAuthenticated, (req, res) => {
-        console.log(req.body);
         const newBoardId = nanoid();
         const newBoardName = req.body.newBoardName;
         const loggedInUserId = req.user.id;
@@ -122,8 +126,6 @@ app.route('/boards/:boardId/:boardName')
         const loggedInUserId = req.user.id;
         const boardID = req.params.boardId;
 
-        console.log(loggedInUserId, boardID);
-
         db.connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=? ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 
@@ -136,18 +138,6 @@ app.route('/boards/:boardId/:boardName')
 
 // Items routes
 app.route('/items')
-    .get(isUserAuthenticated, (req, res) => {
-        const loggedInUser = req.body.id;
-
-        db.connection.query('SELECT * FROM Lists WHERE userID=? ORDER BY createdAt', loggedInUser, err => {
-            if (err) throw err;
-
-            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=? ORDER BY createdAt', loggedInUser, (err, items) => {
-                if (err) throw err;
-                res.send(items);
-            });
-        });
-    })
     .post(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
         const itemName = req.body.itemName;
@@ -163,7 +153,6 @@ app.route('/items')
     })
     .patch(isUserAuthenticated, (req, res) => {
         const targetListItems = req.body;
-        console.log(targetListItems);
 
         for (let i = 0; i < targetListItems.length; i++) {
             db.connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetListItems[i], err => {
@@ -275,8 +264,31 @@ app.route('/study-time')
     .get(isUserAuthenticated, (req, res) => {
         db.connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
             if (err) throw err;
-            console.log(items);
             res.render('pages/study-time', { items: items });
+        });
+    });
+
+app.route('/data')
+    .get(isUserAuthenticated, (req, res) => {
+        const loggedInUser = req.user.id;
+
+        db.connection.query(`
+        SELECT Boards.boardName, COUNT(*) as itemCount 
+        FROM Items 
+        INNER JOIN Boards 
+        ON Items.boardID = Boards.boardID  
+        WHERE Items.isItemCompleted=0 AND Items.userID=?
+        GROUP BY Items.boardID
+        ORDER BY itemCount DESC
+        `, loggedInUser, (err, data) => {
+            if (err) throw err;
+            const boardNames = [];
+            const itemCount = [];
+            for (let i = 0; i < data.length; i++) {
+                boardNames.push(data[i].boardName);
+                itemCount.push(data[i].itemCount);
+            }
+            res.json({ boardNames: boardNames, itemCount: itemCount });
         });
     });
 
@@ -312,3 +324,4 @@ async function isUserAuthenticated(req, res, next) {
     }
 }
 
+;
