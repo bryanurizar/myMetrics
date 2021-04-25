@@ -323,5 +323,3 @@ async function isUserAuthenticated(req, res, next) {
         res.redirect('login');
     }
 }
-
-;
