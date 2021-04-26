@@ -3,4 +3,7 @@
     - boardID would have to be passed to the study page
 
 - User sets time on countdown clock
+    - User starts the timer on the clock
     - 
+
+    

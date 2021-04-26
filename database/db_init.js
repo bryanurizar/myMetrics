@@ -94,4 +94,34 @@ module.exports.connection.connect((err) => {
             if (err) throw err;
             console.log('Items table created.');
         });
+
+    module.exports.connection.query(
+        `CREATE TABLE IF NOT EXISTS StudySessions (
+            sessionID CHAR(12) NOT NULL,
+            sessionDuration INT NOT NULL,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            userID CHAR(255),
+            PRIMARY KEY(sessionID),
+            FOREIGN KEY (userID) REFERENCES Users(userID))`,
+        err => {
+            if (err) throw err;
+            console.log('Study Sessions table created.');
+        });
+
+    module.exports.connection.query(
+        `CREATE TABLE IF NOT EXISTS StudySessionLogs (
+            logID INT NOT NULL AUTO_INCREMENT,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+            userAction CHAR(12) NOT NULL,
+            sessionID CHAR(12) NOT NULL,
+            userID CHAR(255),
+            PRIMARY KEY(logID),
+            FOREIGN KEY (sessionID) REFERENCES StudySessions(sessionID),
+            FOREIGN KEY (userID) REFERENCES Users(userID))`,
+        err => {
+            if (err) throw err;
+            console.log('Study Session Logs table created.');
+        });
 });
