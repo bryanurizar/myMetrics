@@ -3,6 +3,7 @@
 const studySection = document.querySelector('#study-timer');
 
 const timer = document.createElement('div');
+timer.classList.add('timerInputs');
 studySection.appendChild(timer);
 
 const hoursInput = document.createElement('input');
@@ -33,6 +34,7 @@ function startButtonClick() {
     };
 
     postStudyTime(sessionData);
+    createTimer({ hours: sessionData.hours, minutes: sessionData.minutes });
 }
 
 async function postStudyTime(sessionData) {
@@ -45,4 +47,11 @@ async function postStudyTime(sessionData) {
     });
 
     return response.text;
+}
+
+function createTimer(sessionTime) {
+    timer.remove();
+    const countdownTimer = document.createElement('div');
+    countdownTimer.innerHTML = `<p>${sessionTime.hours} : ${sessionTime.minutes}</p>`;
+    studySection.appendChild(countdownTimer);
 }
