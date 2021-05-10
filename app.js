@@ -267,7 +267,7 @@ app.route('/lists/:listId')
 
 app.route('/study-session')
     .post(isUserAuthenticated, (req, res) => {
-        const studySessionId = req.body.studySessionId;
+        const studySessionId = req.body.sessionId;
         const sessionDuration = 3600 * req.body.hours + 60 * req.body.minutes;
         const loggedInUser = req.user.id;
         const boardId = req.body.boardId;
