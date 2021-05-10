@@ -260,13 +260,18 @@ app.route('/lists/:listId')
         });
     });
 
-app.route('/study-time')
+app.route('/study-session')
     .get(isUserAuthenticated, (req, res) => {
         db.connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
             if (err) throw err;
-            res.render('pages/study-time', { items: items });
+            res.render('pages/study-session', { items: items });
         });
+    })
+    .post(isUserAuthenticated, (req, res) => {
+        console.log(req.body);
     });
+
+
 
 app.route('/data')
     .get(isUserAuthenticated, (req, res) => {

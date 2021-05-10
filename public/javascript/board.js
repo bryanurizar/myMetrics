@@ -232,7 +232,7 @@ function enableTargetItemsSelection(buttonName) {
 
 function startStudySession() {
     if (targetItems.length > 0) {
-        window.location.href = 'http://localhost:3000/study-time';
+        window.location.href = 'http://localhost:3000/study-session';
         updateIsTargetList(targetItems);
     } else {
         alert('No items have been selected.');

@@ -1,7 +1,5 @@
 'use strict';
 
-import { DateTime } from 'luxon';
-
 const studySection = document.querySelector('#study-timer');
 
 const timer = document.createElement('div');
@@ -30,7 +28,7 @@ function startButtonClick() {
 }
 
 async function postStudyTime(studyTime) {
-    const response = await fetch('http://localhost:3000/start-time', {
+    const response = await fetch('http://localhost:3000/study-session', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
