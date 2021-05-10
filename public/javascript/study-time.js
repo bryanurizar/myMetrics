@@ -1,6 +1,6 @@
 'use strict';
 
-import Duration from 'luxon/src/duration.js';
+import { DateTime } from 'luxon';
 
 const studySection = document.querySelector('#study-timer');
 
