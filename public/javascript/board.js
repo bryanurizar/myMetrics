@@ -18,7 +18,6 @@ function handleClick(e) {
         const completedItem = {
             completedItemId: todoTag.id.slice(5,)
         };
-        console.log(completedItem);
         todoTag.remove();
 
         (async () => {
@@ -104,7 +103,6 @@ function handleClick(e) {
 
 const draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.items');
-console.log(dropZones);
 
 const handleDragStart = e => {
     e.dataTransfer.setData('text/plain', e.target.id);
@@ -232,7 +230,6 @@ function enableTargetItemsSelection(buttonName) {
 
 function startStudySession() {
     if (targetItems.length > 0) {
-        window.location.href = 'http://localhost:3000/study-session';
         updateIsTargetList(targetItems);
     } else {
         alert('No items have been selected.');
@@ -246,7 +243,8 @@ async function updateIsTargetList(items) {
             body: JSON.stringify(items),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
-        await response.text();
+        let res = await response.json();
+        window.location.href = `http://localhost:3000/study-session/${res.studySessionId}`;
     } catch (err) {
         console.log(err);
     }
@@ -267,8 +265,6 @@ function handleCancelBtn(e) {
 function handleTodoCardClick(e) {
     const todoCard = e.target.closest('.todo-card');
     const todoCardId = todoCard.id.substring(5,);
-    console.log(todoCard);
-    console.log(todoCardId);
     todoCard.classList.toggle('targeted');
 
     if (targetItems.includes(todoCardId)) {
@@ -277,7 +273,6 @@ function handleTodoCardClick(e) {
     } else {
         targetItems.push(todoCardId);
     }
-    console.log(targetItems);
 }
 
 // Create new list using JavaScript object
@@ -298,8 +293,6 @@ function createList(listName) {
         listName: listName,
         boardId: boardId
     };
-
-    console.log(window.location.href);
 
     (async () => {
         try {
