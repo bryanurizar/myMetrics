@@ -9,8 +9,6 @@ const { customAlphabet } = require('nanoid');
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 12);
 
-const { Duration } = require('luxon');
-
 const app = express();
 const port = process.env.PORT || 3000;
 
@@ -263,7 +261,6 @@ app.route('/lists/:listId')
             res.redirect('/board');
         });
     });
-
 
 app.route('/study-session')
     .post(isUserAuthenticated, (req, res) => {

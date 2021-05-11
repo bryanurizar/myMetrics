@@ -54,4 +54,12 @@ function createTimer(sessionTime) {
     const countdownTimer = document.createElement('div');
     countdownTimer.innerHTML = `<p>${sessionTime.hours} : ${sessionTime.minutes}</p>`;
     studySection.appendChild(countdownTimer);
+
+    const pauseButton = document.createElement('button');
+    pauseButton.innerText = 'Pause';
+    studySection.appendChild(pauseButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.innerText = 'Cancel';
+    studySection.appendChild(cancelButton);
 }
