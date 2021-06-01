@@ -246,9 +246,6 @@ async function updateTargetList(items) {
         const sessionId = await response.json();
         window.location.href = `http://localhost:3000/study-session/${sessionId}`;
 
-        // const sessionId = await response.json();
-        // console.log(sessionId);
-
     } catch (err) {
         console.log(err);
     }
