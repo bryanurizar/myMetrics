@@ -152,16 +152,19 @@ app.route('/items')
         });
     })
     .patch(isUserAuthenticated, (req, res) => {
+        console.log('entered');
         const targetListItems = req.body;
         const studySessionId = nanoid();
 
         for (let i = 0; i < targetListItems.length; i++) {
             db.connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetListItems[i], err => {
-                if (err) throw err;
-                res.json({ studySessionId: studySessionId });
-                console.log('Item updated from database.');
+                if (err) {
+                    console.log(err);
+                }
             });
         }
+        res.json({ studySessionId: studySessionId });
+        console.log('Item updated from database.');
     });
 
 app.route('/items/:itemId')
@@ -270,7 +273,10 @@ app.route('/study-session')
         const boardId = req.body.boardId;
 
         db.connection.query('INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID) VALUES (?, ?, ?, ?)', [studySessionId, sessionDuration, loggedInUser, boardId], (err, result) => {
-            if (err) throw err;
+            if (err) {
+                console.log(err);
+                throw err;
+            }
             console.log('Study session created');
         });
     });
@@ -278,8 +284,12 @@ app.route('/study-session')
 app.route('/study-session/:studySessionId')
     .get(isUserAuthenticated, (req, res) => {
         db.connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
-            if (err) throw err;
+            if (err) {
+                console.log(err);
+                throw err;
+            }
             res.render('pages/study-session', { items: items });
+            return;
         });
     });
 

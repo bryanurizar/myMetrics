@@ -195,7 +195,7 @@ function handleDeleteListClick(e) {
 
 /*
 ***
-*** Create target list when user clicks the selectiona button
+*** Create target list when user clicks the selection button
 ***
 */
 
@@ -230,21 +230,25 @@ function enableTargetItemsSelection(buttonName) {
 
 function startStudySession() {
     if (targetItems.length > 0) {
-        updateIsTargetList(targetItems);
+        updateTargetList(targetItems);
     } else {
         alert('No items have been selected.');
     }
 }
 
-async function updateIsTargetList(items) {
+async function updateTargetList(items) {
     try {
         const response = await fetch('http://localhost:3000/items', {
             method: 'PATCH',
             body: JSON.stringify(items),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
-        let res = await response.json();
-        window.location.href = `http://localhost:3000/study-session/${res.studySessionId}`;
+        const sessionId = await response.json();
+        window.location.href = `http://localhost:3000/study-session/${sessionId}`;
+
+        // const sessionId = await response.json();
+        // console.log(sessionId);
+
     } catch (err) {
         console.log(err);
     }
