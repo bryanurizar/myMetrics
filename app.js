@@ -152,24 +152,21 @@ app.route('/items')
         });
     })
     .patch(isUserAuthenticated, (req, res) => {
-        console.log('entered');
         const targetListItems = req.body;
         const studySessionId = nanoid();
 
         for (let i = 0; i < targetListItems.length; i++) {
             db.connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetListItems[i], err => {
-                if (err) {
-                    console.log(err);
-                }
+                if (err) throw err;
             });
         }
         res.json({ studySessionId: studySessionId });
-        console.log('Item updated from database.');
+        console.log('TargetList updated in database');
     });
 
 app.route('/items/:itemId')
 
-    // Is the post route being used?
+    // Is the post route being used??
     .post(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
         const itemName = req.body.itemName;
