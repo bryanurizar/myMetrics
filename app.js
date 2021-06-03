@@ -103,12 +103,12 @@ app.route('/dashboard')
 
 // Board routes
 app.route('/boards')
-    .get(isUserAuthenticated, (req, res) => {
-        db.connection.query('SELECT * FROM BOARDS', (err, results) => {
-            if (err) throw err;
-            res.json(results);
-        });
-    })
+    // .get(isUserAuthenticated, (req, res) => {
+    //     db.connection.query('SELECT * FROM BOARDS', (err, results) => {
+    //         if (err) throw err;
+    //         res.json(results);
+    //     });
+    // })
     .post(isUserAuthenticated, (req, res) => {
         const newBoardId = nanoid();
         const newBoardName = req.body.newBoardName;
