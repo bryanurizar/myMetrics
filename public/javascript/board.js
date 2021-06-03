@@ -243,8 +243,9 @@ async function updateTargetList(items) {
             body: JSON.stringify(items),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
-        const sessionId = await response.json();
-        window.location.href = `http://localhost:3000/study-session/${sessionId}`;
+        const res = await response.json();
+        console.log(res);
+        window.location.href = `http://localhost:3000/study-session/${res.studySessionId}`;
 
     } catch (err) {
         console.log(err);
