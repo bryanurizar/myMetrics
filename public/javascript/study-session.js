@@ -1,4 +1,13 @@
-'use strict';
+import * as luxon from 'https://moment.github.io/luxon/es6/luxon.min.js';
+const Duration = luxon.Duration;
+
+let studySessionDuration = Duration.fromObject({ hours: 10, minutes: 0, seconds: 0 });
+setInterval(countdown, 1000);
+
+function countdown() {
+    studySessionDuration = studySessionDuration.minus({ seconds: 1 });
+    console.log(studySessionDuration.toFormat('hh : mm : ss'));
+}
 
 const studySection = document.querySelector('#study-timer');
 
