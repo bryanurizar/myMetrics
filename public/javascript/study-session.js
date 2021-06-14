@@ -54,24 +54,29 @@ function createTimer(sessionTime) {
     const countdownTimer = document.createElement('div');
 
     let studySessionDuration = Duration.fromObject({ hours: sessionTime.hours, minutes: sessionTime.minutes, seconds: sessionTime.seconds });
-    setInterval(countdown, 1000);
-
-    function countdown() {
-        studySessionDuration = studySessionDuration.minus({ seconds: 1 });
-        countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
-        studySection.appendChild(countdownTimer);
-    }
-
-    const pauseButton = document.createElement('button');
-    pauseButton.innerText = 'Pause';
-    studySection.appendChild(pauseButton);
-
-    const cancelButton = document.createElement('button');
-    cancelButton.innerText = 'Cancel';
-    studySection.appendChild(cancelButton);
 }
 
+const pauseButton = document.createElement('button');
+pauseButton.innerText = 'Pause';
+studySection.appendChild(pauseButton);
+
+const cancelButton = document.createElement('button');
+cancelButton.innerText = 'Cancel';
+studySection.appendChild(cancelButton);
+}
+
+
+
+
+
 function resumeTimer() {
+
+
+
+
+
+
+
 
 }
 
@@ -81,4 +86,20 @@ function pauseTimer() {
 
 function cancelTimer() {
 
+}
+
+class Timer {
+    constructor(sessionDuration) {
+        this.sessionDuration = sessionDuration;
+    }
+
+    start() {
+        this.sessionDuration = Duration.fromObject({ hours: sessionTime.hours, minutes: sessionTime.minutes, seconds: sessionTime.seconds });
+
+    }
+
+    resume() {
+
+    }
+    pause(sess)
 }
