@@ -18,25 +18,11 @@ timer.appendChild(minutesInput);
 timer.appendChild(startButton);
 
 startButton.addEventListener('click', startTimer);
+const sessionUrl = new URL(window.location.href);
+const sessionId = sessionUrl.pathname.split('/')[2];
 
-function startTimer() {
-
-    const sessionUrl = new URL(window.location.href);
-    const sessionId = sessionUrl.pathname.split('/')[2];
-
-    const boardUrl = new URL(document.referrer);
-    const boardId = boardUrl.pathname.split('/')[2];
-
-    const sessionData = {
-        sessionId: sessionId,
-        boardId: boardId,
-        hours: Number(hoursInput.value),
-        minutes: Number(minutesInput.value),
-    };
-
-    postStudyTime(sessionData);
-    createTimer({ hours: sessionData.hours, minutes: sessionData.minutes });
-}
+const boardUrl = new URL(document.referrer);
+const boardId = boardUrl.pathname.split('/')[2];
 
 async function postStudyTime(sessionData) {
     const response = await fetch('http://localhost:3000/study-session/', {
@@ -49,23 +35,40 @@ async function postStudyTime(sessionData) {
     return response;
 }
 
-function createTimer(sessionTime) {
+function createTimer() {
     timer.remove();
+    const pauseButton = document.createElement('button');
+    pauseButton.innerText = 'Pause';
+    studySection.appendChild(pauseButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.innerText = 'Cancel';
+    studySection.appendChild(cancelButton);
+}
+
+function startTimer() {
+    createTimer();
+
+    const sessionData = {
+        sessionId: sessionId,
+        boardId: boardId,
+        hours: Number(hoursInput.value),
+        minutes: Number(minutesInput.value),
+    };
+
     const countdownTimer = document.createElement('div');
 
-    let studySessionDuration = Duration.fromObject({ hours: sessionTime.hours, minutes: sessionTime.minutes, seconds: sessionTime.seconds });
+    let studySessionDuration = Duration.fromObject({ hours: sessionData.hours, minutes: sessionData.minutes, seconds: sessionData.seconds });
+    setInterval(countdown, 1000);
+
+    function countdown() {
+        studySessionDuration = studySessionDuration.minus({ seconds: 1 });
+        countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
+        studySection.prepend(countdownTimer);
+    }
+    postStudyTime(sessionData);
+
 }
-
-const pauseButton = document.createElement('button');
-pauseButton.innerText = 'Pause';
-studySection.appendChild(pauseButton);
-
-const cancelButton = document.createElement('button');
-cancelButton.innerText = 'Cancel';
-studySection.appendChild(cancelButton);
-}
-
-
 
 
 
@@ -86,20 +89,4 @@ function pauseTimer() {
 
 function cancelTimer() {
 
-}
-
-class Timer {
-    constructor(sessionDuration) {
-        this.sessionDuration = sessionDuration;
-    }
-
-    start() {
-        this.sessionDuration = Duration.fromObject({ hours: sessionTime.hours, minutes: sessionTime.minutes, seconds: sessionTime.seconds });
-
-    }
-
-    resume() {
-
-    }
-    pause(sess)
 }
