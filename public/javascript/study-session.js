@@ -17,14 +17,17 @@ timer.appendChild(hoursInput);
 timer.appendChild(minutesInput);
 timer.appendChild(startButton);
 
-startButton.addEventListener('click', startTimer);
+startButton.addEventListener('click', displayTimer);
+
 const sessionUrl = new URL(window.location.href);
 const sessionId = sessionUrl.pathname.split('/')[2];
 
 const boardUrl = new URL(document.referrer);
 const boardId = boardUrl.pathname.split('/')[2];
 
-async function postStudyTime(sessionData) {
+const countdownTimer = document.createElement('div');
+
+async function postStudyLog(sessionData) {
     const response = await fetch('http://localhost:3000/study-session/', {
         method: 'POST',
         headers: {
@@ -35,19 +38,10 @@ async function postStudyTime(sessionData) {
     return response;
 }
 
-function createTimer() {
+function displayTimer() {
+
+    console.log('displayTimer called');
     timer.remove();
-    const pauseButton = document.createElement('button');
-    pauseButton.innerText = 'Pause';
-    studySection.appendChild(pauseButton);
-
-    const cancelButton = document.createElement('button');
-    cancelButton.innerText = 'Cancel';
-    studySection.appendChild(cancelButton);
-}
-
-function startTimer() {
-    createTimer();
 
     const sessionData = {
         sessionId: sessionId,
@@ -56,23 +50,34 @@ function startTimer() {
         minutes: Number(minutesInput.value),
     };
 
-    const countdownTimer = document.createElement('div');
-
     let studySessionDuration = Duration.fromObject({ hours: sessionData.hours, minutes: sessionData.minutes, seconds: sessionData.seconds });
+    countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
+    studySection.prepend(countdownTimer);
+
+    startTimer(studySessionDuration, countdownTimer);
+
+    const pauseButton = document.createElement('button');
+    pauseButton.innerText = 'Pause';
+    studySection.appendChild(pauseButton);
+
+    const cancelButton = document.createElement('button');
+    cancelButton.innerText = 'Cancel';
+    studySection.appendChild(cancelButton);
+
+    postStudyLog(sessionData);
+}
+
+function startTimer(studySessionDuration) {
     setInterval(countdown, 1000);
 
     function countdown() {
         studySessionDuration = studySessionDuration.minus({ seconds: 1 });
         countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
-        studySection.prepend(countdownTimer);
     }
-    postStudyTime(sessionData);
-
 }
 
 
 
-function resumeTimer() {
 
 
 
@@ -80,13 +85,3 @@ function resumeTimer() {
 
 
 
-
-}
-
-function pauseTimer() {
-
-}
-
-function cancelTimer() {
-
-}
