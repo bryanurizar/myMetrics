@@ -38,6 +38,11 @@ async function postStudyLog(sessionData) {
     return response;
 }
 
+
+let val;
+
+
+
 function displayTimer() {
 
     console.log('displayTimer called');
@@ -64,22 +69,47 @@ function displayTimer() {
     cancelButton.innerText = 'Cancel';
     studySection.appendChild(cancelButton);
 
+    const timerButtons = document.querySelectorAll('button');
+    console.log(timerButtons);
+    timerButtons.forEach(timerButton => {
+        timerButton.addEventListener('click', (e) => {
+            if (e.target.innerText === 'Pause') {
+                e.target.innerText === 'Resume';
+                pauseTimer(e);
+
+            } else if (e.target.innerText === 'Cancel') {
+                stopTimer();
+            } else {
+                resumeTimer(e);
+            }
+        });
+    });
+
     postStudyLog(sessionData);
 }
 
 function startTimer(studySessionDuration) {
-    setInterval(countdown, 1000);
+    val = setInterval(decrement, 1000);
 
-    function countdown() {
+    function decrement() {
         studySessionDuration = studySessionDuration.minus({ seconds: 1 });
         countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
     }
 }
 
+function pauseTimer(e) {
+    clearTimeout(val);
+    e.target.innerText = 'Resume';
 
+}
 
+function stopTimer() {
+    console.log('stopTimer');
+}
 
-
+function resumeTimer() {
+    val = setInterval(decrement, 1000);
+}
 
 
 

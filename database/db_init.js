@@ -1,13 +1,13 @@
 const mysql = require('mysql');
 
-module.exports.connection = mysql.createConnection({
+const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     port: process.env.DB_PORT,
     password: process.env.DB_PASSWORD
 });
 
-module.exports.connection.connect((err) => {
+connection.connect((err) => {
     if (err) {
         console.error('error connecting: ' + err.stack);
         return;
@@ -15,18 +15,18 @@ module.exports.connection.connect((err) => {
     console.log('Database connection initiated.');
 
     // creates database
-    module.exports.connection.query('CREATE DATABASE IF NOT EXISTS myMetricsDB', (err) => {
+    connection.query('CREATE DATABASE IF NOT EXISTS myMetricsDB', (err) => {
         if (err) throw err;
         console.log('Database created successfully.');
     });
 
-    module.exports.connection.query('USE myMetricsDB', err => {
+    connection.query('USE myMetricsDB', err => {
         if (err) throw err;
         console.log('Use myMetricsDB.');
     });
 
     //creates the user table
-    module.exports.connection.query(
+    connection.query(
         `CREATE TABLE IF NOT EXISTS Users (
             userID CHAR(255) NOT NULL,
             firstName CHAR(255) NOT NULL,
@@ -42,7 +42,7 @@ module.exports.connection.connect((err) => {
         });
 
     // Creates the board table
-    module.exports.connection.query(
+    connection.query(
         `CREATE TABLE IF NOT EXISTS Boards (
             boardID CHAR(12) NOT NULL, 
             boardName CHAR(255) NOT NULL, 
@@ -57,7 +57,7 @@ module.exports.connection.connect((err) => {
         });
 
     // Creates the lists table
-    module.exports.connection.query(
+    connection.query(
         `CREATE TABLE IF NOT EXISTS Lists (
             listID CHAR(12) NOT NULL,
             listName CHAR(255),
@@ -75,7 +75,7 @@ module.exports.connection.connect((err) => {
         });
 
     // Creates the items table
-    module.exports.connection.query(
+    connection.query(
         `CREATE TABLE IF NOT EXISTS Items (
             itemID CHAR(12) NOT NULL,
             itemName CHAR(255),
@@ -95,7 +95,7 @@ module.exports.connection.connect((err) => {
             console.log('Items table created.');
         });
 
-    module.exports.connection.query(
+    connection.query(
         `CREATE TABLE IF NOT EXISTS StudySessions (
             sessionID CHAR(12) NOT NULL,
             sessionDuration INT NOT NULL,
@@ -111,7 +111,7 @@ module.exports.connection.connect((err) => {
             console.log('Study Sessions table created.');
         });
 
-    module.exports.connection.query(
+    connection.query(
         `CREATE TABLE IF NOT EXISTS StudySessionLogs (
             logID INT NOT NULL AUTO_INCREMENT,
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
@@ -129,3 +129,5 @@ module.exports.connection.connect((err) => {
             console.log('Study Session Logs table created.');
         });
 });
+
+module.exports = exports = { connection };
