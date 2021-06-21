@@ -95,6 +95,7 @@ connection.connect((err) => {
             console.log('Items table created.');
         });
 
+    // Creates the study sessions
     connection.query(
         `CREATE TABLE IF NOT EXISTS StudySessions (
             sessionID CHAR(12) NOT NULL,
@@ -111,6 +112,7 @@ connection.connect((err) => {
             console.log('Study Sessions table created.');
         });
 
+    // Creates the study session logs table
     connection.query(
         `CREATE TABLE IF NOT EXISTS StudySessionLogs (
             logID INT NOT NULL AUTO_INCREMENT,

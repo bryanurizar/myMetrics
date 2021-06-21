@@ -3,25 +3,15 @@ const express = require('express');
 const db = require('./database/db_init');
 const cors = require('cors');
 const cookieParser = require('cookie-parser');
-
 const { customAlphabet } = require('nanoid');
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 12);
+const { OAuth2Client } = require('google-auth-library');
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const app = express();
 const port = process.env.PORT || 3000;
 
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-// const { Duration } = require('luxon');
-
-// let studySessionDuration = Duration.fromObject({ hours: 10, minutes: 0, seconds: 0 });
-// setInterval(countdown, 1000);
-
-// function countdown() {
-//     studySessionDuration = studySessionDuration.minus({ seconds: 1 });
-//     console.log(studySessionDuration.toFormat('hh : mm : ss'));
-// }
 
 app.use(cookieParser());
 app.use(express.static('public'));
