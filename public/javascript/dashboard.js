@@ -2,6 +2,7 @@
 
 const createBoardBtn = document.querySelector('button');
 createBoardBtn.addEventListener('click', createBoard);
+const boardSection = document.querySelector('#boards');
 
 async function createBoard() {
     const newBoardName = document.querySelector('input').value;
@@ -21,12 +22,12 @@ async function createBoard() {
 }
 
 function renderNewBoard(boardName, boardId) {
-    const newBoardElement = document.createElement('a');
-    newBoardElement.textContent = boardName;
-    newBoardElement.href = `/boards/${boardId}/${encodeURI(decodeURI(boardName.toLowerCase()).replace(/ /g, '-'))}`;
-
-    const lineBreak = document.createElement('br');
-    const boardList = document.querySelector('#boards');
-    boardList.insertAdjacentElement('beforeend', newBoardElement);
-    boardList.appendChild(lineBreak);
+    const boardCard = document.createElement('div');
+    boardCard.className = 'board-card';
+    const newBoardName = document.createElement('a');
+    newBoardName.className = 'board-name';;
+    newBoardName.textContent = boardName;
+    newBoardName.href = `/boards/${boardId}/${encodeURI(decodeURI(boardName.toLowerCase()).replace(/ /g, '-'))}`;
+    boardCard.appendChild(newBoardName);
+    boardSection.appendChild(boardCard);
 }

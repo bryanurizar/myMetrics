@@ -18,6 +18,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
+  font-size: 12px;
 }
 
 #logo {
@@ -267,22 +268,6 @@ span {
   height: 25px;
 }
 
-#boards-charts {
-  margin-top: 20px;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-}
-
-#boards {
-  padding: 10px;
-}
-
-.boards {
-  color: white;
-  flex: 2;
-}
-
 .charts {
   display: flex;
   flex: 5;
@@ -313,3 +298,37 @@ span {
   flex: 5;
   align-content: center;
 }
+
+#boards {
+  display: flex;
+  flex-flow: wrap;
+  justify-content: center;
+  padding: 10px;
+  overflow-y: scroll;
+
+}
+
+.board-card {
+  display: flex;
+  margin: 2%;
+  display: flex;
+  height: 200px;
+  width: 200px;
+  justify-content: center;
+  align-items: center;
+  border-color: white;
+  border-width: 1px;
+  border-style: solid;
+  border-radius: 5px;
+}
+
+.board-card:hover {
+  box-shadow: 1px 1px 1px #fff;
+}
+
+.board-name {
+  font-size: 16px;
+  text-align: center;
+}
+
+

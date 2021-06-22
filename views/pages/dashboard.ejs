@@ -1,48 +1,33 @@
 <!DOCTYPE html>
 <html>
   <%- include('../partials/head'); %>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <body>
     <%- include('../partials/header');%>
 
-    <div id="boards-charts">
-
-      <section id="boards">
+      <section id="boards-section">
         <input class="create-board" type="text" placeholder="Create new board">
         <button>Create</button>
-        <div class="board-list"></div>
+
+      <div id="boards">  
         <% for (let i = 0; i < results.length; i++) { %>
-        <div class="board-name">
           <% if (results) { %>
-          <a href="/boards/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
+            <div class="board-card">
+          <a class="board-name" href="/boards/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
             ><%= results[i].boardName %></a
           >
-          <% } %>
         </div>
+          <% } %>
         <% } %>
+      </div>
       </section>
-  
-      <section class="charts">
-          <div>
-            <canvas id="item-count" class="chart" width="350" height="225"></canvas>
-          </div>
-          <!-- <div>
-            <canvas id="board-study-hours" class="chart" width="500" height="300"></canvas>
-          </div> -->
-      </section>
-      
-    </div>
+
+    
     <script
       type="module"
       src="../../../javascript/dashboard.js"
       async
       defer
     ></script>
-    <script
-    type="module"
-    src="../../../javascript/charts/itemCount.js"
-    async
-    defer
-  ></script> 
+ 
   </body>
 </html>

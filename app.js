@@ -284,8 +284,12 @@ app.route('/study-session/:studySessionId')
                 throw err;
             }
             res.render('pages/study-session', { items: items });
-            return;
         });
+    });
+
+app.route('/analytics')
+    .get(isUserAuthenticated, (req, res) => {
+        res.render('pages/analytics');
     });
 
 app.route('/data')
