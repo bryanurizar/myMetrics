@@ -1,5 +1,5 @@
-import express from 'express';
 import { connection } from './database/db_init.js';
+import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
