@@ -1,17 +1,17 @@
-require('dotenv').config();
-const express = require('express');
-const db = require('./database/db_init');
-const cors = require('cors');
-const cookieParser = require('cookie-parser');
-const { customAlphabet } = require('nanoid');
+import express from 'express';
+import { connection as db } from './database/db_init.js';
+import cors from 'cors';
+import cookieParser from 'cookie-parser';
+
+import { OAuth2Client } from 'google-auth-library';
+const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+
+import { customAlphabet } from 'nanoid';
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 12);
-const { OAuth2Client } = require('google-auth-library');
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
 
 const app = express();
 const port = process.env.PORT || 3000;
-
 
 app.use(cookieParser());
 app.use(express.static('public'));

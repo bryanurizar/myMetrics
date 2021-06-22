@@ -41,8 +41,6 @@ async function postStudyLog(sessionData) {
 
 let val;
 
-
-
 function displayTimer() {
 
     console.log('displayTimer called');
@@ -100,7 +98,6 @@ function startTimer(studySessionDuration) {
 function pauseTimer(e) {
     clearTimeout(val);
     e.target.innerText = 'Resume';
-
 }
 
 function stopTimer() {
@@ -110,8 +107,3 @@ function stopTimer() {
 function resumeTimer() {
     val = setInterval(decrement, 1000);
 }
-
-
-
-
-

@@ -245,7 +245,7 @@ span {
   padding: 12px 10px;
   border: none;
   color: white;
-  box-shadow: 0 2.8px 2.2px rgba(0.5, 1.5, 1, 1);
+  box-shadow: 0;
   min-width: 100px;
 }
 
