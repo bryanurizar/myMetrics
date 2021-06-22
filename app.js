@@ -1,5 +1,5 @@
 import express from 'express';
-import { connection as db } from './database/db_init.js';
+import { connection } from './database/db_init.js';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
@@ -65,7 +65,7 @@ app.route('/login')
         }
 
         function databaseValidation(user) {
-            db.connection.query('SELECT * FROM Users WHERE userID = ?', user.id, (err, results) => {
+            connection.query('SELECT * FROM Users WHERE userID = ?', user.id, (err, results) => {
                 if (err) throw err;
 
                 const isUserFound = results.length === 1;
@@ -73,7 +73,7 @@ app.route('/login')
                 if (isUserFound) {
                     console.log('user already exists - redirected to dashboard');
                 } else {
-                    db.connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [user.id, user.firstName, user.lastName, user.email, user.image], (err) => {
+                    connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [user.id, user.firstName, user.lastName, user.email, user.image], (err) => {
                         if (err) throw err;
                         console.log('user added to db and redirected to dashboard');
                     });
@@ -93,7 +93,7 @@ app.route('/dashboard')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
 
-        db.connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? ORDER BY createdAt', loggedInUserId, (err, results) => {
+        connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? ORDER BY createdAt', loggedInUserId, (err, results) => {
             if (err) throw err;
             res.render('pages/dashboard', { user: req.user, results: results });
         });
@@ -102,7 +102,7 @@ app.route('/dashboard')
 // Board routes
 app.route('/boards')
     // .get(isUserAuthenticated, (req, res) => {
-    //     db.connection.query('SELECT * FROM BOARDS', (err, results) => {
+    //     connection.query('SELECT * FROM BOARDS', (err, results) => {
     //         if (err) throw err;
     //         res.json(results);
     //     });
@@ -112,7 +112,7 @@ app.route('/boards')
         const newBoardName = req.body.newBoardName;
         const loggedInUserId = req.user.id;
 
-        db.connection.query('INSERT INTO Boards (boardID, boardName, userID) VALUES(?, ?, ?)', [newBoardId, newBoardName, loggedInUserId], (err) => {
+        connection.query('INSERT INTO Boards (boardID, boardName, userID) VALUES(?, ?, ?)', [newBoardId, newBoardName, loggedInUserId], (err) => {
             if (err) throw err;
             console.log('New board inserted into Boards table');
             res.json({ newBoardId: newBoardId });
@@ -124,10 +124,10 @@ app.route('/boards/:boardId/:boardName')
         const loggedInUserId = req.user.id;
         const boardID = req.params.boardId;
 
-        db.connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=? ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
+        connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=? ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 
-            db.connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=? ORDER BY createdAt', loggedInUserId, (err, items) => {
+            connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=? ORDER BY createdAt', loggedInUserId, (err, items) => {
                 if (err) throw err;
                 res.render('pages/board', { lists: lists, items: items });
             });
@@ -143,7 +143,7 @@ app.route('/items')
         const itemId = nanoid();
         const boardId = req.body.boardId;
 
-        db.connection.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId, boardId], (err) => {
+        connection.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId, boardId], (err) => {
             if (err) throw err;
             console.log('Item inserted into database.');
             res.json({ itemId: itemId });
@@ -154,7 +154,7 @@ app.route('/items')
         const studySessionId = nanoid();
 
         for (let i = 0; i < targetListItems.length; i++) {
-            db.connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetListItems[i], err => {
+            connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetListItems[i], err => {
                 if (err) throw err;
             });
         }
@@ -171,7 +171,7 @@ app.route('/items/:itemId')
         const listId = req.body.listId;
         const itemId = nanoid();
 
-        db.connection.query('INSERT INTO Items (itemID, itemName, listID, userID) VALUES (?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId], err => {
+        connection.query('INSERT INTO Items (itemID, itemName, listID, userID) VALUES (?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId], err => {
             if (err) throw err;
             console.log('Item inserted into database.');
             res.redirect('board');
@@ -183,12 +183,12 @@ app.route('/items/:itemId')
         const completedItemId = req.body.completedItemId;
 
         if (completedItemId) {
-            db.connection.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=?', completedItemId, err => {
+            connection.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=?', completedItemId, err => {
                 if (err) throw err;
                 console.log('Item updated from database.');
             });
         } else {
-            db.connection.query('UPDATE Items SET itemName=? WHERE itemID=?', [updatedItemDescription, editedItemId], err => {
+            connection.query('UPDATE Items SET itemName=? WHERE itemID=?', [updatedItemDescription, editedItemId], err => {
                 if (err) throw err;
                 console.log('Item updated from database.');
             });
@@ -197,7 +197,7 @@ app.route('/items/:itemId')
     .delete(isUserAuthenticated, (req, res) => {
         const deletedItemId = req.body.deletedItemId;
 
-        db.connection.query('DELETE FROM Items WHERE itemId=?', deletedItemId, err => {
+        connection.query('DELETE FROM Items WHERE itemId=?', deletedItemId, err => {
             if (err) throw err;
             console.log('Item deleted from database.');
         });
@@ -211,7 +211,7 @@ app.route('/lists')
         const loggedInUser = req.user.id;
         const listId = nanoid();
 
-        db.connection.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES (?, ?, ?, ?)', [listId, listName, loggedInUser, boardId], (err) => {
+        connection.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES (?, ?, ?, ?)', [listId, listName, loggedInUser, boardId], (err) => {
             if (err) throw err;
             res.json({ listId: listId });
         });
@@ -222,7 +222,7 @@ app.route('/lists/:listId')
         const newList = req.body.newList;
         const loggedInUser = req.user.id;
 
-        db.connection.query('INSERT INTO Lists (listDescription, userID) VALUES (?, ?)', [newList, loggedInUser], err => {
+        connection.query('INSERT INTO Lists (listDescription, userID) VALUES (?, ?)', [newList, loggedInUser], err => {
             if (err) throw err;
             console.log('Item inserted into database.');
             res.redirect('board');
@@ -232,23 +232,23 @@ app.route('/lists/:listId')
         console.log('entered deleted route');
 
         const listId = req.body.listId;
-        db.connection.beginTransaction(function (err) {
+        connection.beginTransaction(function (err) {
             if (err) { throw err; }
-            db.connection.query('DELETE FROM Items Where listID=?', listId, function (error) {
+            connection.query('DELETE FROM Items Where listID=?', listId, function (error) {
                 if (error) {
-                    return db.connection.rollback(function () {
+                    return connection.rollback(function () {
                         throw error;
                     });
                 }
-                db.connection.query('DELETE FROM Lists WHERE listID=?', listId, function (error) {
+                connection.query('DELETE FROM Lists WHERE listID=?', listId, function (error) {
                     if (error) {
-                        return db.connection.rollback(function () {
+                        return connection.rollback(function () {
                             throw error;
                         });
                     }
-                    db.connection.commit(function (err) {
+                    connection.commit(function (err) {
                         if (err) {
-                            return db.connection.rollback(function () {
+                            return connection.rollback(function () {
                                 throw err;
                             });
                         }
@@ -267,7 +267,7 @@ app.route('/study-session')
         const loggedInUser = req.user.id;
         const boardId = req.body.boardId;
 
-        db.connection.query('INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID) VALUES (?, ?, ?, ?)', [studySessionId, sessionDuration, loggedInUser, boardId], (err, result) => {
+        connection.query('INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID) VALUES (?, ?, ?, ?)', [studySessionId, sessionDuration, loggedInUser, boardId], (err, result) => {
             if (err) {
                 console.log(err);
                 throw err;
@@ -278,7 +278,7 @@ app.route('/study-session')
 
 app.route('/study-session/:studySessionId')
     .get(isUserAuthenticated, (req, res) => {
-        db.connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
+        connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
             if (err) {
                 console.log(err);
                 throw err;
@@ -296,7 +296,7 @@ app.route('/data')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
 
-        db.connection.query(`
+        connection.query(`
         SELECT Boards.boardName, COUNT(*) as itemCount 
         FROM Items 
         INNER JOIN Boards 
