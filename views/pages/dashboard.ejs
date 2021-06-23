@@ -5,8 +5,10 @@
     <%- include('../partials/header');%>
 
       <section id="boards-section">
-        <input class="create-board" type="text" placeholder="Create new board">
-        <button>Create</button>
+        <div id="create-board">
+          <input class="create-board" type="text" placeholder="Create new board">
+          <button id="btn">Create</button>
+        </div>
 
       <div id="boards">  
         <% for (let i = 0; i < results.length; i++) { %>

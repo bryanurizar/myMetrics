@@ -8,7 +8,7 @@ body {
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
   color: black;
-  background-color: white;
+  background-color: #f1f5f7;
   padding: 1%;
   margin-bottom: 0;
   overflow-x: auto;
@@ -16,7 +16,9 @@ body {
 }
 
 nav {
+  padding-top: 8px;
   display: flex;
+  height: 30px;
   justify-content: center;
   align-items: center;
   position: sticky;
@@ -24,14 +26,17 @@ nav {
 
 #logo {
   flex: 5;
-  color: black;
+  color: #211921;
   font-size: 3rem;
   font-weight: 600;
 }
 
 #links {
-  flex: 1;
   display: flex;
+  flex: 1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
 
 #links > a {
@@ -41,7 +46,19 @@ nav {
 a {
   text-decoration: none;
   color: black;
-  font-size: 1.5rem;
+  font-size: 1.3rem;
+}
+
+#btn {
+  background-color: #2f75f2;
+  border-radius: 5px;
+  padding: 10px 14px;
+  border: none;
+  color: white;
+}
+
+#btn:hover {
+  background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
 }
 
 #board {
@@ -222,36 +239,9 @@ span {
   background-color: #f7f7f7;
 }
 
-#create-list-btn {
-  margin-top: 30px;
-  margin-bottom: 0px;
-  background-color: #00adb5;
-  border-radius: 5px;
-  padding: 12px 10px;
-  border: none;
-  color: white;
-  box-shadow: 0 2.8px 2.2px rgba(0.5, 1.5, 1, 1);
-}
-
 #target-list {
   display: flex;
   align-items: flex-end;
-}
-
-#create-list-btn {
-  margin-top: 30px;
-  margin-bottom: 0px;
-  background-color: #00adb5;
-  border-radius: 5px;
-  padding: 12px 10px;
-  border: none;
-  color: white;
-  box-shadow: 0;
-  min-width: 100px;
-}
-
-#create-list-btn:hover {
-  box-shadow: 0 5px 15px rgba(0, 173, 181, 0.4);
 }
 
 #target-list > input {
@@ -310,7 +300,6 @@ span {
 
 #boards {
   width: 80%;
-  height: 500px;
   margin-bottom: 100px;
   display: flex;
   flex-flow: wrap;
@@ -320,17 +309,16 @@ span {
 }
 
 .board-card {
+  font-weight: 500;
   display: flex;
   margin: 2%;
   display: flex;
-  height: 200px;
+  height: 170px;
   width: 200px;
   justify-content: center;
   align-items: center;
-  border-color: black;
-  border-width: 1px;
-  border-style: solid;
-  border-radius: 5px;
+  border-radius: 8px;
+  background-color: white;
 }
 
 .board-card:hover {

@@ -199,7 +199,7 @@ function handleDeleteListClick(e) {
 ***
 */
 
-const createTargetListBtn = document.querySelector('#create-list-btn');
+const createTargetListBtn = document.querySelector('.create-list');
 createTargetListBtn.addEventListener('click', handleButtonClick);
 const targetItems = [];
 
