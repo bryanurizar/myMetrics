@@ -309,7 +309,7 @@ span {
 }
 
 .board-card {
-  font-weight: 500;
+  font-weight: 400;
   display: flex;
   margin: 2%;
   display: flex;
@@ -324,6 +324,13 @@ span {
 .board-card:hover {
   box-shadow: 2px 2px 2px #fff;
 }
+
+/* .vl {
+  height: 100%;
+  width: 5px;
+  position: relative;
+  background-color: green;
+} */
 
 .board-name {
   font-size: 16px;
