@@ -1,10 +1,10 @@
 html {
-  max-height: 100vh;
-  overflow-y: hidden;
+  height: 100vh;
+  font-size: 12px;
 }
 
 body {
-  height: 100%;
+  height: 100vh;
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
   color: black;
@@ -12,35 +12,36 @@ body {
   padding: 1%;
   margin-bottom: 0;
   overflow-x: auto;
+  overflow-y: hidden;
 }
 
 nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: 12px;
+  position: sticky;
 }
 
 #logo {
   flex: 5;
   color: black;
-  font-size: 32px;
+  font-size: 3rem;
   font-weight: 600;
 }
 
-links {
+#links {
   flex: 1;
   display: flex;
 }
 
-#link {
-  flex: 2;
+#links > a {
+  margin-left: 15px;
 }
 
 a {
   text-decoration: none;
   color: black;
-  font-size: 20px;
+  font-size: 1.5rem;
 }
 
 #board {
@@ -299,7 +300,18 @@ span {
   align-content: center;
 }
 
+#boards-section {
+  padding-top: 75px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 #boards {
+  width: 80%;
+  height: 500px;
+  margin-bottom: 100px;
   display: flex;
   flex-flow: wrap;
   justify-content: center;
@@ -330,4 +342,20 @@ span {
   text-align: center;
 }
 
+/* Login Page */
 
+#login-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+}
+
+#login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
