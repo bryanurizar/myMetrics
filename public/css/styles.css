@@ -36,7 +36,7 @@ nav {
   flex: 1;
   flex-direction: row;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
 }
 
 #links > a {
@@ -256,7 +256,7 @@ span {
 
 .create-board {
   width: 160px;
-  height: 25px;
+  height: 35px;
 }
 
 .charts {
@@ -317,12 +317,12 @@ span {
   width: 200px;
   justify-content: center;
   align-items: center;
-  border-radius: 8px;
+  border-radius: 10px;
   background-color: white;
 }
 
 .board-card:hover {
-  box-shadow: 1px 1px 1px #fff;
+  box-shadow: 2px 2px 2px #fff;
 }
 
 .board-name {
