@@ -5,14 +5,11 @@
     <nav>
       <a id="logo" href="/dashboard">myMetrics</a>
       <div id="links">
-        <a id="btn" href="/login" onclick="signOut();">Log In</a>
+        <a id="btn" href="/login">Log In</a>
       </div>
-      <script
-        src="https://apis.google.com/js/platform.js?onload=onLoad"
-        async
-        defer
-      >
+      <script>
         function signOut() {
+          console.log('SignOut not working');
           const auth2 = gapi.auth2.getAuthInstance();
           auth2.signOut().then(function () {
             console.log("User signed out.");
