@@ -18,6 +18,7 @@ async function createBoard() {
         body: JSON.stringify(data)
     });
     const res = await response.json();
+    document.querySelector('input').value = '';
     renderNewBoard(newBoardName, res.newBoardId);
 }
 
@@ -25,7 +26,7 @@ function renderNewBoard(boardName, boardId) {
     const boardCard = document.createElement('div');
     boardCard.className = 'board-card';
     const newBoardName = document.createElement('a');
-    newBoardName.className = 'board-name';;
+    newBoardName.className = 'board-name';
     newBoardName.textContent = boardName;
     newBoardName.href = `/boards/${boardId}/${encodeURI(decodeURI(boardName.toLowerCase()).replace(/ /g, '-'))}`;
     boardCard.appendChild(newBoardName);

@@ -2,25 +2,9 @@
   <a id="logo" href="/dashboard">myMetrics</a>
   <div id="links">
     <a id="dashboard" href="/dashboard">Dashboard</a>
+    <a id="breakroom" href="/breakroom">Breakroom</a>
     <a id="analytics" href="/analytics">Analytics</a>
-    <a id="btn" href="/login" onclick="signOut();">Logout</a>
+    <a id="profile" href="/profile">Profile</a>
+    <a id="btn" href="/" onclick="signOut();">Logout</a>
   </div>
-  <script
-    src="https://apis.google.com/js/platform.js?onload=onLoad"
-    async
-    defer
-  >
-    function signOut() {
-      const auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log("User signed out.");
-      });
-    }
-
-    function onLoad() {
-      gapi.load("auth2", function () {
-        gapi.auth2.init();
-      });
-    }
-  </script>
 </nav>

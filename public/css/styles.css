@@ -4,10 +4,10 @@ html {
 }
 
 body {
+  color: #293b5e;
   height: 100vh;
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
-  color: black;
   background-color: #f1f5f7;
   padding: 1%;
   margin-bottom: 0;
@@ -26,8 +26,7 @@ nav {
 
 #logo {
   flex: 5;
-  color: #211921;
-  font-size: 3rem;
+  font-size: 2rem;
   font-weight: 600;
 }
 
@@ -45,8 +44,8 @@ nav {
 
 a {
   text-decoration: none;
-  color: black;
-  font-size: 1.3rem;
+  color: #293b5e;
+  font-size: 1.2rem;
 }
 
 #btn {

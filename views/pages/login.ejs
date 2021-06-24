@@ -1,50 +1,26 @@
 <html lang="en">
-  <%- include('../partials/head'); %>
+  <head>
+    <%- include('../partials/head'); %>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+  </head>
   <body>
     <sectioni id="login-section">
-      
       <div id="login">
         <h1 class=login>Login to myMetrics</h1>
-        <div class="g-signin2 login" data-onsuccess="onSignIn" data-theme="dark"></div>
       </div>
-  
+      <div id="g_id_onload"
+        data-client_id="949496674355-4i348lsnm0fgu1f074nnpdhvq3qpe05g.apps.googleusercontent.com"
+        data-login_uri="http://localhost:3000/login"
+        >
+      </div>
+      <div class="g_id_signin"
+        data-type="standard"
+        data-size="large"
+        data-theme="outline"
+        data-text="sign_in_with"
+        data-shape="rectangular"
+        data-logo_alignment="left">
+      </div>
     </section>  
-
-
-
-
-    <script>
-      function signOut() {
-        const auth2 = gapi.auth2.getAuthInstance();
-        auth2.signOut().then(function () {
-          console.log("User signed out.");
-        });
-      }
-
-      function onSignIn(googleUser) {
-        // Useful data for your client-side scripts:
-        const profile = googleUser.getBasicProfile();
-
-        // The ID token you need to pass to your backend:
-        const id_token = googleUser.getAuthResponse().id_token;
-        console.log("ID Token: " + id_token);
-
-        async function postGoogleId(url = "", data = {}) {
-          const response = await fetch("http://localhost:3000/login", {
-            method: "POST",
-            headers: {
-              "content-type": "application/json",
-            },
-            body: JSON.stringify(data),
-          });
-          const res = await response.text();
-          if (res === "user authenticated") {
-            window.location.replace("http://localhost:3000/dashboard");
-          }
-        }
-
-        postGoogleId("http://localhost:3000/login", { token: id_token });
-      }
-    </script>
   </body>
 </html>

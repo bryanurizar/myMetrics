@@ -3,9 +3,6 @@ import express from 'express';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 
-import { OAuth2Client } from 'google-auth-library';
-const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
-
 import { customAlphabet } from 'nanoid';
 const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 const nanoid = customAlphabet(alphabet, 12);
@@ -33,58 +30,15 @@ app.route('/login')
     .get((req, res) => {
         res.render('pages/login');
     })
-    .post(async (req, res) => {
-        const token = req.body.token;
-        const user = {};
+    .post((req, res) => {
 
-        try {
-            await verify();
-            databaseValidation(user);
-            console.log('user authenticated by google');
-            res.cookie('session-cookie', token);
-            res.send('user authenticated');
-        } catch (err) {
-            console.log('user not authenticated by google');
-        }
-
-        async function verify() {
-            const ticket = await client.verifyIdToken({
-                idToken: token,
-                audience: process.env.GOOGLE_CLIENT_ID
-            });
-
-            console.log('first verify', token);
-
-            const payload = ticket.getPayload();
-
-            user.id = payload.sub;
-            user.firstName = payload.given_name;
-            user.lastName = payload.family_name;
-            user.email = payload.email;
-            user.image = payload.picture;
-        }
-
-        function databaseValidation(user) {
-            connection.query('SELECT * FROM Users WHERE userID = ?', user.id, (err, results) => {
-                if (err) throw err;
-
-                const isUserFound = results.length === 1;
-
-                if (isUserFound) {
-                    console.log('user already exists - redirected to dashboard');
-                } else {
-                    connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES (?, ?, ?, ?, ?)', [user.id, user.firstName, user.lastName, user.email, user.image], (err) => {
-                        if (err) throw err;
-                        console.log('user added to db and redirected to dashboard');
-                    });
-                }
-            });
-        }
     });
 
 app.route('/logout')
     .get((req, res) => {
+        console.log('log out route hit');
         res.clearCookie('session-cookie');
+        res.clearCookie('G_AUTHUSER_H');
         res.redirect('/');
     });
 
@@ -292,6 +246,16 @@ app.route('/analytics')
         res.render('pages/analytics');
     });
 
+app.route('/breakroom')
+    .get(isUserAuthenticated, (req, res) => {
+        res.render('pages/breakroom');
+    });
+
+app.route('/profile')
+    .get(isUserAuthenticated, (req, res) => {
+        res.render('pages/profile');
+    });
+
 app.route('/data')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
@@ -319,31 +283,5 @@ app.route('/data')
 app.listen(port, () => console.log(`Listening on port ${port}.`));
 
 async function isUserAuthenticated(req, res, next) {
-    const token = req.cookies['session-cookie'];
-    const user = {};
 
-    async function verify() {
-        const ticket = await client.verifyIdToken({
-            idToken: token,
-            audience: process.env.GOOGLE_CLIENT_ID
-        });
-
-        const payload = ticket.getPayload();
-
-        user.id = payload.sub;
-        user.firstName = payload.given_name;
-        user.lastName = payload.family_name;
-        user.email = payload.email;
-        user.image = payload.picture;
-    }
-
-    try {
-        await verify();
-        req.user = user;
-        console.log('user verified again');
-        next();
-    } catch (err) {
-        console.log('user not authenticated');
-        res.redirect('login');
-    }
 }
