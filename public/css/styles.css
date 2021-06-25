@@ -96,6 +96,10 @@ input {
   box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
 }
 
+.todo-list-container > .items {
+  overflow-y: scroll;
+}
+
 .add-list {
   margin-top: 0;
   width: 272px;
