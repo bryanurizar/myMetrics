@@ -17,10 +17,13 @@
     "dotenv": "^8.2.0",
     "ejs": "^3.1.5",
     "express": "^4.17.1",
-    "google-auth-library": "^7.0.2",
+    "express-session": "^1.17.2",
     "luxon": "^1.27.0",
     "mysql": "^2.18.1",
-    "nanoid": "^3.1.22"
+    "nanoid": "^3.1.22",
+    "passport": "^0.4.1",
+    "passport-github2": "^0.1.12",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "eslint": "^7.16.0",

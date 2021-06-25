@@ -1,13 +1,16 @@
 import { connection } from './database/db_init.js';
 import express from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
-
-import { customAlphabet } from 'nanoid';
-const alphabet = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
-const nanoid = customAlphabet(alphabet, 12);
-
 const app = express();
+import passportConfig from './config/passport.js';
+passportConfig(app);
+import cors from 'cors';
+import session from 'express-session';
+import cookieParser from 'cookie-parser';
+import nanoid from './helpers/nanoid.js';
+import passport from 'passport';
+import findById from './helpers/findById.js';
+import isUserAuthenticated from './helpers/isUserAuthenticated.js';
+
 const port = process.env.PORT || 3000;
 
 app.use(cookieParser());
@@ -17,7 +20,23 @@ app.use(express.json({
     type: ['application/json', 'text/plain']
 }));
 app.use(cors());
+
+app.use(session({
+    secret: process.env.SESSION_SECRET,
+    resave: false,
+    saveUninitialized: true
+}));
+app.use(passport.initialize());
+app.use(passport.session());
 app.set('view engine', 'ejs');
+
+passport.serializeUser(function (user, done) {
+    done(null, user.id);
+});
+
+passport.deserializeUser(function (id, done) {
+    findById(id, done);
+});
 
 // Home route
 app.route('/')
@@ -31,14 +50,25 @@ app.route('/login')
         res.render('pages/login');
     })
     .post((req, res) => {
-
+        console.log(res);
     });
+
+app.route('/auth/google')
+    .get(passport.authenticate('google', { Scope: ['userinfo.profile', 'userinfo.email'] }));
+
+app.route('/auth/google/callback')
+    .get(passport.authenticate('google', { failureredirect: '/login' }),
+        function (req, res) {
+            req.session.user = req.user;
+            res.redirect('/dashboard');
+        });
+
 
 app.route('/logout')
     .get((req, res) => {
-        console.log('log out route hit');
-        res.clearCookie('session-cookie');
-        res.clearCookie('G_AUTHUSER_H');
+        console.log('route being hit');
+        req.session.user = null;
+        console.log(req.session.user);
         res.redirect('/');
     });
 
@@ -280,8 +310,4 @@ app.route('/data')
         });
     });
 
-app.listen(port, () => console.log(`Listening on port ${port}.`));
-
-async function isUserAuthenticated(req, res, next) {
-
-}
+app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));
