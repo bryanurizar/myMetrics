@@ -66,10 +66,10 @@ app.route('/auth/google/callback')
 
 app.route('/logout')
     .get((req, res) => {
-        console.log('route being hit');
-        req.session.user = null;
-        console.log(req.session.user);
-        res.redirect('/');
+        req.session.destroy(function (err) {
+            if (err) throw err;
+            res.redirect('/');
+        });
     });
 
 // Dashboard route

@@ -7,13 +7,11 @@ function findOrCreate(profile, callback) {
         const isUserFound = results.length === 1;
 
         if (!isUserFound) {
-            console.log('user not found');
-            connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage)', [profile.id, profile.name.givenName, profile.name.familyName, profile.emails[0].value, profile.photos[0].value], (err) => {
+            connection.query('INSERT INTO Users (userID, firstName, lastName, email, userImage) VALUES(?, ?, ?, ?, ?)', [profile.id, profile.name.givenName, profile.name.familyName, profile.emails[0].value, profile.photos[0].value], (err) => {
                 if (err) throw err;
                 return callback(null, profile);
             });
         }
-        console.log('user found');
         return callback(null, profile);
     });
 }
