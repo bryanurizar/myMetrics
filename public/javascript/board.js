@@ -221,6 +221,7 @@ function handleButtonClick() {
 function enableTargetItemsSelection(buttonName) {
     const cancelBtn = document.createElement('button');
     cancelBtn.innerText = 'Cancel';
+    cancelBtn.className = 'cancel-btn';
     buttonName.appendChild(cancelBtn);
 
     cancelBtn.addEventListener('click', handleCancelBtn);

@@ -141,13 +141,29 @@ input {
 }
 
 .targeted {
-  background-color: #fc5185;
-  color: white;
+  background-color: #f4f5f7;
+  border-style: solid;
+  border-width: 2px;
+  border-color: #bb371a;
 }
 
 .targeted:hover {
-  background-color: #fc5185;
-  color: white;
+  background-color: #f4f5f7;
+}
+
+.cancel-btn {
+  background-color: white;
+  margin-left: 5px;
+  border-radius: 5px;
+  padding: 10px 14px;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #666767;
+  color: #666767;
+}
+
+.cancel-btn:hover {
+  background-color: rgb(248, 248, 248);
 }
 
 .todo-content {
@@ -322,7 +338,8 @@ span {
   justify-content: center;
   align-items: center;
   border-radius: 10px;
-  background-color: white;
+  background-color: #eaecf1;
+  box-shadow: 0 2.8px 2.2px rgb(0 0 0 / 15%);
 }
 
 .board-card:hover {
