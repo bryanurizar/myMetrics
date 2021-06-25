@@ -1,4 +1,4 @@
-import { connection } from './database/db_init.js';
+import connection from './database/db_init.js';
 import express from 'express';
 const app = express();
 import passportConfig from './config/passport.js';

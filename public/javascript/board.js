@@ -3,6 +3,10 @@
 import { edit, trash } from './icons.js';
 let todoItems = document.querySelectorAll('.todo-card');
 
+if (window.performance && window.performance.getEntriesByType.type === window.performance.getEntriesByType.TYPE_BACK_FORWARD) {
+    // What goes
+}
+
 for (let i = 0; i < todoItems.length; i++) {
     todoItems[i].addEventListener('click', handleClick);
 }

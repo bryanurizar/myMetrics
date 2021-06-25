@@ -2,7 +2,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 import mysql from 'mysql';
 
-export const connection = mysql.createConnection({
+const connection = mysql.createConnection({
     host: process.env.DB_HOST,
     user: process.env.DB_USER,
     port: process.env.DB_PORT,
@@ -134,3 +134,4 @@ connection.connect((err) => {
         });
 });
 
+export default connection;

@@ -1,4 +1,4 @@
-import { connection } from '../database/db_init.js';
+import connection from '../database/db_init.js';
 
 function findOrCreate(profile, callback) {
     connection.query('SELECT userID FROM Users WHERE userID=?', profile.id, (err, results) => {
