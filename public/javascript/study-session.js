@@ -38,7 +38,6 @@ async function postStudyLog(sessionData) {
     return response;
 }
 
-
 let val;
 
 function displayTimer() {
