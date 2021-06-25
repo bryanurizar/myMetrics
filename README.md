@@ -11,7 +11,7 @@ A study application that allows user to create boards with tasks and then create
 
 ### Interesting Challenges/Learning Experiences
 
-- Persistence of Drag and Drop to the database
+- Implmentation of the Drag and Drop API and persistence of dragged items to the database
 - Creating a user actions log table in the database to collect data for the analytics
 - Learned of OAuth / OpenID Connect
 - MySQL and learned to write SQL queries / prevent SQL injection attacks
