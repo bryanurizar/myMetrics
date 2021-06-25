@@ -4,7 +4,14 @@ A study application that allows user to create boards with tasks and then create
 
 ### Technologies Used
 
-- Frontend: Vanilla JavasScript with EJS Templating
+- Frontend: Vanilla JavasScript with EJS Templating and CSS
 - Backend: ExpressJS and NodeJS
 - Database: MySQL with no ORM (i.e. raw SQL queries)
 - Authentication: Google OAuth 2.0 using PassportJS
+
+### Interesting Challenges/Learning Experiences
+
+- Persistence of Drag and Drop to the database
+- Creating a user actions log table in the database to collect data for the analytics
+- Learned of OAuth / OpenID Connect
+- MySQL and learned to write SQL queries / prevent SQL injection attacks
