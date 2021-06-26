@@ -118,6 +118,7 @@ connection.connect((err) => {
     connection.query(
         `CREATE TABLE IF NOT EXISTS StudySessionLogs (
             logID INT NOT NULL AUTO_INCREMENT,
+            sessionDurationRemaining INT NOT NULL,
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             userAction CHAR(12) NOT NULL,
