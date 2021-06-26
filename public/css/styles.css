@@ -303,26 +303,6 @@ span {
   flex: 2;
 }
 
-/* Study time styling */
-
-#study {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 100px;
-}
-
-#study-list {
-  flex: 1;
-  width: 800px;
-  align-content: center;
-}
-
-#study-timer {
-  flex: 5;
-  align-content: center;
-}
-
 #boards-section {
   padding-top: 75px;
   display: flex;
@@ -409,4 +389,69 @@ span {
   -webkit-transition: background-color 0.1s ease, border-color 0.1s ease;
   transition: background-color 0.1s ease, border-color 0.1s ease;
   will-change: background-color, border-color;
+}
+
+/* Study session page styling */
+
+#study {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  margin-top: 100px;
+}
+
+#study-list {
+  display: flex;
+  flex: 3;
+  justify-content: center;
+  align-items: center;
+}
+
+#study-list > .todo-list-container {
+  margin: 0;
+  max-height: 500px;
+}
+
+#study-timer {
+  flex: 5;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.timer-inputs {
+  display: flex;
+  padding: 20px;
+}
+
+#minutes {
+  flex-direction: row;
+  padding: 2%;
+  flex: 1;
+  height: 75px;
+  width: 70px;
+  font-size: 2rem;
+  text-align: center;
+  margin-left: 10px;
+}
+
+#hours {
+  flex-direction: row;
+  padding: 2%;
+  flex: 1;
+  height: 75px;
+  width: 70px;
+  margin-right: 10px;
+  font-size: 2rem;
+  text-align: center;
+}
+
+.start-btn {
+}
+
+.seperator {
+  display: inline;
+  font-size: 2.5rem;
 }

@@ -8,14 +8,29 @@ timer.classList.add('timerInputs');
 studySection.appendChild(timer);
 
 const hoursInput = document.createElement('input');
+hoursInput.placeholder = 'HH';
+hoursInput.id = 'hours';
+
+const timerSeperator = document.createElement('p');
+timerSeperator.className = 'seperator';
+timerSeperator.innerHTML = ':';
+
 const minutesInput = document.createElement('input');
+minutesInput.placeholder = 'MM';
+minutesInput.id = 'minutes';
+
+const timerButtons = document.createElement('div');
+studySection.appendChild(timerButtons);
+timerButtons.classList.add('timer-btns');
 const startButton = document.createElement('button');
+startButton.id = 'btn';
 
 startButton.innerText = 'Start';
 
 timer.appendChild(hoursInput);
+timer.appendChild(timerSeperator);
 timer.appendChild(minutesInput);
-timer.appendChild(startButton);
+timerButtons.appendChild(startButton);
 
 startButton.addEventListener('click', displayTimer);
 
@@ -59,6 +74,7 @@ function displayTimer() {
     startTimer(studySessionDuration, countdownTimer);
 
     const pauseButton = document.createElement('button');
+    pauseButton.id = 'btn';
     pauseButton.innerText = 'Pause';
     studySection.appendChild(pauseButton);
 
@@ -92,6 +108,7 @@ function startTimer(studySessionDuration) {
         studySessionDuration = studySessionDuration.minus({ seconds: 1 });
         countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
     }
+
 }
 
 function pauseTimer(e) {
