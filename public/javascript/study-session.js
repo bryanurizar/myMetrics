@@ -83,20 +83,9 @@ function displayTimer() {
 
     // Posts the study session to the db
     postStudySession(sessionData);
-
+    postStudySessionLog('Start', studySessionDuration);
     // Starts the timer
     startTimer(studySessionDuration);
-}
-
-async function postStudySession(sessionData) {
-    const response = await fetch('http://localhost:3000/study-session/', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(sessionData)
-    });
-    return response;
 }
 
 // Timer button logic (i.e. pause, resume, cancel logic)
@@ -113,9 +102,11 @@ function pauseOrResumeTimer(e) {
     if (e.target.innerText === 'Pause') {
         clearTimeout(ticker);
         e.target.innerText = 'Resume';
+        postStudySessionLog('Pause', studySessionDuration);
     } else {
         ticker = setInterval(decrement, 1000);
         e.target.innerText = 'Pause';
+        postStudySessionLog('Resume', studySessionDuration);
     }
 }
 
@@ -124,7 +115,10 @@ function cancelTimer() {
     if (confirmation) {
         clearTimeout(ticker);
         const studySection = document.querySelector('#study');
-        studySection.innerHTML = '<h2>Session Ended</h2>';
+        studySection.innerHTML = `
+        <h2 id="session-ended">Your Study Session Has Ended</h2>`;
+        postStudySessionLog('Cancel', studySessionDuration);
+        updateSessionStatus(sessionId);
     }
     return;
 }
@@ -134,7 +128,19 @@ function decrement() {
     studySessionDuration = studySessionDuration.minus({ seconds: 1 });
 }
 
-async function updateStudySessionLog(userAction, sessionDuration) {
+// API Function Calls
+async function postStudySession(sessionData) {
+    const response = await fetch('http://localhost:3000/study-session/', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(sessionData)
+    });
+    return response;
+}
+
+async function postStudySessionLog(userAction, sessionDuration) {
     const sessionData = {
         boardId: boardId,
         sessionId: sessionId,
@@ -144,12 +150,27 @@ async function updateStudySessionLog(userAction, sessionDuration) {
         seconds: sessionDuration.seconds,
     };
 
-    const response = await fetch('http://localhost:3000/study-session', {
-        method: 'PATCH',
+    const response = await fetch(`http://localhost:3000/study-session/${sessionData.sessionId}`, {
+        method: 'POST',
         headers: {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(sessionData),
+    });
+    return response;
+}
+
+async function updateSessionStatus(sessionId) {
+    const status = {
+        sessionStatus: 'Cancelled'
+    };
+
+    const response = await fetch(`http://localhost:3000/study-session/${sessionId}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify(status)
     });
     return response;
 }

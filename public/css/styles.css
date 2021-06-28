@@ -467,3 +467,7 @@ span {
   font-weight: bold;
   padding: 20px;
 }
+
+#session-ended {
+  font-size: 4rem;
+}

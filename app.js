@@ -258,14 +258,6 @@ app.route('/study-session')
             }
             console.log('Study session created');
         });
-    })
-    .patch(isUserAuthenticated, (req, res) => {
-        const updatedSessionDuration = req.body.sessionDurationInSeconds;
-
-        connection.query('UPDATE SESSION');
-
-
-
     });
 
 app.route('/study-session/:studySessionId')
@@ -276,6 +268,27 @@ app.route('/study-session/:studySessionId')
                 throw err;
             }
             res.render('pages/study-session', { items: items });
+        });
+    })
+    .post(isUserAuthenticated, (req, res) => {
+        const studySessionDuration = req.body.hours * 3600 + req.body.minutes * 60 + req.body.seconds;
+        const boardId = req.body.boardId;
+        const sessionId = req.params.studySessionId;
+        const userAction = req.body.userAction;
+        const loggedInUser = req.user.id;
+
+        connection.query('INSERT INTO STUDYSESSIONLOGS (sessionDurationRemaining, userAction, sessionID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [studySessionDuration, userAction, sessionId, loggedInUser, boardId, sessionId], (err, result) => {
+            if (err) throw err;
+            console.log('User action added to study session log');
+        });
+    })
+    .patch(isUserAuthenticated, (req, res) => {
+        const sessionStatus = req.body.sessionStatus;
+        const sessionId = req.params.studySessionId;
+
+        connection.query('UPDATE STUDYSESSIONS SET SESSIONSTATUS=? WHERE sessionID=?', [sessionStatus, sessionId], (err, result) => {
+            if (err) throw err;
+            console.log('Study session updated');
         });
     });
 
