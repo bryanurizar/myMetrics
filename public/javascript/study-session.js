@@ -44,6 +44,7 @@ const countdownTimer = document.createElement('div');
 
 // Adds the event listener to the start button
 startButton.addEventListener('click', displayTimer);
+let studySessionDuration;
 
 function displayTimer() {
     timerInputs.remove();
@@ -57,22 +58,24 @@ function displayTimer() {
     };
 
     // Creates the duration object and prepends it so it can be displayed
-    let studySessionDuration = Duration.fromObject({ hours: sessionData.hours, minutes: sessionData.minutes, seconds: sessionData.seconds });
+    studySessionDuration = Duration.fromObject({ hours: sessionData.hours, minutes: sessionData.minutes });
     countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
-    studySection.prepend(countdownTimer);
+    studySection.append(countdownTimer);
 
-    // Adds the pause / cancel buttons
+    // Adds the pause / cancel buttons and event listeners
     const pauseButton = document.createElement('button');
     pauseButton.id = 'pause-btn';
     pauseButton.className = 'btn';
     pauseButton.innerText = 'Pause';
     studySection.appendChild(pauseButton);
+    pauseButton.addEventListener('click', pauseOrResumeTimer);
 
     const cancelButton = document.createElement('button');
     cancelButton.id = 'cancel-btn';
     cancelButton.className = 'btn';
     cancelButton.innerText = 'Cancel';
     studySection.appendChild(cancelButton);
+    cancelButton.addEventListener('click', cancelTimer);
 
     // Posts the study session to the db
     postStudySession(sessionData);
@@ -93,65 +96,29 @@ async function postStudySession(sessionData) {
 }
 
 // Timer button logic (i.e. pause, resume, cancel logic)
+let ticker;
 
-g
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const timerButtons = document.querySelectorAll('button');
-// console.log(timerButtons);
-// timerButtons.forEach(timerButton => {
-//     timerButton.addEventListener('click', (e) => {
-//         if (e.target.innerText === 'Pause') {
-//             e.target.innerText === 'Resume';
-//             pauseTimer(e);
-
-//         } else if (e.target.innerText === 'Cancel') {
-//             stopTimer();
-//         } else {
-//             resumeTimer(e);
-//         }
-//     });
-// });
-
-let val;
-
-function startTimer(studySessionDuration) {
-    val = setInterval(decrement, 1000);
+function startTimer() {
+    ticker = setInterval(decrement, 1000);
     startButton.remove();
 
-    function decrement() {
-        studySessionDuration = studySessionDuration.minus({ seconds: 1 });
-        countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
+    decrement();
+}
+
+function pauseOrResumeTimer(e) {
+    if (e.target.innerText === 'Pause') {
+        clearTimeout(ticker);
+        e.target.innerText = 'Resume';
+    } else {
+        ticker = setInterval(decrement, 1000);
     }
-
 }
 
-function pauseTimer(e) {
-    clearTimeout(val);
-    e.target.innerText = 'Resume';
+function cancelTimer() {
+    clearTimeout(ticker);
 }
 
-function stopTimer() {
-    console.log('stopTimer');
-}
-
-function resumeTimer() {
-    val = setInterval(decrement, 1000);
+function decrement() {
+    countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
+    studySessionDuration = studySessionDuration.minus({ seconds: 1 });
 }
