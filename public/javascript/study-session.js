@@ -72,7 +72,7 @@ function displayTimer() {
 
     const cancelButton = document.createElement('button');
     cancelButton.id = 'cancel-btn';
-    cancelButton.className = 'btn';
+    cancelButton.className = 'btn cancel-btn';
     cancelButton.innerText = 'Cancel';
     studySection.appendChild(cancelButton);
     cancelButton.addEventListener('click', cancelTimer);
@@ -116,6 +116,8 @@ function pauseOrResumeTimer(e) {
 
 function cancelTimer() {
     clearTimeout(ticker);
+    const studySection = document.querySelector('#study');
+    studySection.innerHTML = '<h2>Session Ended</h2>';
 }
 
 function decrement() {
