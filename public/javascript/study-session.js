@@ -41,6 +41,7 @@ const boardId = boardUrl.pathname.split('/')[2];
 
 // Creates div where the countdown timer will be displayed
 const countdownTimer = document.createElement('div');
+countdownTimer.id = 'countdown-timer';
 
 // Adds the event listener to the start button
 startButton.addEventListener('click', displayTimer);
@@ -62,19 +63,22 @@ function displayTimer() {
     countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
     studySection.append(countdownTimer);
 
+    const timerButtons = document.createElement('div');
+    studySection.appendChild(timerButtons);
+
     // Adds the pause / cancel buttons and event listeners
     const pauseButton = document.createElement('button');
     pauseButton.id = 'pause-btn';
     pauseButton.className = 'btn';
     pauseButton.innerText = 'Pause';
-    studySection.appendChild(pauseButton);
+    timerButtons.appendChild(pauseButton);
     pauseButton.addEventListener('click', pauseOrResumeTimer);
 
     const cancelButton = document.createElement('button');
     cancelButton.id = 'cancel-btn';
     cancelButton.className = 'btn cancel-btn';
     cancelButton.innerText = 'Cancel';
-    studySection.appendChild(cancelButton);
+    timerButtons.appendChild(cancelButton);
     cancelButton.addEventListener('click', cancelTimer);
 
     // Posts the study session to the db
@@ -111,16 +115,41 @@ function pauseOrResumeTimer(e) {
         e.target.innerText = 'Resume';
     } else {
         ticker = setInterval(decrement, 1000);
+        e.target.innerText = 'Pause';
     }
 }
 
 function cancelTimer() {
-    clearTimeout(ticker);
-    const studySection = document.querySelector('#study');
-    studySection.innerHTML = '<h2>Session Ended</h2>';
+    const confirmation = confirm('Are you sure you want to end the session?');
+    if (confirmation) {
+        clearTimeout(ticker);
+        const studySection = document.querySelector('#study');
+        studySection.innerHTML = '<h2>Session Ended</h2>';
+    }
+    return;
 }
 
 function decrement() {
-    countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
+    countdownTimer.innerHTML = studySessionDuration.toFormat('hh:mm:ss');
     studySessionDuration = studySessionDuration.minus({ seconds: 1 });
+}
+
+async function updateStudySessionLog(userAction, sessionDuration) {
+    const sessionData = {
+        boardId: boardId,
+        sessionId: sessionId,
+        userAction: userAction,
+        hours: sessionDuration.hours,
+        minutes: sessionDuration.minutes,
+        seconds: sessionDuration.seconds,
+    };
+
+    const response = await fetch('http://localhost:3000/study-session', {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(sessionData),
+    });
+    return response;
 }

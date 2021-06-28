@@ -258,6 +258,14 @@ app.route('/study-session')
             }
             console.log('Study session created');
         });
+    })
+    .patch(isUserAuthenticated, (req, res) => {
+        const updatedSessionDuration = req.body.sessionDurationInSeconds;
+
+        connection.query('UPDATE SESSION');
+
+
+
     });
 
 app.route('/study-session/:studySessionId')

@@ -460,3 +460,10 @@ span {
   border: none;
   color: white;
 }
+
+#countdown-timer {
+  font-family: "Roboto Mono", monospace;
+  font-size: 5rem;
+  font-weight: bold;
+  padding: 20px;
+}
