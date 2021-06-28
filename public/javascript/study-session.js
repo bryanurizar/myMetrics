@@ -53,7 +53,6 @@ async function postStudyLog(sessionData) {
     return response;
 }
 
-let val;
 
 function displayTimer() {
 
@@ -79,6 +78,7 @@ function displayTimer() {
     studySection.appendChild(pauseButton);
 
     const cancelButton = document.createElement('button');
+    cancelButton.classList.add('cancel-btn');
     cancelButton.innerText = 'Cancel';
     studySection.appendChild(cancelButton);
 
@@ -101,8 +101,11 @@ function displayTimer() {
     postStudyLog(sessionData);
 }
 
+let val;
+
 function startTimer(studySessionDuration) {
     val = setInterval(decrement, 1000);
+    startButton.remove();
 
     function decrement() {
         studySessionDuration = studySessionDuration.minus({ seconds: 1 });
