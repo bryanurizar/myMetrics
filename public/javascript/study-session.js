@@ -4,6 +4,10 @@ const Duration = luxon.Duration;
 // Below few lines of code create the inputs for the timer and appends them to the timerInputs div
 const studySection = document.querySelector('#study-timer');
 
+const timerHeader = document.createElement('h2');
+timerHeader.innerText = 'Study Session';
+studySection.append(timerHeader);
+
 const timerInputs = document.createElement('div');
 timerInputs.classList.add('timerInputs');
 studySection.appendChild(timerInputs);
@@ -88,13 +92,12 @@ function displayTimer() {
     startTimer(studySessionDuration);
 }
 
-// Timer button logic (i.e. pause, resume, cancel logic)
+// Timer logic (i.e. pause, resume, cancel logic)
 let ticker;
 
 function startTimer() {
     ticker = setInterval(decrement, 1000);
     startButton.remove();
-
     decrement();
 }
 
@@ -120,7 +123,6 @@ function cancelTimer() {
         postStudySessionLog('Cancel', studySessionDuration);
         updateSessionStatus(sessionId);
     }
-    return;
 }
 
 function decrement() {
