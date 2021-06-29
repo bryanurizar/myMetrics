@@ -4,15 +4,16 @@ html {
 }
 
 body {
-  color: #293b5e;
+  color: #0b1f3d;
   height: 100vh;
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
   background-color: #f1f5f7;
-  padding: 1%;
+  padding: 1.5%;
   margin-bottom: 0;
   overflow-x: auto;
   overflow-y: hidden;
+  margin: 0;
 }
 
 nav {
@@ -92,8 +93,8 @@ input {
   min-width: 272px;
   max-width: 272px;
   max-height: 77vh;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
   background-color: #eaecf1;
-  box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
 }
 
 .todo-list-container > .items {
@@ -132,7 +133,7 @@ input {
   flex: 1;
   border-radius: 5px;
   background-color: white;
-  box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
   cursor: pointer;
 }
 
@@ -235,6 +236,7 @@ input[type="checkbox"] {
   vertical-align: top;
   line-height: 1;
   cursor: pointer;
+  letter-spacing: 1px;
 }
 .modal {
   display: none;
@@ -246,10 +248,10 @@ input[type="checkbox"] {
   font-size: 12px;
   position: absolute;
   width: 272px;
-  top: 38px;
+  top: 30px;
   left: 259px;
   background-color: #ffffff;
-  box-shadow: 0 2.8px 2.2px rgba(0.3, 0.3, 0.3, 0.15);
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
 }
 
 #modal-title {
@@ -330,13 +332,11 @@ span {
   width: 200px;
   justify-content: center;
   align-items: center;
+  background-color: white;
   border-radius: 10px;
-  background-color: #eaecf1;
-  box-shadow: 0 2.8px 2.2px rgb(0 0 0 / 15%);
-}
-
-.board-card:hover {
-  box-shadow: 2px 2px 2px #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
 }
 
 /* .vl {
@@ -349,6 +349,7 @@ span {
 .board-name {
   font-size: 16px;
   text-align: center;
+  padding: 3%;
 }
 
 /* Login Page */
