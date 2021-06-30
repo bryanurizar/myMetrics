@@ -246,8 +246,8 @@ app.route('/lists/:listId')
 
 app.route('/study-session')
     .post(isUserAuthenticated, (req, res) => {
-        const studySessionId = req.body.sessionId;
-        const sessionDuration = 3600 * req.body.hours + 60 * req.body.minutes;
+        const studySessionId = req.body.sessionID;
+        const sessionDuration = req.body.sessionDuration;
         const loggedInUser = req.user.id;
         const boardId = req.body.boardId;
 
@@ -258,10 +258,30 @@ app.route('/study-session')
             }
             console.log('Study session created');
         });
+    })
+    .patch(isUserAuthenticated, (req, res) => {
+        const studySessionId = req.body.sessionId;
+        const sessionDuration = 3600 * req.body.hours + 60 * req.body.minutes;
+
+        connection.query('UPDATE StudySessions SET sessionDuration=? WHERE sessionId=?', [sessionDuration, studySessionId], (err, result) => {
+            if (err) {
+                console.log(err);
+                throw err;
+            }
+            console.log('Study session created');
+        });
     });
 
 app.route('/study-session/:studySessionId')
     .get(isUserAuthenticated, (req, res) => {
+        // const studySessionId = req.params.studySessionId;
+
+        // const isSessionStarted = connection.query(`SELECT * FROM StudySessions WHERE isSessionPageVisited="Yes" AND sessionID=${studySessionId}`, (err, result) => {
+        //     console.log(result);
+        // });
+
+        // console.log(isSessionStarted);
+
         connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
             if (err) {
                 console.log(err);
@@ -283,13 +303,21 @@ app.route('/study-session/:studySessionId')
         });
     })
     .patch(isUserAuthenticated, (req, res) => {
+        const isSessionPageVisited = req.body.isSessionVisited;
         const sessionStatus = req.body.sessionStatus;
         const sessionId = req.params.studySessionId;
 
-        connection.query('UPDATE STUDYSESSIONS SET SESSIONSTATUS=? WHERE sessionID=?', [sessionStatus, sessionId], (err, result) => {
-            if (err) throw err;
-            console.log('Study session updated');
-        });
+        if (isSessionPageVisited) {
+            connection.query('UPDATE StudySessions SET isSessionPageVisited="Yes" WHERE sessionID=?', sessionId, (err, result) => {
+                if (err) throw err;
+                console.log('Study session set to visited.');
+            });
+        } else {
+            connection.query('UPDATE STUDYSESSIONS SET SESSIONSTATUS=? WHERE sessionID=?', [sessionStatus, sessionId], (err, result) => {
+                if (err) throw err;
+                console.log('Study session updated');
+            });
+        }
     });
 
 app.route('/analytics')

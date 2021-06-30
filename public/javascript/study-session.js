@@ -1,6 +1,19 @@
 import * as luxon from 'https://moment.github.io/luxon/es6/luxon.min.js';
 const Duration = luxon.Duration;
 
+// Checks if user wants to navigate away without cancelling
+window.addEventListener('beforeunload', e => {
+    e.preventDefault();
+    e.returnValue = '';
+});
+
+// Captures the session ID / board ID to be used later in the API call
+const sessionUrl = new URL(window.location.href);
+const sessionId = sessionUrl.pathname.split('/')[2];
+const boardUrl = new URL(document.referrer);
+const boardId = boardUrl.pathname.split('/')[2];
+
+
 // Below few lines of code create the inputs for the timer and appends them to the timerInputs div
 const studySection = document.querySelector('#study-timer');
 
@@ -14,6 +27,7 @@ studySection.appendChild(timerInputs);
 
 const hoursInput = document.createElement('input');
 hoursInput.placeholder = 'HH';
+hoursInput.autocomplete = 'off';
 hoursInput.id = 'hours';
 
 const timerSeperator = document.createElement('p');
@@ -22,6 +36,7 @@ timerSeperator.innerHTML = ':';
 
 const minutesInput = document.createElement('input');
 minutesInput.placeholder = 'MM';
+minutesInput.autocomplete = 'off';
 minutesInput.id = 'minutes';
 
 const timerButtons = document.createElement('div');
@@ -36,12 +51,6 @@ timerInputs.appendChild(hoursInput);
 timerInputs.appendChild(timerSeperator);
 timerInputs.appendChild(minutesInput);
 timerButtons.appendChild(startButton);
-
-// Captures the session ID / board ID to be used later in the API call
-const sessionUrl = new URL(window.location.href);
-const sessionId = sessionUrl.pathname.split('/')[2];
-const boardUrl = new URL(document.referrer);
-const boardId = boardUrl.pathname.split('/')[2];
 
 // Creates div where the countdown timer will be displayed
 const countdownTimer = document.createElement('div');
@@ -86,10 +95,11 @@ function displayTimer() {
     cancelButton.addEventListener('click', cancelTimer);
 
     // Posts the study session to the db
-    postStudySession(sessionData);
+    updateStudySession(sessionData);
     postStudySessionLog('Start', studySessionDuration);
     // Starts the timer
     startTimer(studySessionDuration);
+    isStudySessionVisited(sessionId);
 }
 
 // Timer logic (i.e. pause, resume, cancel logic)
@@ -114,15 +124,13 @@ function pauseOrResumeTimer(e) {
 }
 
 function cancelTimer() {
-    const confirmation = confirm('Are you sure you want to end the session?');
-    if (confirmation) {
-        clearTimeout(ticker);
-        const studySection = document.querySelector('#study');
-        studySection.innerHTML = `
+
+    clearTimeout(ticker);
+    const studySection = document.querySelector('#study');
+    studySection.innerHTML = `
         <h2 id="session-ended">Your Study Session Has Ended</h2>`;
-        postStudySessionLog('Cancel', studySessionDuration);
-        updateSessionStatus(sessionId);
-    }
+    postStudySessionLog('Cancel', studySessionDuration);
+    updateSessionStatus(sessionId);
 }
 
 function decrement() {
@@ -131,9 +139,9 @@ function decrement() {
 }
 
 // API Function Calls
-async function postStudySession(sessionData) {
+async function updateStudySession(sessionData) {
     const response = await fetch('http://localhost:3000/study-session/', {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -173,6 +181,21 @@ async function updateSessionStatus(sessionId) {
             'content-type': 'application/json',
         },
         body: JSON.stringify(status)
+    });
+    return response;
+}
+
+async function isStudySessionVisited(sessionId) {
+    const data = {
+        isSessionVisited: 'Yes'
+    };
+
+    const response = await fetch(`http://localhost:3000/study-session/${sessionId}`, {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify(data)
     });
     return response;
 }

@@ -151,7 +151,6 @@ dropZones.forEach(dropZone => {
 ***
 */
 function handleModal(e) {
-
     const modalId = `#modal-${e.target.id}`;
     const modal = document.querySelector(modalId);
 
@@ -214,7 +213,8 @@ function handleButtonClick() {
     if (buttonText === 'Select Target Items') {
         enableTargetItemsSelection(targetButtonsSection);
     } else {
-        startStudySession();
+        checkLengthOfTargetList();
+        postStudySession(studySessioId);
     }
 }
 
@@ -233,7 +233,7 @@ function enableTargetItemsSelection(buttonName) {
     });
 }
 
-function startStudySession() {
+function checkLengthOfTargetList() {
     if (targetItems.length > 0) {
         updateTargetList(targetItems);
     } else {
@@ -250,11 +250,33 @@ async function updateTargetList(items) {
         });
         const res = await response.json();
         console.log(res);
+        postStudySession(res.studySessionId);
         window.location.href = `http://localhost:3000/study-session/${res.studySessionId}`;
 
     } catch (err) {
         console.log(err);
     }
+}
+
+async function postStudySession(studySessionId) {
+    const url = new URL(window.location.href);
+    const boardId = url.pathname.split('/')[2];
+
+    const studySessionData = {
+        sessionID: studySessionId,
+        sessionDuration: 0,
+        isSessionPageVisited: 'No',
+        boardId: boardId
+    };
+
+    const response = await fetch('http://localhost:3000/study-session', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(studySessionData)
+    });
+    return response;
 }
 
 function handleCancelBtn(e) {
@@ -403,6 +425,7 @@ function addCard(listId, itemName) {
         renderCard(itemData.listId, res.itemId, itemData.itemName);
     })();
 }
+
 
 function renderCard(listId, cardId, cardContent) {
     const list = document.querySelector(`#todo-list-${listId}`);

@@ -105,7 +105,7 @@ connection.connect((err) => {
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             userID CHAR(255),
-            sessionStatus CHAR(12) DEFAULT "Active" NOT NULL,
+            isSessionPageVisited CHAR(12) DEFAULT "NO" NOT NULL,
             boardID CHAR(12) NOT NULL,
             PRIMARY KEY(sessionID),
             FOREIGN KEY (boardID) REFERENCES Boards(boardID),
