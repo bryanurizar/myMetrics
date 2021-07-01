@@ -99,7 +99,6 @@ function displayTimer() {
     postStudySessionLog('Start', studySessionDuration);
     // Starts the timer
     startTimer(studySessionDuration);
-    isStudySessionVisited(sessionId);
 }
 
 // Timer logic (i.e. pause, resume, cancel logic)
@@ -185,17 +184,17 @@ async function updateSessionStatus(sessionId) {
     return response;
 }
 
-async function isStudySessionVisited(sessionId) {
-    const data = {
-        isSessionVisited: 'Yes'
-    };
+// async function isStudySessionVisited(sessionId) {
+//     const data = {
+//         isSessionVisited: 'Yes'
+//     };
 
-    const response = await fetch(`http://localhost:3000/study-session/${sessionId}`, {
-        method: 'PATCH',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(data)
-    });
-    return response;
-}
+//     const response = await fetch(`http://localhost:3000/study-session/${sessionId}`, {
+//         method: 'PATCH',
+//         headers: {
+//             'content-type': 'application/json',
+//         },
+//         body: JSON.stringify(data)
+//     });
+//     return response;
+// }

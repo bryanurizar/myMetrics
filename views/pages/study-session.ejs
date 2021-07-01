@@ -9,6 +9,11 @@
     <%- include('../partials/header');%>
 
     <section id="study">
+      <% if(isSessionPageVisited === 'Yes') { %>
+      <div>Study Session is Ended.</div>
+
+      <%} else { %>
+
       <div id="study-list">
         <div class="todo-list-container">
           <div class="list-header">
@@ -48,5 +53,7 @@
       async
       defer
     ></script>
+
+    <% } %>
   </body>
 </html>

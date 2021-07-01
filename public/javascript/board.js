@@ -214,7 +214,6 @@ function handleButtonClick() {
         enableTargetItemsSelection(targetButtonsSection);
     } else {
         checkLengthOfTargetList();
-        postStudySession(studySessioId);
     }
 }
 
@@ -249,10 +248,8 @@ async function updateTargetList(items) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
         const res = await response.json();
-        console.log(res);
-        postStudySession(res.studySessionId);
-        window.location.href = `http://localhost:3000/study-session/${res.studySessionId}`;
-
+        console.log(await postStudySession(res.studySessionId));
+        window.location.replace(`http://localhost:3000/study-session/${res.studySessionId}`);
     } catch (err) {
         console.log(err);
     }
