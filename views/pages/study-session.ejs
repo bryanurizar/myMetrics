@@ -3,6 +3,12 @@
   <head>
     <title>Study Session | myMetrics</title>
     <%- include('../partials/head'); %>
+    <meta
+      http-equiv="Cache-Control"
+      content="no-cache, no-store, must-revalidate"
+    />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
   </head>
 
   <body>
@@ -49,7 +55,7 @@
     </section>
     <script
       type="module"
-      src="../../../javascript/study-session.js"
+      src="../../../javascript/study-session.js?=<%=version%>"
       async
       defer
     ></script>

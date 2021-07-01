@@ -1,6 +1,12 @@
 import * as luxon from 'https://moment.github.io/luxon/es6/luxon.min.js';
 const Duration = luxon.Duration;
 
+// var perfEntries = performance.getEntriesByType('navigation');
+
+// if (perfEntries[0].type === 'back_forward') {
+//     location.reload();
+// }
+
 // Checks if user wants to navigate away without cancelling
 window.addEventListener('beforeunload', e => {
     e.preventDefault();
