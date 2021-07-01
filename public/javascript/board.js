@@ -1,101 +1,105 @@
 'use strict';
-
 import { edit, trash } from './icons.js';
-let todoItems = document.querySelectorAll('.todo-card');
 
-if (window.performance && window.performance.getEntriesByType.type === window.performance.getEntriesByType.TYPE_BACK_FORWARD) {
-    // What goes
+// Add event listeners to checkbox and handle clicks
+const itemCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+
+itemCheckboxes.forEach(itemCheckbox => {
+    itemCheckbox.addEventListener('click', handleCheckboxClick);
+});
+
+function handleCheckboxClick(e) {
+    const nearestItemCard = e.target.closest('.todo-card');
+    const completedItem = {
+        completedItemId: nearestItemCard.id.slice(5,)
+    };
+
+    nearestItemCard.remove();
+    postedCompletedItem(completedItem);
 }
 
-for (let i = 0; i < todoItems.length; i++) {
-    todoItems[i].addEventListener('click', handleClick);
+async function postedCompletedItem(item) {
+    try {
+        const response = await fetch(`http://localhost:3000/items/${item.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(item),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+        });
+        response.text();
+    } catch (err) {
+        console.log(err);
+    }
 }
 
-function handleClick(e) {
-    const todoTag = e.target.closest('.todo-card');
+// Add event listeners to edit icons and handle clicks
+const editIcons = document.querySelectorAll('.edit');
 
-    const todoCheckbox = todoTag.querySelector('input[type="checkbox"]');
+editIcons.forEach(editIcon => {
+    editIcon.addEventListener('click', handleEditIconClick);
+});
 
-    if (todoCheckbox.checked) {
-        todoTag.querySelectorAll('.todo-description')[0].style.textDecoration = 'line-through';
+function handleEditIconClick(e) {
+    const nearestItemCard = e.target.closest('.todo-card');
+    const nearestItemCardDescription = nearestItemCard.querySelector('.todo-description');
 
-        const completedItem = {
-            completedItemId: todoTag.id.slice(5,)
+    nearestItemCardDescription.setAttribute('contenteditable', true);
+    nearestItemCardDescription.focus();
+
+    nearestItemCardDescription.addEventListener('keypress', e => {
+        if (e.key === 'Enter') {
+            nearestItemCardDescription.removeAttribute('contenteditable');
+        }
+    });
+
+    nearestItemCardDescription.addEventListener('blur', e => {
+        const editedItem = {
+            editedItemId: nearestItemCard.id.slice(5,),
+            updatedItem: e.target.innerText
         };
-        todoTag.remove();
+        updateEditedItem(editedItem);
+    });
+}
 
-        (async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/items/${completedItem.id}`, {
-                    method: 'PATCH',
-                    body: JSON.stringify(completedItem),
-                    headers: { 'Content-type': 'application/json; charset=UTF-8' }
-                });
-                response.text();
-            } catch (err) {
-                console.log(err);
-
-            }
-        })();
-    } else {
-        todoTag.querySelectorAll('.todo-description')[0].style.textDecoration = 'none';
-    }
-
-    const isTrashClicked = e.target.className === 'trash';
-
-    if (isTrashClicked) {
-        const deletedItem = {
-            deletedItemId: todoTag.id.slice(5,)
-        };
-
-        todoTag.remove();
-
-        (async () => {
-            try {
-                const response = await fetch(`http://localhost:3000/items/${deletedItem.deletedItemId}`, {
-                    method: 'DELETE',
-                    body: JSON.stringify(deletedItem),
-                    headers: { 'Content-type': 'application/json; charset=UTF-8' }
-                });
-                await response.text();
-            } catch (err) {
-                console.log(err);
-            }
-        })();
-    }
-
-    const isEditClicked = e.target.className === 'edit';
-
-    if (isEditClicked) {
-        const todoTag = e.target.closest('.todo-card');
-
-        const todoInputTag = todoTag.getElementsByClassName('todo-description')[0];
-        todoInputTag.setAttribute('contenteditable', true);
-        todoInputTag.focus();
-
-        todoInputTag.addEventListener('keypress', e => {
-            if (e.key === 'Enter') todoInputTag.removeAttribute('contenteditable');
+async function updateEditedItem(item) {
+    try {
+        const response = await fetch(`http://localhost:3000/items/${item.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(item),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
+        await response.text();
+    } catch (err) {
+        console.log(err);
+    }
+}
 
-        todoInputTag.addEventListener('blur', e => {
-            const editedItem = {
-                editedItemId: todoTag.id.slice(5,),
-                updatedItem: e.target.innerText
-            };
+// Add event listeners to trash icons and handle clicks
+const trashIcons = document.querySelectorAll('.trash');
 
-            (async () => {
-                try {
-                    const response = await fetch(`http://localhost:3000/items/${editedItem.id}`, {
-                        method: 'PATCH',
-                        body: JSON.stringify(editedItem),
-                        headers: { 'Content-type': 'application/json; charset=UTF-8' }
-                    });
-                    await response.text();
-                } catch (err) {
-                    console.log(err);
-                }
-            })();
+trashIcons.forEach(trashIcon => {
+    trashIcon.addEventListener('click', handleTrashIconClick);
+});
+
+function handleTrashIconClick(e) {
+
+    const nearestItemCard = e.target.closest('.todo-card');
+    const deletedItem = {
+        deletedItemId: nearestItemCard.id.slice(5,)
+    };
+    nearestItemCard.remove();
+    removeDeletedItem(deletedItem);
+}
+
+async function removeDeletedItem(item) {
+    try {
+        const response = await fetch(`http://localhost:3000/items/${item.deletedItemId}`, {
+            method: 'DELETE',
+            body: JSON.stringify(item),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
+        await response.text();
+    } catch (err) {
+        console.log(err);
     }
 }
 
@@ -447,7 +451,7 @@ function renderCard(listId, cardId, cardContent) {
 
     // Adding event listener for the drag and drop API
     todoCard.addEventListener('dragstart', handleDragStart);
-    todoCard.addEventListener('click', handleClick);
+    // todoCard.addEventListener('click', handleClick)
 }
 
 // Added event listner to the input elements of the list by using event delegation
