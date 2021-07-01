@@ -277,7 +277,6 @@ app.route('/study-session/:studySessionId')
     .get(isUserAuthenticated, (req, res) => {
         const studySessionId = req.params.studySessionId;
         let isSessionPageVisited;
-        const version = nanoid();
 
         connection.query(`SELECT * FROM StudySessions WHERE sessionID="${studySessionId}"`, (err, result) => {
             if (err) throw err;
@@ -291,8 +290,7 @@ app.route('/study-session/:studySessionId')
             }
             const status = {
                 items: items,
-                isSessionPageVisited: isSessionPageVisited,
-                version: version
+                isSessionPageVisited: isSessionPageVisited
             };
             console.log(status);
             res.setHeader('Cache-Control', 'no-store');
