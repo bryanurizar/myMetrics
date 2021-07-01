@@ -451,7 +451,18 @@ function renderCard(listId, cardId, cardContent) {
 
     // Adding event listener for the drag and drop API
     todoCard.addEventListener('dragstart', handleDragStart);
-    // todoCard.addEventListener('click', handleClick)
+
+    // Adding event listeners to checkbox, edit and trash icons on new element
+    const itemCheckbox = todoCard.querySelector('input[type="checkbox"]');
+    const itemEditIcon = todoCard.querySelector('.edit');
+    const itemTrashIcon = todoCard.querySelector('.trash');
+    console.log(itemCheckbox);
+    console.log(itemEditIcon);
+    console.log(itemTrashIcon);
+
+    itemCheckbox.addEventListener('click', handleCheckboxClick);
+    itemEditIcon.addEventListener('click', handleEditIconClick);
+    itemTrashIcon.addEventListener('click', handleTrashIconClick);
 }
 
 // Added event listner to the input elements of the list by using event delegation
