@@ -13,7 +13,6 @@ const sessionId = sessionUrl.pathname.split('/')[2];
 const boardUrl = new URL(document.referrer);
 const boardId = boardUrl.pathname.split('/')[2];
 
-
 // Below few lines of code create the inputs for the timer and appends them to the timerInputs div
 const studySection = document.querySelector('#study-timer');
 
@@ -97,6 +96,7 @@ function displayTimer() {
     // Posts the study session to the db
     updateStudySession(sessionData);
     postStudySessionLog('Start', studySessionDuration);
+
     // Starts the timer
     startTimer(studySessionDuration);
 }
@@ -183,18 +183,3 @@ async function updateSessionStatus(sessionId) {
     });
     return response;
 }
-
-// async function isStudySessionVisited(sessionId) {
-//     const data = {
-//         isSessionVisited: 'Yes'
-//     };
-
-//     const response = await fetch(`http://localhost:3000/study-session/${sessionId}`, {
-//         method: 'PATCH',
-//         headers: {
-//             'content-type': 'application/json',
-//         },
-//         body: JSON.stringify(data)
-//     });
-//     return response;
-// }

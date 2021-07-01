@@ -4,16 +4,12 @@
     <title>Study Session | myMetrics</title>
     <%- include('../partials/head'); %>
   </head>
-
   <body>
     <%- include('../partials/header');%>
-
     <section id="study">
       <% if(isSessionPageVisited === 'Yes') { %>
       <h2 id="session-ended">Your Study Session Has Ended.</h2>
-
       <%} else { %>
-
       <div id="study-list">
         <div class="todo-list-container">
           <div class="list-header">
@@ -23,7 +19,6 @@
               <p class="delete-list">Delete This List..</p>
             </div>
           </div>
-
           <div class="items">
             <% for (let i = 0; i < items.length; i++) { %>
             <div
@@ -53,7 +48,6 @@
       async
       defer
     ></script>
-
     <% } %>
   </body>
 </html>

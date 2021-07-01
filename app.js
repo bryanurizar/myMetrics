@@ -63,7 +63,6 @@ app.route('/auth/google/callback')
             res.redirect('/dashboard');
         });
 
-
 app.route('/logout')
     .get((req, res) => {
         req.session.destroy(function (err) {
@@ -85,12 +84,6 @@ app.route('/dashboard')
 
 // Board routes
 app.route('/boards')
-    // .get(isUserAuthenticated, (req, res) => {
-    //     connection.query('SELECT * FROM BOARDS', (err, results) => {
-    //         if (err) throw err;
-    //         res.json(results);
-    //     });
-    // })
     .post(isUserAuthenticated, (req, res) => {
         const newBoardId = nanoid();
         const newBoardName = req.body.newBoardName;
@@ -147,20 +140,6 @@ app.route('/items')
     });
 
 app.route('/items/:itemId')
-
-    // Is the post route being used??
-    .post(isUserAuthenticated, (req, res) => {
-        const loggedInUserId = req.user.id;
-        const itemName = req.body.itemName;
-        const listId = req.body.listId;
-        const itemId = nanoid();
-
-        connection.query('INSERT INTO Items (itemID, itemName, listID, userID) VALUES (?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId], err => {
-            if (err) throw err;
-            console.log('Item inserted into database.');
-            res.redirect('board');
-        });
-    })
     .patch(isUserAuthenticated, (req, res) => {
         const updatedItemDescription = req.body.updatedItem;
         const editedItemId = req.body.editedItemId;
@@ -285,14 +264,12 @@ app.route('/study-session/:studySessionId')
 
         connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
             if (err) {
-                console.log(err);
                 throw err;
             }
             const status = {
                 items: items,
                 isSessionPageVisited: isSessionPageVisited
             };
-            console.log(status);
             res.setHeader('Cache-Control', 'no-store');
             res.render('pages/study-session', status);
         });
