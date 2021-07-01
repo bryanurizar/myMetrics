@@ -3,12 +3,6 @@
   <head>
     <title>Study Session | myMetrics</title>
     <%- include('../partials/head'); %>
-    <meta
-      http-equiv="Cache-Control"
-      content="no-cache, no-store, must-revalidate"
-    />
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Expires" content="0" />
   </head>
 
   <body>
@@ -16,7 +10,7 @@
 
     <section id="study">
       <% if(isSessionPageVisited === 'Yes') { %>
-      <div>Study Session is Ended.</div>
+      <h2 id="session-ended">Your Study Session Has Ended.</h2>
 
       <%} else { %>
 
