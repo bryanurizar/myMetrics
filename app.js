@@ -140,6 +140,7 @@ app.route('/items')
     });
 
 app.route('/items/:itemId')
+
     .patch(isUserAuthenticated, (req, res) => {
         const updatedItemDescription = req.body.updatedItem;
         const editedItemId = req.body.editedItemId;
@@ -219,7 +220,6 @@ app.route('/lists/:listId')
                     });
                 });
             });
-            res.redirect('/board');
         });
     });
 
