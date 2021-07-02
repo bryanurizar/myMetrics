@@ -2,6 +2,12 @@ import * as luxon from 'https://moment.github.io/luxon/es6/luxon.min.js';
 const Duration = luxon.Duration;
 import { addItemEventListeners } from './itemEventHandlers.js';
 
+// Checks if user wants to navigate away without cancelling
+window.addEventListener('beforeunload', e => {
+    e.preventDefault();
+    e.returnValue = '';
+});
+
 // Adds checkbox, edit and trash icon event handlers to items in lists
 addItemEventListeners();
 
