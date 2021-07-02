@@ -1,5 +1,5 @@
-// import { createItemCountChart } from './charts/itemCount.js';
+import { createItemCountChart, getItemCountChartData } from './charts/itemCountChart.js';
 
-alert('hello');
-console.log('Hello');
-// createItemCountChart();
+(async () => {
+    createItemCountChart(await getItemCountChartData());
+})();

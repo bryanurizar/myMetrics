@@ -313,7 +313,7 @@ app.route('/profile')
         res.render('pages/profile');
     });
 
-app.route('/data')
+app.route('/itemCountChart')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
 
