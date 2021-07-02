@@ -316,6 +316,7 @@ span {
 
 #boards {
   width: 80%;
+  height: 70vh;
   margin-bottom: 100px;
   display: flex;
   flex-flow: wrap;
