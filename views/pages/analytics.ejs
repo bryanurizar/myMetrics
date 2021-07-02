@@ -9,14 +9,54 @@
     <%- include('../partials/header'); %>
     <section class="charts">
       <div>
-        <canvas id="item-count" class="chart" width="350" height="225"></canvas>
+        <canvas
+          id="item-count-by-boards"
+          class="chart"
+          width="350"
+          height="2"
+        ></canvas>
+      </div>
+      <div>
+        <canvas
+          id="study-time-by-board"
+          class="chart"
+          width="350"
+          height="225"
+        ></canvas>
+      </div>
+      <div>
+        <canvas
+          id="study-time-by-periods"
+          class="chart"
+          width="350"
+          height="225"
+        ></canvas>
+      </div>
+      <div>
+        <canvas
+          id="pauses-per-study-sessions"
+          class="chart"
+          width="350"
+          height="225"
+        ></canvas>
+      </div>
+      <div>
+        <canvas
+          id="number-of-days-since-last-study-session"
+          class="chart"
+          width="350"
+          height="225"
+        ></canvas>
+      </div>
+      <div>
+        <canvas
+          id="leaderboard-position"
+          class="chart"
+          width="350"
+          height="225"
+        ></canvas>
       </div>
     </section>
-    <script
-      type="module"
-      src="../../../javascript/charts/itemCount.js"
-      async
-      defer
-    ></script>
+    <script type="module" src="javascript/charts.js"></script>
   </body>
 </html>

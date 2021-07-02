@@ -315,12 +315,14 @@ span {
 }
 
 #boards {
-  width: 80%;
+  width: 60%;
   height: 70vh;
-  margin-bottom: 100px;
+  /* margin-bottom: 100px; */
   display: flex;
   flex-flow: wrap;
   justify-content: center;
+  align-items: center;
+  align-content: flex-start;
   padding: 10px;
   overflow-y: scroll;
 }
@@ -337,7 +339,6 @@ span {
   background-color: white;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-  font-weight: 400;
   letter-spacing: 0.5px;
 }
 
