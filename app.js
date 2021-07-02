@@ -101,6 +101,11 @@ app.route('/boards/:boardId/:boardName')
         const loggedInUserId = req.user.id;
         const boardID = req.params.boardId;
 
+        connection.query('UPDATE Items SET isOnTargetList=? WHERE userID=? AND isOnTargetList=1', [0, loggedInUserId], (err, result) => {
+            if (err) throw err;
+            console.log('Target list reset.');
+        });
+
         connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=? ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 

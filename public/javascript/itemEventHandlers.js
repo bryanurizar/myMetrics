@@ -1,5 +1,5 @@
 
-export function addItemEventHandlers() {
+export function addItemEventListeners() {
     // Add event listeners to checkbox
     const itemCheckboxes = document.querySelectorAll('input[type="checkbox"]');
     itemCheckboxes.forEach(itemCheckbox => {

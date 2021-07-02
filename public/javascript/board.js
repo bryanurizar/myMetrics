@@ -1,9 +1,9 @@
 'use strict';
 import { edit, trash } from './icons.js';
-import { addItemEventHandlers, handleCheckboxClick, handleEditIconClick, handleTrashIconClick } from './itemEventHandlers.js';
+import { addItemEventListeners, handleCheckboxClick, handleEditIconClick, handleTrashIconClick } from './itemEventHandlers.js';
 
 // Adds checkbox, edit and trash icon event handlers to items in lists
-addItemEventHandlers();
+addItemEventListeners();
 
 /*
 ***

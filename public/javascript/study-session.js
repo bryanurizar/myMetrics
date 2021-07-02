@@ -1,9 +1,9 @@
 import * as luxon from 'https://moment.github.io/luxon/es6/luxon.min.js';
 const Duration = luxon.Duration;
-import { addItemEventHandlers } from './itemEventHandlers.js';
+import { addItemEventListeners } from './itemEventHandlers.js';
 
 // Adds checkbox, edit and trash icon event handlers to items in lists
-addItemEventHandlers();
+addItemEventListeners();
 
 // Captures the session ID / board ID to be used later in the API call
 const sessionUrl = new URL(window.location.href);
