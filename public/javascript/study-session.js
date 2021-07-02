@@ -127,7 +127,6 @@ function cancelTimer() {
     studySection.innerHTML = `
         <h2 id="session-ended">Your Study Session Has Ended.</h2>`;
     postStudySessionLog('Cancel', studySessionDuration);
-    updateSessionStatus(sessionId);
 }
 
 function decrement() {
@@ -163,21 +162,6 @@ async function postStudySessionLog(userAction, sessionDuration) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify(sessionData),
-    });
-    return response;
-}
-
-async function updateSessionStatus(sessionId) {
-    const status = {
-        sessionStatus: 'Cancelled'
-    };
-
-    const response = await fetch(`http://localhost:3000/study-session/${sessionId}`, {
-        method: 'PATCH',
-        headers: {
-            'content-type': 'application/json',
-        },
-        body: JSON.stringify(status)
     });
     return response;
 }

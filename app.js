@@ -296,16 +296,6 @@ app.route('/study-session/:studySessionId')
             if (err) throw err;
             console.log('User action added to study session log');
         });
-    })
-    .patch(isUserAuthenticated, (req, res) => {
-        console.log(req.body);
-        const sessionStatus = req.body.sessionStatus;
-        const sessionId = req.params.studySessionId;
-
-        connection.query('UPDATE STUDYSESSIONS SET SESSIONSTATUS=? WHERE sessionID=?', [sessionStatus, sessionId], (err, result) => {
-            if (err) throw err;
-            console.log('Study session updated');
-        });
     });
 
 app.route('/analytics')
