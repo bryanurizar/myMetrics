@@ -165,6 +165,7 @@ app.route('/items/:itemId')
             if (err) throw err;
             console.log('Item deleted from database.');
         });
+        res.send('Item deleted');
     });
 
 // List routes
@@ -193,8 +194,6 @@ app.route('/lists/:listId')
         });
     })
     .delete(isUserAuthenticated, (req, res) => {
-        console.log('entered deleted route');
-
         const listId = req.body.listId;
         connection.beginTransaction(function (err) {
             if (err) { throw err; }
@@ -221,6 +220,7 @@ app.route('/lists/:listId')
                 });
             });
         });
+        res.json({});
     });
 
 app.route('/study-session')

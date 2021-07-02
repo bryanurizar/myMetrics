@@ -1,107 +1,9 @@
 'use strict';
 import { edit, trash } from './icons.js';
+import { addItemEventHandlers, handleCheckboxClick, handleEditIconClick, handleTrashIconClick } from './itemEventHandlers.js';
 
-// Add event listeners to checkbox and handle clicks
-const itemCheckboxes = document.querySelectorAll('input[type="checkbox"]');
-
-itemCheckboxes.forEach(itemCheckbox => {
-    itemCheckbox.addEventListener('click', handleCheckboxClick);
-});
-
-function handleCheckboxClick(e) {
-    const nearestItemCard = e.target.closest('.todo-card');
-    const completedItem = {
-        completedItemId: nearestItemCard.id.slice(5,)
-    };
-
-    nearestItemCard.remove();
-    postedCompletedItem(completedItem);
-}
-
-async function postedCompletedItem(item) {
-    try {
-        const response = await fetch(`http://localhost:3000/items/${item.id}`, {
-            method: 'PATCH',
-            body: JSON.stringify(item),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        });
-        response.text();
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-// Add event listeners to edit icons and handle clicks
-const editIcons = document.querySelectorAll('.edit');
-
-editIcons.forEach(editIcon => {
-    editIcon.addEventListener('click', handleEditIconClick);
-});
-
-function handleEditIconClick(e) {
-    const nearestItemCard = e.target.closest('.todo-card');
-    const nearestItemCardDescription = nearestItemCard.querySelector('.todo-description');
-
-    nearestItemCardDescription.setAttribute('contenteditable', true);
-    nearestItemCardDescription.focus();
-
-    nearestItemCardDescription.addEventListener('keypress', e => {
-        if (e.key === 'Enter') {
-            nearestItemCardDescription.removeAttribute('contenteditable');
-        }
-    });
-
-    nearestItemCardDescription.addEventListener('blur', e => {
-        const editedItem = {
-            editedItemId: nearestItemCard.id.slice(5,),
-            updatedItem: e.target.innerText
-        };
-        updateEditedItem(editedItem);
-    });
-}
-
-async function updateEditedItem(item) {
-    try {
-        const response = await fetch(`http://localhost:3000/items/${item.id}`, {
-            method: 'PATCH',
-            body: JSON.stringify(item),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        });
-        await response.text();
-    } catch (err) {
-        console.log(err);
-    }
-}
-
-// Add event listeners to trash icons and handle clicks
-const trashIcons = document.querySelectorAll('.trash');
-
-trashIcons.forEach(trashIcon => {
-    trashIcon.addEventListener('click', handleTrashIconClick);
-});
-
-function handleTrashIconClick(e) {
-
-    const nearestItemCard = e.target.closest('.todo-card');
-    const deletedItem = {
-        deletedItemId: nearestItemCard.id.slice(5,)
-    };
-    nearestItemCard.remove();
-    removeDeletedItem(deletedItem);
-}
-
-async function removeDeletedItem(item) {
-    try {
-        const response = await fetch(`http://localhost:3000/items/${item.deletedItemId}`, {
-            method: 'DELETE',
-            body: JSON.stringify(item),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
-        });
-        await response.text();
-    } catch (err) {
-        console.log(err);
-    }
-}
+// Adds checkbox, edit and trash icon event handlers to items in lists
+addItemEventHandlers();
 
 /*
 ***
@@ -180,6 +82,7 @@ deleteList.forEach(list => {
 });
 
 function handleDeleteListClick(e) {
+    console.log('delete list clicked on');
     const listId = {
         listId: e.target.id
     };
@@ -193,6 +96,7 @@ function handleDeleteListClick(e) {
             });
             await response.text();
             const deletedTodoList = document.querySelector(`#todo-list-${e.target.id}`).closest('.todo-list-container');
+            console.log(deletedTodoList);
             deletedTodoList.remove();
         } catch (err) {
             console.log(err);
@@ -456,9 +360,6 @@ function renderCard(listId, cardId, cardContent) {
     const itemCheckbox = todoCard.querySelector('input[type="checkbox"]');
     const itemEditIcon = todoCard.querySelector('.edit');
     const itemTrashIcon = todoCard.querySelector('.trash');
-    console.log(itemCheckbox);
-    console.log(itemEditIcon);
-    console.log(itemTrashIcon);
 
     itemCheckbox.addEventListener('click', handleCheckboxClick);
     itemEditIcon.addEventListener('click', handleEditIconClick);
