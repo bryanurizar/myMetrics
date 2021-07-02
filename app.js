@@ -262,7 +262,7 @@ app.route('/study-session/:studySessionId')
         const studySessionId = req.params.studySessionId;
         let isSessionPageVisited;
 
-        connection.query(`SELECT * FROM StudySessions WHERE sessionID="${studySessionId}"`, (err, result) => {
+        connection.query('SELECT * FROM StudySessions WHERE sessionID=?', studySessionId, (err, result) => {
             if (err) throw err;
             isSessionPageVisited = result[0].isSessionPageVisited;
         });
@@ -279,7 +279,7 @@ app.route('/study-session/:studySessionId')
             res.render('pages/study-session', status);
         });
 
-        connection.query(`UPDATE StudySessions SET isSessionPageVisited="Yes" WHERE sessionID="${studySessionId}"`, (err, result) => {
+        connection.query('UPDATE StudySessions SET isSessionPageVisited="Yes" WHERE sessionID=?', studySessionId, (err, result) => {
             if (err) throw err;
             isSessionPageVisited = 'Yes';
             console.log('isSessionPageVisited property updated.');
