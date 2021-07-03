@@ -1,79 +1,27 @@
-// async function getChartData() {
-//     const response = await fetch('http://localhost:3000/data', {
-//         method: 'GET',
-//         headers: {
-//             'Content-Type': 'application/json',
-//         }
-//     });
-//     const res = await response.json();
-
-//     const labels = res.boardNames;
-//     const data = {
-//         labels: labels,
-//         datasets: [{
-//             label: 'Count of Tasks',
-//             backgroundColor: 'rgb(48, 111, 216)',
-//             borderColor: 'rgb(48,111,216)',
-//             data: res.itemCount,
-//         }]
-//     };
-
-//     const config = {
-//         type: 'bar',
-//         data,
-//         options: {
-//             scales: {
-//                 y: {
-//                     beginAtZero: true
-//                 }
-//             }
-//         }
-//     };
-
-//     const itemCount = new Chart(
-//         document.querySelector('#study-time-by-board'),
-//         config
-//     );
-// }
-
-async function getChartData() {
-    const response = await fetch('http://localhost:3000/data', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
+export async function getItemCountChartData() {
+    const response = await fetch('http://localhost:3000/studyTimeByBoardsChart', {
+        method: 'GET'
     });
-    const res = await response.json();
-    return res;
-
+    return response.json();
 }
 
-export function createItemCountChart() {
-    const labels = getChartData().boardNames;
+export function createItemCountChart(chartData) {
     const data = {
-        labels: labels,
+        labels: chartData.boardNames,
         datasets: [{
-            label: 'Count of Tasks',
+            label: 'Number of Tasks',
             backgroundColor: 'rgb(48, 111, 216)',
             borderColor: 'rgb(48,111,216)',
-            data: res.itemCount,
+            data: chartData.itemCount,
         }]
     };
-
     const config = {
         type: 'bar',
-        data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
+        data
     };
 
     const itemCount = new Chart(
-        document.querySelector('#study-time-by-board'),
+        document.querySelector('#item-count-by-boards'),
         config
     );
 }

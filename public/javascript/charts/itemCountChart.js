@@ -1,39 +1,27 @@
 export async function getItemCountChartData() {
     const response = await fetch('http://localhost:3000/itemCountChart', {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-        }
+        method: 'GET'
     });
     return response.json();
 }
 
-export function createItemCountChart(res) {
-    const labels = res.boardNames;
+export function createItemCountChart(chartData) {
     const data = {
-        labels: labels,
+        labels: chartData.boardNames,
         datasets: [{
-            label: 'Count of Tasks',
+            label: 'Number of Tasks',
             backgroundColor: 'rgb(48, 111, 216)',
             borderColor: 'rgb(48,111,216)',
-            data: res.itemCount,
+            data: chartData.itemCount,
         }]
     };
-
     const config = {
         type: 'bar',
-        data,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true
-                }
-            }
-        }
+        data
     };
 
     const itemCount = new Chart(
-        document.querySelector('#study-time-by-board'),
+        document.querySelector('#item-count-by-boards'),
         config
     );
 }

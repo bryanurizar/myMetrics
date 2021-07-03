@@ -303,9 +303,9 @@ app.route('/analytics')
         res.render('pages/analytics');
     });
 
-app.route('/breakroom')
+app.route('/leaderboard')
     .get(isUserAuthenticated, (req, res) => {
-        res.render('pages/breakroom');
+        res.render('pages/leaderboard');
     });
 
 app.route('/profile')
@@ -314,6 +314,30 @@ app.route('/profile')
     });
 
 app.route('/itemCountChart')
+    .get(isUserAuthenticated, (req, res) => {
+        const loggedInUser = req.user.id;
+
+        connection.query(`
+        SELECT Boards.boardName, COUNT(*) as itemCount 
+        FROM Items 
+        INNER JOIN Boards 
+        ON Items.boardID = Boards.boardID  
+        WHERE Items.isItemCompleted=0 AND Items.userID=?
+        GROUP BY Items.boardID
+        ORDER BY itemCount DESC
+        `, loggedInUser, (err, data) => {
+            if (err) throw err;
+            const boardNames = [];
+            const itemCount = [];
+            for (let i = 0; i < data.length; i++) {
+                boardNames.push(data[i].boardName);
+                itemCount.push(data[i].itemCount);
+            }
+            res.json({ boardNames: boardNames, itemCount: itemCount });
+        });
+    });
+
+app.route('/studyTimeByBoardsChart')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
 
