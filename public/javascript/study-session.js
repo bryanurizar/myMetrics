@@ -97,37 +97,44 @@ function displayTimer() {
     timerButtons.appendChild(cancelButton);
     cancelButton.addEventListener('click', cancelTimer);
 
+    // Starts the timer
+    startTimer();
+
     // Posts the study session to the db
     updateStudySession(sessionData);
     postStudySessionLog('Start', studySessionDuration);
 
-    // Starts the timer
-    startTimer(studySessionDuration);
 }
 
 // Timer logic (i.e. pause, resume, cancel logic)
 let ticker;
+let elapsedTime = 0;
+let startTime;
 
 function startTimer() {
-    ticker = setInterval(decrement, 1000);
     startButton.remove();
+    countdownTimer.innerHTML = studySessionDuration.minus(elapsedTime).toFormat('hh:mm:ss');
+    startTime = new Date().getTime();
     decrement();
+    // ticker = setInterval(decrement, 1000);
 }
 
 function pauseOrResumeTimer(e) {
+    studySessionDuration = studySessionDuration.minus(elapsedTime - 1);
+    startTime = new Date().getTime();
+    elapsedTime = 0;
     if (e.target.innerText === 'Pause') {
         clearTimeout(ticker);
         e.target.innerText = 'Resume';
         postStudySessionLog('Pause', studySessionDuration);
     } else {
-        ticker = setInterval(decrement, 1000);
+        ticker = setTimeout(decrement, 1000);
         e.target.innerText = 'Pause';
         postStudySessionLog('Resume', studySessionDuration);
     }
 }
 
 function cancelTimer() {
-
     clearTimeout(ticker);
     const studySection = document.querySelector('#study');
     studySection.innerHTML = `
@@ -136,30 +143,38 @@ function cancelTimer() {
 }
 
 function decrement() {
-    countdownTimer.innerHTML = studySessionDuration.toFormat('hh:mm:ss');
-    studySessionDuration = studySessionDuration.minus({ seconds: 1 });
+    const now = new Date().getTime();
+    elapsedTime = 1000 * Math.floor((now - startTime) / 1000);
+    countdownTimer.innerHTML = studySessionDuration.minus(elapsedTime).toFormat('hh:mm:ss');
+
+    let isSessionDurationOver = Number(studySessionDuration.minus(elapsedTime).toFormat('s')) < -1;
+    if (isSessionDurationOver) {
+        cancelTimer();
+    }
+    ticker = setTimeout(decrement, 1000);
 }
 
 // API Function Calls
-async function updateStudySession(sessionData) {
+async function updateStudySession(data) {
     const response = await fetch('http://localhost:3000/study-session/', {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(sessionData)
+        body: JSON.stringify(data)
     });
     return response;
 }
 
-async function postStudySessionLog(userAction, sessionDuration) {
+async function postStudySessionLog(action, duration) {
     const sessionData = {
         boardId: boardId,
         sessionId: sessionId,
-        userAction: userAction,
-        hours: sessionDuration.hours,
-        minutes: sessionDuration.minutes,
-        seconds: sessionDuration.seconds,
+        userAction: action,
+        hours: duration.hours,
+        minutes: duration.minutes,
+        seconds: duration.seconds,
+        milliseconds: duration.milliseconds,
     };
 
     const response = await fetch(`http://localhost:3000/study-session/${sessionData.sessionId}`, {
@@ -169,5 +184,5 @@ async function postStudySessionLog(userAction, sessionDuration) {
         },
         body: JSON.stringify(sessionData),
     });
-    return response;
+    response;
 }

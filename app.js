@@ -286,7 +286,9 @@ app.route('/study-session/:studySessionId')
         });
     })
     .post(isUserAuthenticated, (req, res) => {
-        const studySessionDuration = req.body.hours * 3600 + req.body.minutes * 60 + req.body.seconds;
+        console.log(req.body);
+        const studySessionDuration = (req.body.hours || 0) * 3600 + (req.body.minutes || 0) * 60 + (req.body.seconds || 0) + (req.body.milliseconds || 0) / 1000;
+        console.log(studySessionDuration);
         const boardId = req.body.boardId;
         const sessionId = req.params.studySessionId;
         const userAction = req.body.userAction;
