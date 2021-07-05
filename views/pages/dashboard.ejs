@@ -18,11 +18,12 @@
         <% for (let i = 0; i < results.length; i++) { %>
           <% if (results) { %>
             <div class="board-card">
-              <div class="vl"></div>
-          <a class="board-name" href="/boards/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"
-            ><%= results[i].boardName %></a
-          >
-        </div>
+              <div class="dashboard-flaticons">
+                <img class="edit" src="img/edit.svg" />
+                <img class="trash" src="img/trash.svg" />
+              </div>
+              <a class="board-name" href="/boards/<%=results[i].boardID%>/<%=encodeURI(decodeURI(results[i].boardName.toLowerCase()).replace(/ /g, "-"))%>"><%= results[i].boardName %></a>
+            </div>
           <% } %>
         <% } %>
       </div>

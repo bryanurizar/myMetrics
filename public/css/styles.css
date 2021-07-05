@@ -290,6 +290,27 @@ span {
 
 /*dashboard styling*/
 
+.dashboard-flaticons {
+  position: absolute;
+  top: 6.344px;
+  left: 170px;
+  visibility: hidden;
+}
+
+.dashboard-flaticons > img {
+  width: 10px;
+  visibility: hidden;
+}
+
+.board-card:hover img {
+  visibility: visible;
+  cursor: pointer;
+}
+
+/* .dashboard-flaticons:hover {
+  visibility: visible;
+} */
+
 .create-board {
   width: 160px;
   height: 35px;
@@ -328,6 +349,7 @@ span {
 }
 
 .board-card {
+  position: relative;
   font-weight: 400;
   display: flex;
   margin: 2%;
@@ -336,6 +358,7 @@ span {
   width: 200px;
   justify-content: center;
   align-items: center;
+  align-content: center;
   background-color: white;
   border-radius: 10px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
@@ -350,9 +373,14 @@ span {
 } */
 
 .board-name {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  height: 100%;
+  width: 100%;
   font-size: 16px;
   text-align: center;
-  padding: 3%;
 }
 
 /* Login Page */
