@@ -49,7 +49,7 @@ function handleEditOrDeleteClick(e) {
     let nearestBoard;
 
     if (e.target.className === 'edit') {
-        // Do something
+        // TODO: Add name edit functionality 
     } else if (e.target.className === 'trash') {
         boardId = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(29, 41);
         boardName = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(42,);
