@@ -332,7 +332,7 @@ app.route('/itemCountChart')
         FROM Items 
         INNER JOIN Boards 
         ON Items.boardID = Boards.boardID  
-        WHERE Items.isItemCompleted=0 AND Items.userID=?
+        WHERE Items.isItemCompleted=0 AND Items.userID=? AND isBoardDeleted=FALSE
         GROUP BY Items.boardID
         ORDER BY itemCount DESC
         `, loggedInUser, (err, data) => {
