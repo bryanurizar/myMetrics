@@ -120,22 +120,23 @@ function startTimer() {
 }
 
 function pauseOrResumeTimer(e) {
-    studySessionDuration = studySessionDuration.minus(elapsedTime - 1);
+    studySessionDuration = studySessionDuration.minus(elapsedTime);
     startTime = new Date().getTime();
     elapsedTime = 0;
     if (e.target.innerText === 'Pause') {
+        postStudySessionLog('Pause', studySessionDuration);
         clearTimeout(ticker);
         e.target.innerText = 'Resume';
-        postStudySessionLog('Pause', studySessionDuration);
     } else {
+        postStudySessionLog('Resume', studySessionDuration);
         ticker = setTimeout(decrement, 1000);
         e.target.innerText = 'Pause';
-        postStudySessionLog('Resume', studySessionDuration);
     }
 }
 
 function cancelTimer() {
     clearTimeout(ticker);
+    studySessionDuration = studySessionDuration.minus(elapsedTime - 1000);
     const studySection = document.querySelector('#study');
     studySection.innerHTML = `
         <h2 id="session-ended">Your Study Session Has Ended.</h2>`;
@@ -148,10 +149,12 @@ function decrement() {
     countdownTimer.innerHTML = studySessionDuration.minus(elapsedTime).toFormat('hh:mm:ss');
 
     let isSessionDurationOver = Number(studySessionDuration.minus(elapsedTime).toFormat('s')) < 0;
+    ticker = setTimeout(decrement, 1000);
+
     if (isSessionDurationOver) {
         cancelTimer();
     }
-    ticker = setTimeout(decrement, 1000);
+    return;
 }
 
 // API Function Calls
@@ -184,5 +187,5 @@ async function postStudySessionLog(action, duration) {
         },
         body: JSON.stringify(sessionData),
     });
-    response;
+    return response;
 }

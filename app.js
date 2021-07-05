@@ -249,8 +249,8 @@ app.route('/study-session')
                 throw err;
             }
             console.log('Study session created');
-            res.json({});
         });
+        res.json({});
     })
     .patch(isUserAuthenticated, (req, res) => {
         const studySessionId = req.body.sessionId;
@@ -263,6 +263,7 @@ app.route('/study-session')
             }
             console.log('Study session created');
         });
+        res.json({});
     });
 
 app.route('/study-session/:studySessionId')
@@ -294,7 +295,6 @@ app.route('/study-session/:studySessionId')
         });
     })
     .post(isUserAuthenticated, (req, res) => {
-        console.log(req.body);
         const studySessionDuration = (req.body.hours || 0) * 3600 + (req.body.minutes || 0) * 60 + (req.body.seconds || 0) + (req.body.milliseconds || 0) / 1000;
         console.log(studySessionDuration);
         const boardId = req.body.boardId;
@@ -306,6 +306,7 @@ app.route('/study-session/:studySessionId')
             if (err) throw err;
             console.log('User action added to study session log');
         });
+        res.json({});
     });
 
 app.route('/analytics')
@@ -347,28 +348,16 @@ app.route('/itemCountChart')
         });
     });
 
-app.route('/studyTimeByBoardsChart')
-    .get(isUserAuthenticated, (req, res) => {
-        const loggedInUser = req.user.id;
+// app.route('/studyTimeByBoardsChart')
+//     .get(isUserAuthenticated, (req, res) => {
+//         const loggedInUser = req.user.id;
+//         connection.query(`
+//         SELECT 
 
-        connection.query(`
-        SELECT Boards.boardName, COUNT(*) as itemCount 
-        FROM Items 
-        INNER JOIN Boards 
-        ON Items.boardID = Boards.boardID  
-        WHERE Items.isItemCompleted=0 AND Items.userID=?
-        GROUP BY Items.boardID
-        ORDER BY itemCount DESC
-        `, loggedInUser, (err, data) => {
-            if (err) throw err;
-            const boardNames = [];
-            const itemCount = [];
-            for (let i = 0; i < data.length; i++) {
-                boardNames.push(data[i].boardName);
-                itemCount.push(data[i].itemCount);
-            }
-            res.json({ boardNames: boardNames, itemCount: itemCount });
-        });
-    });
+
+//         `
+
+
+//     });
 
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));

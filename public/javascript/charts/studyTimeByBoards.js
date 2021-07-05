@@ -21,7 +21,7 @@ export function createItemCountChart(chartData) {
     };
 
     const itemCount = new Chart(
-        document.querySelector('#item-count-by-boards'),
+        document.querySelector('#study-time-by-board'),
         config
     );
 }
