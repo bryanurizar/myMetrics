@@ -44,17 +44,14 @@ const boardsSection = document.querySelector('#boards');
 boardsSection.addEventListener('click', handleEditOrDeleteClick);
 
 function handleEditOrDeleteClick(e) {
-    let boardId;
-    let boardName;
-    let nearestBoard;
+    const boardId = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(29, 41);
+    const boardName = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(42,);
+    const parentBoard = e.target.closest('.board-card');
 
     if (e.target.className === 'edit') {
         // TODO: Add name edit functionality 
     } else if (e.target.className === 'trash') {
-        boardId = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(29, 41);
-        boardName = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(42,);
-        nearestBoard = e.target.closest('.board-card');
-        nearestBoard.remove();
+        parentBoard.remove();
         deleteBoard(boardId, boardName);
     }
 }
