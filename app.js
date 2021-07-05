@@ -76,8 +76,9 @@ app.route('/dashboard')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
 
-        connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? ORDER BY createdAt', loggedInUserId, (err, results) => {
+        connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? AND isBoardDeleted=FALSE ORDER BY createdAt', loggedInUserId, (err, results) => {
             if (err) throw err;
+            res.setHeader('Cache-Control', 'no-store');
             res.render('pages/dashboard', { user: req.user, results: results });
         });
     });
@@ -113,6 +114,13 @@ app.route('/boards/:boardId/:boardName')
                 if (err) throw err;
                 res.render('pages/board', { lists: lists, items: items });
             });
+        });
+    })
+    .patch(isUserAuthenticated, (req, res) => {
+        const boardId = req.body.boardId;
+        connection.query('UPDATE Boards SET isBoardDeleted=True WHERE BoardID=?', boardId, (err, result) => {
+            if (err) throw err;
+            console.log('Board marked as deleted');
         });
     });
 

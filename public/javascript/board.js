@@ -37,7 +37,7 @@ const handleDrop = e => {
 };
 
 function isMouseAboveMiddle(e) {
-    const bounds = e.target.getBoundingClientRect();
+    const bousnds = e.target.getBoundingClientRect();
     const y = e.clientY - bounds.top;
     return y < bounds.height / 2;
 }

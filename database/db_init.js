@@ -35,7 +35,7 @@ connection.connect((err) => {
             lastName CHAR(255) NOT NULL,
             email CHAR(255) NOT NULL,
             userImage CHAR(255),
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             PRIMARY KEY (userID))`,
         err => {
@@ -48,6 +48,7 @@ connection.connect((err) => {
         `CREATE TABLE IF NOT EXISTS Boards (
             boardID CHAR(12) NOT NULL, 
             boardName CHAR(255) NOT NULL, 
+            isBoardDeleted BOOLEAN DEFAULT FALSE,
             createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             userID CHAR(255),
@@ -64,7 +65,7 @@ connection.connect((err) => {
             listID CHAR(12) NOT NULL,
             listName CHAR(255),
             isListDeleted BOOLEAN DEFAULT FALSE,
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             userID CHAR(255),
             boardID CHAR(12) NOT NULL,
@@ -81,8 +82,9 @@ connection.connect((err) => {
         `CREATE TABLE IF NOT EXISTS Items (
             itemID CHAR(12) NOT NULL,
             itemName CHAR(255),
+            isItemDeleted BOOLEAN DEFAULT FALSE,
             isItemCompleted BOOLEAN DEFAULT FALSE,
-            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP,
+            createdAt DATETIME DEFAULT CURRENT_TIMESTAMP, 
             updatedAt DATETIME DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
             isOnTargetList BOOLEAN DEFAULT FALSE,
             userID CHAR(255),
