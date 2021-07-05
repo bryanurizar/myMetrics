@@ -147,7 +147,7 @@ function decrement() {
     elapsedTime = 1000 * Math.floor((now - startTime) / 1000);
     countdownTimer.innerHTML = studySessionDuration.minus(elapsedTime).toFormat('hh:mm:ss');
 
-    let isSessionDurationOver = Number(studySessionDuration.minus(elapsedTime).toFormat('s')) < -1;
+    let isSessionDurationOver = Number(studySessionDuration.minus(elapsedTime).toFormat('s')) < 0;
     if (isSessionDurationOver) {
         cancelTimer();
     }
