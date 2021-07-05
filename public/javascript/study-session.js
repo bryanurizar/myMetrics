@@ -33,9 +33,9 @@ hoursInput.placeholder = 'HH';
 hoursInput.autocomplete = 'off';
 hoursInput.id = 'hours';
 
-const timerSeperator = document.createElement('p');
-timerSeperator.className = 'seperator';
-timerSeperator.innerHTML = ':';
+const timerSeparator = document.createElement('p');
+timerSeparator.className = 'separator';
+timerSeparator.innerHTML = ':';
 
 const minutesInput = document.createElement('input');
 minutesInput.placeholder = 'MM';
@@ -51,7 +51,7 @@ startButton.innerText = 'Start';
 startButton.id = 'btn';
 
 timerInputs.appendChild(hoursInput);
-timerInputs.appendChild(timerSeperator);
+timerInputs.appendChild(timerSeparator);
 timerInputs.appendChild(minutesInput);
 timerButtons.appendChild(startButton);
 

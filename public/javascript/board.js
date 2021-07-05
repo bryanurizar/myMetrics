@@ -37,7 +37,7 @@ const handleDrop = e => {
 };
 
 function isMouseAboveMiddle(e) {
-    const bousnds = e.target.getBoundingClientRect();
+    const bounds = e.target.getBoundingClientRect();
     const y = e.clientY - bounds.top;
     return y < bounds.height / 2;
 }
@@ -366,7 +366,7 @@ function renderCard(listId, cardId, cardContent) {
     itemTrashIcon.addEventListener('click', handleTrashIconClick);
 }
 
-// Added event listner to the input elements of the list by using event delegation
+// Added event listener to the input elements of the list by using event delegation
 const board = document.querySelector('#board');
 
 board.addEventListener('keypress', e => {
