@@ -112,6 +112,7 @@ app.route('/boards/:boardId/:boardName')
 
             connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=? ORDER BY createdAt', loggedInUserId, (err, items) => {
                 if (err) throw err;
+                res.setHeader('Cache-Control', 'no-store');
                 res.render('pages/board', { lists: lists, items: items });
             });
         });
@@ -348,16 +349,48 @@ app.route('/itemCountChart')
         });
     });
 
-// app.route('/studyTimeByBoardsChart')
-//     .get(isUserAuthenticated, (req, res) => {
-//         const loggedInUser = req.user.id;
-//         connection.query(`
-//         SELECT 
-
-
-//         `
-
-
-//     });
+app.route('/studyTimeByBoardsChart')
+    .get(isUserAuthenticated, (req, res) => {
+        const loggedInUser = req.user.id;
+        connection.query(`
+        SELECT * FROM (SELECT T1.boardID, SUM(T1.timeStudied) as boardStudyTime
+        FROM (
+            SELECT StudySessionLogs.boardID, StudySessions.sessionDuration, StudySessionLogs.sessionDurationRemaining, (StudySessions.sessionDuration - StudySessionLogs.sessionDurationRemaining) AS timeStudied 
+            FROM StudySessions 
+            INNER JOIN StudySessionLogs 
+            ON StudySessions.boardID = StudySessionLogs.boardID 
+            WHERE StudySessionLogs.userAction="Cancel") AS T1
+        INNER JOIN Boards
+        ON Boards.boardID = T1.boardID
+        WHERE Boards.isBoardDeleted=0 AND Boards.userID=?
+        GROUP BY T1.boardID) AS T1
+        JOIN Boards
+        ON T1.boardID = Boards.boardID`, loggedInUser, (err, data) => {
+            if (err) throw err;
+            const boardNames = [];
+            const boardStudyTime = [];
+            for (let i = 0; i < data.length; i++) {
+                boardNames.push(data[i].boardName);
+                boardStudyTime.push(data[i].boardStudyTime / 60);
+            }
+            res.json({ boardNames: boardNames, boardStudyTime: boardStudyTime });
+        });
+    });
 
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));
+
+
+
+// SELECT * FROM (SELECT T1.boardID, SUM(T1.timeStudied)
+//         FROM (
+//             SELECT StudySessionLogs.boardID, StudySessions.sessionDuration, StudySessionLogs.sessionDurationRemaining, (StudySessions.sessionDuration - StudySessionLogs.sessionDurationRemaining) AS timeStudied 
+//             FROM StudySessions 
+//             INNER JOIN StudySessionLogs 
+//             ON StudySessions.boardID = StudySessionLogs.boardID 
+//             WHERE StudySessionLogs.userAction="Cancel") AS T1
+//         INNER JOIN Boards
+//         ON Boards.boardID = T1.boardID
+//         WHERE Boards.isBoardDeleted=0
+//         GROUP BY T1.boardID) AS T1
+//         JOIN Boards
+//         ON T1.boardID = Boards.boardID;

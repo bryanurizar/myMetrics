@@ -24,5 +24,6 @@ export function createItemCountChart(chartData) {
         document.querySelector('#item-count-by-boards'),
         config
     );
+    return;
 }
 

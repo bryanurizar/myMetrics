@@ -1,18 +1,20 @@
-export async function getItemCountChartData() {
+export async function getStudyTimeByBoardsData() {
     const response = await fetch('http://localhost:3000/studyTimeByBoardsChart', {
         method: 'GET'
     });
     return response.json();
 }
 
-export function createItemCountChart(chartData) {
+export function createStudyTimeByBoardsChart(chartData) {
+    console.log(chartData.boardNames);
+    console.log(chartData.boardStudyTime);
     const data = {
         labels: chartData.boardNames,
         datasets: [{
-            label: 'Number of Tasks',
+            label: 'Study Time by Boards (min)',
             backgroundColor: 'rgb(48, 111, 216)',
             borderColor: 'rgb(48,111,216)',
-            data: chartData.itemCount,
+            data: chartData.boardStudyTime,
         }]
     };
     const config = {
@@ -20,7 +22,7 @@ export function createItemCountChart(chartData) {
         data
     };
 
-    const itemCount = new Chart(
+    const boardStudyTime = new Chart(
         document.querySelector('#study-time-by-board'),
         config
     );
