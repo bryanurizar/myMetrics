@@ -422,8 +422,6 @@ app.route('/pausesByBoards')
             pauseCountByBoards.forEach(pauseCountByBoard => {
                 pausesCount.push(pauseCountByBoard.pauseCount);
             });
-            console.log(lastTenSessions);
-            console.log(pausesCount);
             res.json({ lastTenSessions: lastTenSessions, pausesCount: pausesCount });
         });
     });
