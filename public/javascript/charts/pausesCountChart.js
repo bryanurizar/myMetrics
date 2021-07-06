@@ -6,8 +6,6 @@ export async function getPausesCountChart() {
 }
 
 export function createPausesCountChart(chartData) {
-    console.log(chartData.lastTenSessions);
-    console.log(chartData.pausesCount);
     const data = {
         labels: chartData.lastTenSessions,
         datasets: [{

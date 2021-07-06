@@ -6,8 +6,6 @@ export async function getNoOfDaysSinceLastSessionChartData() {
 }
 
 export function createNoOfDaysSinceLastSessionChart(chartData) {
-    console.log(chartData.boardNames);
-    console.log(chartData.daysSinceLastSession);
     const data = {
         labels: chartData.boardNames,
         datasets: [{
