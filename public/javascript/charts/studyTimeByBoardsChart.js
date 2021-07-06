@@ -6,8 +6,6 @@ export async function getStudyTimeByBoardsData() {
 }
 
 export function createStudyTimeByBoardsChart(chartData) {
-    console.log(chartData.boardNames);
-    console.log(chartData.boardStudyTime);
     const data = {
         labels: chartData.boardNames,
         datasets: [{

@@ -330,13 +330,12 @@ app.route('/itemCountChart')
         const loggedInUser = req.user.id;
 
         connection.query(`
-        SELECT Boards.boardName, COUNT(*) as itemCount 
-        FROM Items 
+        SELECT Boards.boardName, COUNT(*) as itemCount FROM Items 
         INNER JOIN Boards 
         ON Items.boardID = Boards.boardID  
         WHERE Items.isItemCompleted=0 AND Items.userID=? AND isBoardDeleted=FALSE
         GROUP BY Items.boardID
-        ORDER BY itemCount DESC
+        ORDER BY Boards.boardName;
         `, loggedInUser, (err, data) => {
             if (err) throw err;
             const boardNames = [];
@@ -353,31 +352,31 @@ app.route('/studyTimeByBoardsChart')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
         connection.query(`
-        SELECT T5.boardName, SUM(T5.TimeStudied) AS BoardStudyTime FROM (
+        SELECT T5.boardName, SUM(T5.TimeStudied) AS boardStudyTime FROM (
             SELECT T4.boardName, T4.isBoardDeleted, T3.TimeStudied FROM (
                 SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
                     SELECT * FROM StudySessionLogs 
-                    WHERE StudySessionLogs.userAction='Cancel') AS T1
+                    WHERE StudySessionLogs.userAction='Cancel' AND userID=?) AS T1
                LEFT JOIN StudySessions As T2
                ON T1.sessionID = T2.sessionId) AS T3
             INNER JOIN Boards AS T4
             ON T4.boardID = T3.boardID) AS T5
             WHERE T5.isBoardDeleted=0
-        GROUP BY T5.boardName`, loggedInUser, (err, data) => {
+        GROUP BY T5.boardName
+        ORDER BY T5.boardName;
+        `, loggedInUser, (err, boardsData) => {
             if (err) throw err;
             const boardNames = [];
             const boardStudyTime = [];
-            for (let i = 0; i < data.length; i++) {
-                boardNames.push(data[i].boardName);
-                boardStudyTime.push(data[i].boardStudyTime / 60);
-            }
-            console.log(boardNames);
-            console.log(boardStudyTime);
+            boardsData.forEach(boardData => {
+                boardNames.push(boardData.boardName);
+                boardStudyTime.push(boardData.boardStudyTime / 60);
+            });
             res.json({ boardNames: boardNames, boardStudyTime: boardStudyTime });
         });
     });
 
-app.route('/daysFromLastSessionByBoard')
+app.route('/daysSinceLastSession')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
         connection.query(`
@@ -385,10 +384,12 @@ app.route('/daysFromLastSessionByBoard')
 	        SELECT T1.*, T2.boardName, T2.isBoardDeleted FROM (
 		        SELECT StudySessionLogs.LogId, StudySessionLogs.boardID, StudySessionLogs.createdAt FROM StudySessionLogs 
 			    WHERE StudySessionLogs.userAction='Cancel' AND userID=?) AS T1			
-        JOIN Boards as T2
-        ON T2.boardID = T1.boardID
-        WHERE T2.isBoardDeleted=0) AS T3
-        GROUP BY T3.boardName;`, loggedInUser, (err, boardsData) => {
+            JOIN Boards as T2
+            ON T2.boardID = T1.boardID
+            WHERE T2.isBoardDeleted=0) AS T3
+        GROUP BY T3.boardName
+        ORDER BY T3.boardName;
+        `, loggedInUser, (err, boardsData) => {
             if (err) throw err;
             const boardNames = [];
             const daysSinceLastSession = [];

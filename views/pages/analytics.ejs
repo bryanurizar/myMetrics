@@ -7,57 +7,59 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <body>
     <%- include('../partials/header'); %>
-    <section class="charts">
-      <div>
-        <canvas
-          id="item-count-by-boards"
-          class="chart"
-          width="350"
-          height="225"
-          arial-label="item-count-by-boards"
-          role="img"
-          ><p>A chart of the number of items for each board.</p></canvas
-        >
-      </div>
-      <div>
-        <canvas
-          id="study-time-by-board"
-          class="chart"
-          width="350"
-          height="225"
-        ></canvas>
-      </div>
-      <div>
-        <canvas
-          id="study-time-by-periods"
-          class="chart"
-          width="350"
-          height="225"
-        ></canvas>
-      </div>
-      <div>
-        <canvas
-          id="pauses-per-study-sessions"
-          class="chart"
-          width="350"
-          height="225"
-        ></canvas>
-      </div>
-      <div>
-        <canvas
-          id="number-of-days-since-last-study-session"
-          class="chart"
-          width="350"
-          height="225"
-        ></canvas>
-      </div>
-      <div>
-        <canvas
-          id="leaderboard-position"
-          class="chart"
-          width="350"
-          height="225"
-        ></canvas>
+    <section id="charts-section">
+      <div id="charts-container">
+        <div class="chart">
+          <canvas
+            id="item-count-by-boards"
+            class="chart"
+            width="350px"
+            height="225px"
+            arial-label="item-count-by-boards"
+            role="img"
+            ><p>A chart of the number of items for each board.</p></canvas
+          >
+        </div>
+        <div class="chart">
+          <canvas
+            id="study-time-by-board"
+            class="chart"
+            width="350px"
+            height="225px"
+          ></canvas>
+        </div>
+        <div class="chart">
+          <canvas
+            id="study-time-by-periods"
+            class="chart"
+            width="350px"
+            height="225px"
+          ></canvas>
+        </div>
+        <div class="chart">
+          <canvas
+            id="pauses-per-study-sessions"
+            class="chart"
+            width="350px"
+            height="225px"
+          ></canvas>
+        </div>
+        <div class="chart">
+          <canvas
+            id="number-of-days-since-last-study-session"
+            class="chart"
+            width="350px"
+            height="225px"
+          ></canvas>
+        </div>
+        <div class="chart">
+          <canvas
+            id="leaderboard-position"
+            class="chart"
+            width="350px"
+            height="225px"
+          ></canvas>
+        </div>
       </div>
     </section>
     <script type="module" src="javascript/charts.js"></script>

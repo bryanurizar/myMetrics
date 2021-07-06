@@ -316,17 +316,6 @@ span {
   height: 35px;
 }
 
-.charts {
-  display: flex;
-  flex: 5;
-  color: white;
-  padding: 10px;
-}
-
-.chart {
-  flex: 2;
-}
-
 #boards-section {
   padding-top: 75px;
   display: flex;
@@ -507,4 +496,27 @@ span {
 
 #session-ended {
   font-size: 4rem;
+}
+
+/* Analytics page styling */
+
+#charts-section {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+#charts-container {
+  flex: 1;
+  width: 100%;
+  padding: 0;
+}
+
+.chart {
+  display: inline-block;
+  flex: 1;
+  padding: 5px;
+  /* width: 250px;
+  height: 250px; */
 }
