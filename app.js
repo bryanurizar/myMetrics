@@ -353,19 +353,17 @@ app.route('/studyTimeByBoardsChart')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
         connection.query(`
-        SELECT * FROM (SELECT T1.boardID, SUM(T1.timeStudied) as boardStudyTime
-        FROM (
-            SELECT StudySessionLogs.boardID, StudySessions.sessionDuration, StudySessionLogs.sessionDurationRemaining, (StudySessions.sessionDuration - StudySessionLogs.sessionDurationRemaining) AS timeStudied 
-            FROM StudySessions 
-            INNER JOIN StudySessionLogs 
-            ON StudySessions.boardID = StudySessionLogs.boardID 
-            WHERE StudySessionLogs.userAction="Cancel") AS T1
-        INNER JOIN Boards
-        ON Boards.boardID = T1.boardID
-        WHERE Boards.isBoardDeleted=0 AND Boards.userID=?
-        GROUP BY T1.boardID) AS T1
-        JOIN Boards
-        ON T1.boardID = Boards.boardID`, loggedInUser, (err, data) => {
+        SELECT T5.boardName, SUM(T5.TimeStudied) AS BoardStudyTime FROM (
+            SELECT T4.boardName, T4.isBoardDeleted, T3.TimeStudied FROM (
+                SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
+                    SELECT * FROM StudySessionLogs 
+                    WHERE StudySessionLogs.userAction='Cancel') AS T1
+               LEFT JOIN StudySessions As T2
+               ON T1.sessionID = T2.sessionId) AS T3
+            INNER JOIN Boards AS T4
+            ON T4.boardID = T3.boardID) AS T5
+            WHERE T5.isBoardDeleted=0
+        GROUP BY T5.boardName`, loggedInUser, (err, data) => {
             if (err) throw err;
             const boardNames = [];
             const boardStudyTime = [];
@@ -373,24 +371,34 @@ app.route('/studyTimeByBoardsChart')
                 boardNames.push(data[i].boardName);
                 boardStudyTime.push(data[i].boardStudyTime / 60);
             }
+            console.log(boardNames);
+            console.log(boardStudyTime);
             res.json({ boardNames: boardNames, boardStudyTime: boardStudyTime });
         });
     });
 
+app.route('/daysFromLastSessionByBoard')
+    .get(isUserAuthenticated, (req, res) => {
+        const loggedInUser = req.user.id;
+        connection.query(`
+        SELECT T3.boardName, MAX(T3.createdAt) AS LastSessionDate FROM (
+	        SELECT T1.*, T2.boardName, T2.isBoardDeleted FROM (
+		        SELECT StudySessionLogs.LogId, StudySessionLogs.boardID, StudySessionLogs.createdAt FROM StudySessionLogs 
+			    WHERE StudySessionLogs.userAction='Cancel' AND userID=?) AS T1			
+        JOIN Boards as T2
+        ON T2.boardID = T1.boardID
+        WHERE T2.isBoardDeleted=0) AS T3
+        GROUP BY T3.boardName;`, loggedInUser, (err, boardsData) => {
+            if (err) throw err;
+            const boardNames = [];
+            const daysSinceLastSession = [];
+            boardsData.forEach(boardData => {
+                const numberOfDays = Math.floor((Date.now() - boardData.LastSessionDate) / (1000 * 3600 * 24));
+                boardNames.push(boardData.boardName);
+                daysSinceLastSession.push(numberOfDays);
+            });
+            res.json({ boardNames: boardNames, daysSinceLastSession: daysSinceLastSession });
+        });
+    });
+
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));
-
-
-
-// SELECT * FROM (SELECT T1.boardID, SUM(T1.timeStudied)
-//         FROM (
-//             SELECT StudySessionLogs.boardID, StudySessions.sessionDuration, StudySessionLogs.sessionDurationRemaining, (StudySessions.sessionDuration - StudySessionLogs.sessionDurationRemaining) AS timeStudied 
-//             FROM StudySessions 
-//             INNER JOIN StudySessionLogs 
-//             ON StudySessions.boardID = StudySessionLogs.boardID 
-//             WHERE StudySessionLogs.userAction="Cancel") AS T1
-//         INNER JOIN Boards
-//         ON Boards.boardID = T1.boardID
-//         WHERE Boards.isBoardDeleted=0
-//         GROUP BY T1.boardID) AS T1
-//         JOIN Boards
-//         ON T1.boardID = Boards.boardID;
