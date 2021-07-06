@@ -402,4 +402,30 @@ app.route('/daysSinceLastSession')
         });
     });
 
+app.route('/pausesByBoards')
+    .get(isUserAuthenticated, (req, res) => {
+        const loggedInUser = req.user.id;
+        connection.query(`
+        SELECT T3.SessionID, T3.pauseCount FROM (
+            SELECT StudySessionLogs.SessionID, StudySessionLogs.userACTION, T2.createdAt, 
+            COUNT(StudySessionLogs.userAction) AS pauseCount FROM StudySessionLogs
+            INNER JOIN StudySessions AS T2
+            ON StudySessionLogs.SessionID = T2.SessionID
+            WHERE StudySessionLogs.userAction = 'Pause' AND StudySessionLogs.userID=?
+            GROUP BY StudySessionLogs.SessionID
+            ORDER BY createdAt DESC
+            LIMIT 10) As T3
+        ORDER BY T3.createdAt ASC
+        `, loggedInUser, (err, pauseCountByBoards) => {
+            const lastTenSessions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+            const pausesCount = [];
+            pauseCountByBoards.forEach(pauseCountByBoard => {
+                pausesCount.push(pauseCountByBoard.pauseCount);
+            });
+            console.log(lastTenSessions);
+            console.log(pausesCount);
+            res.json({ lastTenSessions: lastTenSessions, pausesCount: pausesCount });
+        });
+    });
+
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));

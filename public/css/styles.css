@@ -502,21 +502,23 @@ span {
 
 #charts-section {
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
 }
+
 #charts-container {
   flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin: 20px;
+  padding: 10px;
   width: 100%;
   padding: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .chart {
-  display: inline-block;
-  flex: 1;
-  padding: 5px;
-  /* width: 250px;
-  height: 250px; */
+  padding: 20px;
 }

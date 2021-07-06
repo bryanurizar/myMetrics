@@ -1,6 +1,7 @@
 import { createItemCountChart, getItemCountChartData } from './charts/itemCountChart.js';
 import { createStudyTimeByBoardsChart, getStudyTimeByBoardsData } from './charts/studyTimeByBoardsChart.js';
 import { createNoOfDaysSinceLastSessionChart, getNoOfDaysSinceLastSessionChartData } from './charts/daysSinceLastStudySession.js';
+import { createPausesCountChart, getPausesCountChart } from './charts/pausesCountChart.js';
 
 (async () => {
     createItemCountChart(await getItemCountChartData());
@@ -12,4 +13,8 @@ import { createNoOfDaysSinceLastSessionChart, getNoOfDaysSinceLastSessionChartDa
 
 (async () => {
     createNoOfDaysSinceLastSessionChart(await getNoOfDaysSinceLastSessionChartData());
+})();
+
+(async () => {
+    createPausesCountChart(await getPausesCountChart());
 })();
