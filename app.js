@@ -77,7 +77,7 @@ app.route('/dashboard')
         console.log(req.user.name.givenName);
         const loggedInUserId = req.user.id;
 
-        connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? AND isBoardDeleted=FALSE ORDER BY createdAt', loggedInUserId, (err, results) => {
+        connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? AND isBoardDeleted=0 ORDER BY createdAt', loggedInUserId, (err, results) => {
             if (err) throw err;
             res.setHeader('Cache-Control', 'no-store');
             res.render('pages/dashboard', { user: req.user, results: results });
@@ -371,7 +371,7 @@ app.route('/studyTimeByBoardsChart')
             const boardStudyTime = [];
             boardsData.forEach(boardData => {
                 boardNames.push(boardData.boardName);
-                boardStudyTime.push(boardData.boardStudyTime / 60);
+                boardStudyTime.push(boardData.boardStudyTime / (60 * 60));
             });
             res.json({ boardNames: boardNames, boardStudyTime: boardStudyTime });
         });
