@@ -427,4 +427,22 @@ app.route('/pausesByBoards')
         });
     });
 
+// SELECT T5.userID, SUM(T5.TimeStudied) AS boardStudyTime FROM (
+//     SELECT T4.userID, T4.isBoardDeleted, T3.TimeStudied FROM (
+//         SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
+//             SELECT * FROM StudySessionLogs 
+//             WHERE StudySessionLogs.userAction='Cancel') AS T1
+//        LEFT JOIN StudySessions As T2
+//        ON T1.sessionID = T2.sessionId) AS T3
+//     INNER JOIN Boards AS T4
+//     ON T4.boardID = T3.boardID) AS T5
+//     WHERE T5.isBoardDeleted=0
+// GROUP BY T5.userID
+// ORDER BY T5.userID;
+
+
+
+
+
+
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));
