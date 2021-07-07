@@ -9,9 +9,10 @@ export function createStudyTimeByBoardsChart(chartData) {
     const data = {
         labels: chartData.boardNames,
         datasets: [{
-            label: 'Study Time by Boards (min)',
-            backgroundColor: 'rgb(48, 111, 216)',
-            borderColor: 'rgb(48,111,216)',
+            label: 'Total Minutes',
+            backgroundColor: 'rgba(153, 102, 255, 0.2)',
+            borderColor: 'rgb(153, 102, 255)',
+            borderWidth: 1,
             data: chartData.boardStudyTime,
         }]
     };

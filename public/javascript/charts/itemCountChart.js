@@ -9,15 +9,27 @@ export function createItemCountChart(chartData) {
     const data = {
         labels: chartData.boardNames,
         datasets: [{
-            label: 'Number of Tasks',
-            backgroundColor: 'rgb(48, 111, 216)',
-            borderColor: 'rgb(48,111,216)',
+            label: 'No of Tasks',
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgb(255, 99, 132)',
+            borderWidth: 1,
             data: chartData.itemCount,
         }]
     };
+    const options = {
+        scales: {
+            y: {
+                min: 0,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    };
     const config = {
         type: 'bar',
-        data
+        data,
+        options
     };
 
     const itemCount = new Chart(

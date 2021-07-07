@@ -74,6 +74,7 @@ app.route('/logout')
 // Dashboard route
 app.route('/dashboard')
     .get(isUserAuthenticated, (req, res) => {
+        console.log(req.user.name.givenName);
         const loggedInUserId = req.user.id;
 
         connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? AND isBoardDeleted=FALSE ORDER BY createdAt', loggedInUserId, (err, results) => {

@@ -9,16 +9,29 @@ export function createNoOfDaysSinceLastSessionChart(chartData) {
     const data = {
         labels: chartData.boardNames,
         datasets: [{
-            label: 'No of Days Since Last Study Session',
-            backgroundColor: 'rgb(48, 111, 216)',
-            borderColor: 'rgb(48,111,216)',
+            label: 'No of Days since Last Session',
+            backgroundColor: 'rgba(54, 162, 235, 0.2)',
+            borderColor: 'rgb(54, 162, 235)',
+            borderWidth: 1,
             data: chartData.daysSinceLastSession,
         }]
     };
+    const options = {
+        scales: {
+            y: {
+                min: 0,
+                ticks: {
+                    stepSize: 1
+                }
+            }
+        }
+    };
     const config = {
         type: 'bar',
-        data
+        data,
+        options
     };
+
 
     const numberOfDaysChart = new Chart(
         document.querySelector('#number-of-days-since-last-study-session'),
