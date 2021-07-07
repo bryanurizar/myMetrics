@@ -4,7 +4,7 @@ html {
 }
 
 body {
-  color: #0b1f3d;
+  color: #293b5d;
   height: 100vh;
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
@@ -55,9 +55,10 @@ a {
 #btn {
   background-color: #2f75f2;
   border-radius: 20px;
-  padding: 8px 18px;
+  padding: 10px 18px;
   border: none;
   color: white;
+  box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2);
 }
 
 #btn:hover {
@@ -67,7 +68,7 @@ a {
 #board {
   display: flex;
   position: absolute;
-  margin-top: 8px;
+  margin-top: 12px;
   flex-direction: row;
   align-items: flex-start;
   overflow-x: auto;
@@ -90,14 +91,16 @@ input {
 .todo-list-container {
   display: flex;
   flex-direction: column;
+  border-color: white;
+  border-style: 1px solid;
   border-radius: 5px;
   padding: 1px 8px;
   margin: 0px 5px 40px;
   min-width: 272px;
   max-width: 272px;
   max-height: 77vh;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-  background-color: #eaecf1;
+  box-shadow: 0 2px 16px 0 rgb(0 0 0 / 6%);
+  background-color: #eaedf0;
 }
 
 .todo-list-container > .items {
@@ -116,13 +119,13 @@ input {
 }
 
 .add-card {
-  background-color: #ebecf0;
+  background-color: #eaedf0;
   border: none;
   margin-top: 0;
 }
 
 .add-card:hover {
-  background-color: #d5dade;
+  background-color: #f4f5f4;
 }
 
 .todos {
@@ -178,14 +181,15 @@ img:hover {
 }
 
 .targeted {
-  background-color: #f4f5f7;
+  background-color: #f56488;
   border-style: solid;
   border-width: 2px;
-  border-color: #bb371a;
+  color: white;
+  border-color: #f56488;
 }
 
 .targeted:hover {
-  background-color: #f4f5f7;
+  background-color: #f56488;
 }
 
 .cancel-btn {
@@ -197,6 +201,7 @@ img:hover {
   border-width: 1px;
   border-color: #9e9e9e;
   color: #666767;
+  /* box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2); */
 }
 
 .cancel-btn:hover {
@@ -330,6 +335,7 @@ span {
   border-radius: 20px;
   width: 210px;
   height: 35px;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
 }
 
 .create-board:focus {
@@ -465,7 +471,7 @@ span {
   align-items: center;
 }
 
-.timer-inputs {
+.timerInputs {
   display: flex;
   padding: 20px;
 }
@@ -479,6 +485,9 @@ span {
   font-size: 2rem;
   text-align: center;
   margin-left: 10px;
+  border-radius: 20px;
+  outline: none;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
 }
 
 #hours {
@@ -490,6 +499,9 @@ span {
   margin-right: 10px;
   font-size: 2rem;
   text-align: center;
+  border-radius: 20px;
+  outline: none;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
 }
 
 .separator {
@@ -503,6 +515,7 @@ span {
   padding: 10px 18px;
   border: none;
   color: white;
+  box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2);
 }
 
 #pause-btn:hover {
@@ -546,6 +559,7 @@ span {
   padding: 8px 20px;
   box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
   border-radius: 5px;
+  background-color: white;
 }
 
 .chart-title {
@@ -559,23 +573,30 @@ span {
 /* Leaderboard Styling */
 #leaderboard-section {
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  width: 30%;
+  height: 90%;
 }
+
 #leaderboard-table {
   flex: 1;
+  width: 30%;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
+  padding: 20px;
+  overflow-y: scroll;
 }
 
 header {
   font-weight: bold;
+  box-shadow: 0 8px 8px -10px rgb(0 0 0 / 15%);
 }
 
 header,
 .row {
   display: flex; /* aligns all child elements (flex items) in a row */
   /* border-style: solid; */
-  margin-bottom: 5px;
+  margin-bottom: 8px;
 }
 
 .col {
@@ -597,4 +618,22 @@ header,
 
 .user > .username {
   flex: 6;
+}
+
+.th-time {
+  text-align: right;
+}
+
+.td-time {
+  text-align: right;
+}
+
+#leaderboard-title {
+  margin-bottom: 0;
+}
+
+#leaderboard-your-rank {
+  margin-top: 5px;
+  margin-bottom: 10px;
+  font-weight: 400;
 }

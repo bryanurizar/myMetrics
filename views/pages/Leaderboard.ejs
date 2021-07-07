@@ -8,11 +8,13 @@
     <%- include('../partials/header');%>
 
     <section id="leaderboard-section">
+      <h2 id="leaderboard-title">Leaderboard: Top 100</h2>
+      <h3 id="leaderboard-your-rank">Your Rank: </h3>
       <div id="leaderboard-table">
         <header>
           <div class="col">Rank</div>
           <div class="col">User</div>
-          <div class="col">Time (hours)</div>
+          <div class="col th-time">Time (hours)</div>
         </header>
   
         <% results.forEach((result, rank) => { %>
@@ -24,7 +26,7 @@
               <%=`${result.firstName} ${result.lastName.substring(0, 1)}.`%>
             </div>
           </div>
-          <div class="col"><%=Math.round(result.boardStudyTime/(60))%></div>
+          <div class="col td-time"><%=Math.round(result.boardStudyTime/(60))%></div>
         </div>
         <% }) %>
         </div>

@@ -1,11 +1,16 @@
 import * as luxon from 'https://moment.github.io/luxon/es6/luxon.min.js';
 const Duration = luxon.Duration;
 import { addItemEventListeners } from './itemEventHandlers.js';
+import { isNumeric } from './isNumeric.js';
 
 // Checks if user wants to navigate away without cancelling
 window.addEventListener('beforeunload', e => {
-    e.preventDefault();
-    e.returnValue = '';
+    const isSessionOver = document.querySelector('#session-ended');
+    if (!isSessionOver) {
+        e.preventDefault();
+        e.returnValue = '';
+    }
+    return;
 });
 
 // Adds checkbox, edit and trash icon event handlers to items in lists
@@ -21,7 +26,7 @@ const boardId = boardUrl.pathname.split('/')[2];
 const studySection = document.querySelector('#study-timer');
 
 const timerHeader = document.createElement('h2');
-timerHeader.innerText = 'Study Session';
+timerHeader.innerText = 'Set a Countdown Timer!';
 studySection.append(timerHeader);
 
 const timerInputs = document.createElement('div');
@@ -47,7 +52,7 @@ studySection.appendChild(timerButtons);
 timerButtons.classList.add('timer-btns');
 
 const startButton = document.createElement('button');
-startButton.innerText = 'Start';
+startButton.innerText = 'Start Timer';
 startButton.id = 'btn';
 
 timerInputs.appendChild(hoursInput);
@@ -64,6 +69,12 @@ startButton.addEventListener('click', displayTimer);
 let studySessionDuration;
 
 function displayTimer() {
+    const areInputsNumbers = isNumeric(hoursInput.value) && isNumeric(minutesInput.value);
+    if (!areInputsNumbers) {
+        alert('Inputs are not numbers. Please try again');
+        return;
+    }
+
     timerInputs.remove();
 
     // Captures user input and includes board ID / study session ID
@@ -113,6 +124,7 @@ let startTime;
 
 function startTimer() {
     startButton.remove();
+    timerHeader.innerText = 'Session Started!';
     countdownTimer.innerHTML = studySessionDuration.minus(elapsedTime).toFormat('hh:mm:ss');
     startTime = new Date().getTime();
     decrement();
@@ -124,10 +136,14 @@ function pauseOrResumeTimer(e) {
     startTime = new Date().getTime();
     elapsedTime = 0;
     if (e.target.innerText === 'Pause') {
+        timerHeader.innerText = 'Session Paused!';
+        countdownTimer.style.color = '#DF5E5E';
         postStudySessionLog('Pause', studySessionDuration);
         clearTimeout(ticker);
         e.target.innerText = 'Resume';
     } else {
+        countdownTimer.style.color = '#293B5D';
+        timerHeader.innerText = 'Session Resumed!';
         postStudySessionLog('Resume', studySessionDuration);
         ticker = setTimeout(decrement, 1000);
         e.target.innerText = 'Pause';
