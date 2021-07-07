@@ -48,9 +48,6 @@ app.route('/')
 app.route('/login')
     .get((req, res) => {
         res.render('pages/login');
-    })
-    .post((req, res) => {
-        console.log(res);
     });
 
 app.route('/auth/google')
@@ -74,7 +71,6 @@ app.route('/logout')
 // Dashboard route
 app.route('/dashboard')
     .get(isUserAuthenticated, (req, res) => {
-        console.log(req.user.name.givenName);
         const loggedInUserId = req.user.id;
 
         connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? AND isBoardDeleted=0 ORDER BY createdAt', loggedInUserId, (err, results) => {
@@ -316,10 +312,10 @@ app.route('/analytics')
         res.render('pages/analytics');
     });
 
-app.route('/leaderboard')
-    .get(isUserAuthenticated, (req, res) => {
-        res.render('pages/leaderboard');
-    });
+// app.route('/leaderboard')
+//     .get(isUserAuthenticated, (req, res) => {
+//         res.render('pages/leaderboard');
+//     });
 
 app.route('/profile')
     .get(isUserAuthenticated, (req, res) => {
@@ -427,22 +423,27 @@ app.route('/pausesByBoards')
         });
     });
 
-// SELECT T5.userID, SUM(T5.TimeStudied) AS boardStudyTime FROM (
-//     SELECT T4.userID, T4.isBoardDeleted, T3.TimeStudied FROM (
-//         SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
-//             SELECT * FROM StudySessionLogs 
-//             WHERE StudySessionLogs.userAction='Cancel') AS T1
-//        LEFT JOIN StudySessions As T2
-//        ON T1.sessionID = T2.sessionId) AS T3
-//     INNER JOIN Boards AS T4
-//     ON T4.boardID = T3.boardID) AS T5
-//     WHERE T5.isBoardDeleted=0
-// GROUP BY T5.userID
-// ORDER BY T5.userID;
-
-
-
-
-
+app.route('/leaderboard')
+    .get(isUserAuthenticated, (req, res) => {
+        connection.query(`
+        SELECT T6.*, T7.firstName, T7.lastName, T7.email, T7.userImage  FROM (SELECT T5.userID, SUM(T5.TimeStudied) AS boardStudyTime FROM (
+            SELECT T4.userID, T4.isBoardDeleted, T3.TimeStudied FROM (
+                SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
+                    SELECT * FROM StudySessionLogs 
+                    WHERE StudySessionLogs.userAction='Cancel') AS T1
+               LEFT JOIN StudySessions As T2
+               ON T1.sessionID = T2.sessionId) AS T3
+            INNER JOIN Boards AS T4
+            ON T4.boardID = T3.boardID) AS T5
+            WHERE T5.isBoardDeleted=0
+        GROUP BY T5.userID
+        ORDER BY T5.userID) AS T6
+        INNER JOIN Users AS T7
+        ON T6.userID = T7.userID;
+    `, (err, results) => {
+            if (err) throw err;
+            res.render('pages/leaderboard', { results: results });
+        });
+    });
 
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));

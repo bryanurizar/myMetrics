@@ -555,3 +555,46 @@ span {
 .emoji {
   font-size: 20px;
 }
+
+/* Leaderboard Styling */
+#leaderboard-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 30%;
+}
+#leaderboard-table {
+  flex: 1;
+}
+
+header {
+  font-weight: bold;
+}
+
+header,
+.row {
+  display: flex; /* aligns all child elements (flex items) in a row */
+  /* border-style: solid; */
+  margin-bottom: 5px;
+}
+
+.col {
+  /* border-style: solid; */
+  flex: 1; /* distributes space on the line equally among items */
+}
+
+.user {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.user > img {
+  border-radius: 50%;
+  width: 20px;
+  margin-right: 5px;
+}
+
+.user > .username {
+  flex: 6;
+}
