@@ -437,7 +437,7 @@ app.route('/leaderboard')
             ON T4.boardID = T3.boardID) AS T5
             WHERE T5.isBoardDeleted=0
         GROUP BY T5.userID
-        ORDER BY T5.userID) AS T6
+        ORDER BY boardStudyTime DESC) AS T6
         INNER JOIN Users AS T7
         ON T6.userID = T7.userID;
     `, (err, results) => {
