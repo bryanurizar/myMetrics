@@ -288,6 +288,7 @@ span {
   margin-top: 40px;
   display: flex;
   align-items: flex-end;
+  transition: all 0.5s;
 }
 
 #target-list > input {
@@ -576,11 +577,11 @@ span {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  height: 90%;
+  height: 88%;
 }
 
 #leaderboard-title {
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 
 #leaderboard-your-rank {
@@ -592,9 +593,11 @@ span {
 #leaderboard-table {
   flex: 1;
   width: 30%;
-  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
-  padding: 20px;
+  box-shadow: 0 2px 20px 0 rgb(0 0 0 / 6%);
+  padding: 16px;
+  background-color: white;
   overflow-y: scroll;
+  border-radius: 10px;
 }
 
 header {
