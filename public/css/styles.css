@@ -603,7 +603,7 @@ span {
 }
 
 #leaderboard-rows {
-  max-height: 525px;
+  max-height: 68vh;
   overflow-y: scroll;
 }
 
