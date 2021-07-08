@@ -1,6 +1,7 @@
 html {
   height: 100vh;
   font-size: 12px;
+  margin: 0;
 }
 
 body {
@@ -18,6 +19,7 @@ body {
 section {
   padding: 0 1.5%;
 }
+
 nav {
   padding: 8px 1.5%;
   display: flex;
@@ -353,7 +355,7 @@ span {
 
 #boards {
   width: 60%;
-  height: 70vh;
+  height: 58vh;
   display: flex;
   flex-flow: wrap;
   justify-content: center;
@@ -584,9 +586,10 @@ span {
   margin-bottom: 0px;
 }
 
-#leaderboard-your-rank {
+#leaderboard-rank {
   margin-bottom: 10px;
-  font-weight: 400;
+  font-weight: 600;
+  font-size: 1.1rem;
 }
 
 #leaderboard-table {
@@ -600,7 +603,7 @@ span {
 }
 
 #leaderboard-rows {
-  height: 550px;
+  max-height: 525px;
   overflow-y: scroll;
 }
 
@@ -642,4 +645,8 @@ header,
   border-radius: 50%;
   width: 25px;
   margin-right: 8px;
+}
+
+#rank-emoji {
+  font-size: 1.8rem;
 }

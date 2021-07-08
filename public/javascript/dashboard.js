@@ -2,7 +2,18 @@
 
 const createBoardBtn = document.querySelector('button');
 createBoardBtn.addEventListener('click', createBoard);
+
+const createBoardInput = document.querySelector('.create-board');
+createBoardInput.addEventListener('keypress', e => {
+    if (e.target.className === 'create-board' && e.key === 'Enter') {
+        createBoard();
+    }
+});
+
+
 const boardSection = document.querySelector('#boards');
+
+
 
 async function createBoard() {
     const newBoardName = document.querySelector('input').value;
