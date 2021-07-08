@@ -9,26 +9,28 @@
 
     <section id="leaderboard-section">
       <h2 id="leaderboard-title">Leaderboard: Top 100</h2>
-      <h3 id="leaderboard-your-rank">Your Rank: </h3>
+      <h3 id="leaderboard-your-rank">Your Rank: <%= myRank.myRank %></h3>
       <div id="leaderboard-table">
         <header>
           <div class="rank">Rank</div>
           <div class="username">User</div>
           <div class="time">Time (hours)</div>
         </header>
-  
-        <% results.forEach((result, rank) => { %>
-        <div class="row">
-          <div class="rank"><%=rank + 1%></div>
-          <div class="username">
-            <img src="<%=result.userImage%>" alt="" />
-            <div>
-              <%=`${result.firstName} ${result.lastName.substring(0, 1)}.`%>
+        
+        <div id="leaderboard-rows">
+          <% results.forEach((result, rank) => { %>
+          <div class="row">
+            <div class="rank"><%=rank + 1%></div>
+            <div class="username">
+              <img src="<%=result.userImage%>" alt="" />
+              <div>
+                <%=`${result.firstName} ${result.lastName.substring(0, 1)}.`%>
+              </div>
             </div>
+            <div class="time"><%=Math.round(result.boardStudyTime/(60))%></div>
           </div>
-          <div class="time"><%=Math.round(result.boardStudyTime/(60))%></div>
+          <% }) %>
         </div>
-        <% }) %>
         </div>
       </div>
     </section>

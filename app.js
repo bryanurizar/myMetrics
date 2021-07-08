@@ -10,6 +10,7 @@ import nanoid from './helpers/nanoid.js';
 import passport from 'passport';
 import findById from './helpers/findById.js';
 import isUserAuthenticated from './helpers/isUserAuthenticated.js';
+import faker from 'faker';
 
 const port = process.env.PORT || 3000;
 
@@ -442,7 +443,50 @@ app.route('/leaderboard')
         ON T6.userID = T7.userID;
     `, (err, results) => {
             if (err) throw err;
-            res.render('pages/leaderboard', { results: results });
+
+            // Generates fake data
+            results = [];
+            for (let i = 0; i < 199; i++) {
+                const user = {
+                    userID: faker.datatype.uuid(),
+                    boardStudyTime: faker.datatype.number(),
+                    firstName: faker.name.firstName(),
+                    lastName: faker.name.lastName(),
+                    email: faker.internet.email(),
+                    userImage: faker.image.avatar()
+                };
+
+
+                results.push(user);
+            }
+            const myself = {
+                userId: '12345',
+                boardStudyTime: 459,
+                firstName: 'Bryan',
+                lastName: 'Urizar',
+                email: 'bryan.urizar@outlook.com',
+                userImage: 'https://lh3.googleusercontent.com/a-/AOh14Gg9118uWEU7dIwfvL0KiVLssfhEpc89pVuymrfJWA=s96-c'
+            };
+            results.push(myself);
+
+            function dynamicSort(property) {
+                var sortOrder = 1;
+                if (property[0] === '-') {
+                    sortOrder = -1;
+                    property = property.substr(1);
+                }
+                return function (a, b) {
+                    /* next line works with strings and numbers, 
+                     * and you may want to customize it to your needs
+                     */
+                    var result = (a[property] > b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+                    return result * sortOrder;
+                };
+            }
+            results = results.sort(dynamicSort('boardStudyTime'));
+
+            const myRank = results.findIndex(result => result.userID === '12345');
+            res.render('pages/leaderboard', { results: results, myRank: myRank });
         });
     });
 
