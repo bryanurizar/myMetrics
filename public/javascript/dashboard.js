@@ -6,7 +6,8 @@ createBoardBtn.addEventListener('click', createBoard);
 const createBoardInput = document.querySelector('.create-board');
 createBoardInput.addEventListener('keypress', e => {
     if (e.target.className === 'create-board' && e.key === 'Enter') {
-        createBoard();
+        const newBoardName = document.querySelector('input').value;
+        createBoard(newBoardName);
     }
 });
 
@@ -15,10 +16,14 @@ const boardSection = document.querySelector('#boards');
 
 
 
-async function createBoard() {
-    const newBoardName = document.querySelector('input').value;
+async function createBoard(boardName) {
+    if (boardName === '') {
+        alert('Please enter a valid board name');
+        return;
+    }
+
     const data = {
-        newBoardName: newBoardName
+        newBoardName: boardName
     };
 
     const response = await fetch('http://localhost:3000/boards', {
@@ -30,7 +35,7 @@ async function createBoard() {
     });
     const res = await response.json();
     document.querySelector('input').value = '';
-    renderNewBoard(newBoardName, res.newBoardId);
+    renderNewBoard(boardName, res.newBoardId);
 }
 
 function renderNewBoard(boardName, boardId) {
