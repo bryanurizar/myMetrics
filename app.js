@@ -485,7 +485,11 @@ app.route('/leaderboard')
             }
             results = results.sort(dynamicSort('boardStudyTime'));
 
-            const myRank = results.findIndex(result => result.userID === '12345');
+            const myRank = results.findIndex((result, idx) => {
+                result.userID === '12345';
+                console.log(result.userID);
+                console.log(idx);
+            });
             res.render('pages/leaderboard', { results: results, myRank: myRank });
         });
     });
