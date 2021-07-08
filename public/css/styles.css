@@ -591,7 +591,7 @@ span {
 
 #leaderboard-table {
   flex: 1;
-  width: 35%;
+  min-width: 450px;
   box-shadow: 0 2px 20px 0 rgb(0 0 0 / 6%);
   padding: 16px;
   background-color: white;

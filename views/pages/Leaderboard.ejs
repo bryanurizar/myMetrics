@@ -27,7 +27,7 @@
                 <%=`${result.firstName} ${result.lastName.substring(0, 1)}.`%>
               </div>
             </div>
-            <div class="time"><%=Math.round(result.boardStudyTime/(60))%></div>
+            <div class="time"><%=Math.round(result.boardStudyTime/(60 * 60))%></div>
           </div>
           <% }) %>
         </div>
