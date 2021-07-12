@@ -12,7 +12,6 @@ import findById from './helpers/findById.js';
 import isUserAuthenticated from './helpers/isUserAuthenticated.js';
 import faker from 'faker';
 import ordinalSuffixOf from './helpers/ordinalSuffix.js';
-import { LexoRank } from 'lexorank';
 
 const port = process.env.PORT || 3000;
 
