@@ -12,6 +12,7 @@ import findById from './helpers/findById.js';
 import isUserAuthenticated from './helpers/isUserAuthenticated.js';
 import faker from 'faker';
 import ordinalSuffixOf from './helpers/ordinalSuffix.js';
+import { LexoRank } from 'lexorank';
 
 const port = process.env.PORT || 3000;
 
@@ -494,6 +495,7 @@ app.route('/leaderboard')
 
             res.render('pages/leaderboard', { results: results, userRank: userRank });
         });
+
     });
 
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));

@@ -290,7 +290,7 @@ span {
   margin-top: 40px;
   display: flex;
   align-items: flex-end;
-  transition: all 0.5s;
+  /* transition: all 0.5s; */
 }
 
 #target-list > input {

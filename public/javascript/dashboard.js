@@ -1,20 +1,22 @@
 'use strict';
 
 const createBoardBtn = document.querySelector('button');
-createBoardBtn.addEventListener('click', createBoard);
-
 const createBoardInput = document.querySelector('.create-board');
+
+createBoardBtn.addEventListener('click', () => {
+    const newBoardName = document.querySelector('input').value;
+    createBoard(newBoardName);
+
+});
+
 createBoardInput.addEventListener('keypress', e => {
     if (e.target.className === 'create-board' && e.key === 'Enter') {
-        const newBoardName = document.querySelector('input').value;
+        const newBoardName = e.target.value;
         createBoard(newBoardName);
     }
 });
 
-
 const boardSection = document.querySelector('#boards');
-
-
 
 async function createBoard(boardName) {
     if (boardName === '') {
