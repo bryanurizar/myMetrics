@@ -494,7 +494,6 @@ app.route('/leaderboard')
 
             res.render('pages/leaderboard', { results: results, userRank: userRank });
         });
-
     });
 
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));

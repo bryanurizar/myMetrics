@@ -2,20 +2,16 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 import pg from 'pg';
-const { Client } = pg;
-const client = new Client({
+const { Pool } = pg;
+const pool = new Pool({
     user: process.env.USER,
-    password: process.env.PASSWORD,
     host: process.env.HOST,
-    port: process.env.PORT,
-    database: process.env.DB_NAME
+    database: process.env.DB_NAME,
+    password: process.env.PASSWORD,
+    port: process.env.PORT
 });
 
-client.connect()
-    .then(() => console.log('Connected successfully'))
-    .catch(e => console.log(e))
-    .finally(() => client.end());
-
+await pool.connect();
 
 // client.connect((err) => {
 //     if (err) {
