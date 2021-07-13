@@ -6,7 +6,6 @@ const createBoardInput = document.querySelector('.create-board');
 createBoardBtn.addEventListener('click', () => {
     const newBoardName = document.querySelector('input').value;
     createBoard(newBoardName);
-
 });
 
 createBoardInput.addEventListener('keypress', e => {

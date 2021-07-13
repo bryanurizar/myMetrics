@@ -28,12 +28,22 @@ const handleDrop = e => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.todo-card');
+    const movedCardNode = document.querySelector(`#${cardId}`);
+    console.log(movedCardNode);
 
     if (isMouseAboveMiddle(e)) {
         dropNode.insertAdjacentElement('beforebegin', document.querySelector(`#${cardId}`));
     } else {
         dropNode.insertAdjacentElement('afterend', document.querySelector(`#${cardId}`));
     }
+
+
+
+    console.log(movedCardNode.previousElementSibling);
+    console.log(movedCardNode.nextElementSibling);
+
+
+
 };
 
 function isMouseAboveMiddle(e) {
@@ -50,6 +60,14 @@ dropZones.forEach(dropZone => {
     dropZone.addEventListener('drop', handleDrop);
     dropZone.addEventListener('dragover', handleDragOver);
 });
+
+
+
+
+
+
+
+
 
 /*
 ***
