@@ -76,7 +76,6 @@ app.route('/dashboard')
         const loggedInUserId = req.user.id;
 
         pool.query('SELECT boardID, boardName FROM Boards WHERE userID=$1 AND isBoardDeleted=FALSE ORDER BY createdAt', [loggedInUserId], (err, results) => {
-            console.log(results.rows);
             if (err) throw err;
             res.setHeader('Cache-Control', 'no-store');
             res.render('pages/dashboard', { user: req.user, results: results.rows });
@@ -102,7 +101,7 @@ app.route('/boards/:boardId/:boardName')
         const loggedInUserId = req.user.id;
         const boardID = req.params.boardId;
 
-        pool.query('UPDATE Items SET isOnTargetList=FALSE WHERE userID=$2 AND isOnTargetList=1', [loggedInUserId], (err, result) => {
+        pool.query('UPDATE Items SET isOnTargetList=FALSE WHERE userID=$1 AND isOnTargetList=True', [loggedInUserId], (err, result) => {
             if (err) throw err;
             console.log('Target list reset.');
         });
@@ -110,7 +109,7 @@ app.route('/boards/:boardId/:boardName')
         pool.query('SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 
-            pool.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=$1 ORDER BY createdAt', [loggedInUserId], (err, items) => {
+            pool.query('SELECT * FROM Items WHERE isItemCompleted=FALSE AND userID=$1 ORDER BY createdAt', [loggedInUserId], (err, items) => {
                 if (err) throw err;
                 res.setHeader('Cache-Control', 'no-store');
                 res.render('pages/board', { lists: lists, items: items });
@@ -145,7 +144,7 @@ app.route('/items')
         const studySessionId = nanoid();
 
         for (let i = 0; i < targetListItems.length; i++) {
-            pool.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=$1', [targetListItems[i]], err => {
+            pool.query('UPDATE Items SET isOnTargetList=True WHERE itemID=$1', [targetListItems[i]], err => {
                 if (err) throw err;
             });
         }
@@ -277,7 +276,7 @@ app.route('/study-session/:studySessionId')
             isSessionPageVisited = result[0].isSessionPageVisited;
         });
 
-        pool.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
+        pool.query('SELECT * FROM ITEMS WHERE isOnTargetList=True ORDER BY createdAt', (err, items) => {
             if (err) {
                 throw err;
             }
@@ -333,7 +332,7 @@ app.route('/itemCountChart')
         SELECT Boards.boardName, COUNT(*) as itemCount FROM Items 
         INNER JOIN Boards 
         ON Items.boardID = Boards.boardID  
-        WHERE Items.isItemCompleted=0 AND Items.userID=$1 AND isBoardDeleted=FALSE
+        WHERE Items.isItemCompleted=FALSE AND Items.userID=$1 AND isBoardDeleted=FALSE
         GROUP BY Items.boardID
         ORDER BY Boards.boardName;
         `, [loggedInUser], (err, data) => {
