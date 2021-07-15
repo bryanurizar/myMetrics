@@ -76,9 +76,10 @@ app.route('/dashboard')
         const loggedInUserId = req.user.id;
 
         pool.query('SELECT boardID, boardName FROM Boards WHERE userID=$1 AND isBoardDeleted=FALSE ORDER BY createdAt', [loggedInUserId], (err, results) => {
+            console.log(results.rows);
             if (err) throw err;
             res.setHeader('Cache-Control', 'no-store');
-            res.render('pages/dashboard', { user: req.user, results: results });
+            res.render('pages/dashboard', { user: req.user, results: results.rows });
         });
     });
 
