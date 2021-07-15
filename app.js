@@ -1,4 +1,4 @@
-import connection from './database/db_init.js';
+import pool from './database/db_init.js';
 import express from 'express';
 const app = express();
 import passportConfig from './config/passport.js';
@@ -75,7 +75,7 @@ app.route('/dashboard')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
 
-        connection.query('SELECT boardID, boardName FROM Boards WHERE userID=? AND isBoardDeleted=0 ORDER BY createdAt', loggedInUserId, (err, results) => {
+        pool.query('SELECT boardID, boardName FROM Boards WHERE userID=$1 AND isBoardDeleted=FALSE ORDER BY createdAt', [loggedInUserId], (err, results) => {
             if (err) throw err;
             res.setHeader('Cache-Control', 'no-store');
             res.render('pages/dashboard', { user: req.user, results: results });
@@ -89,7 +89,7 @@ app.route('/boards')
         const newBoardName = req.body.newBoardName;
         const loggedInUserId = req.user.id;
 
-        connection.query('INSERT INTO Boards (boardID, boardName, userID) VALUES(?, ?, ?)', [newBoardId, newBoardName, loggedInUserId], (err) => {
+        pool.query('INSERT INTO Boards (boardID, boardName, userID) VALUES($1, $2, $3)', [newBoardId, newBoardName, loggedInUserId], (err) => {
             if (err) throw err;
             console.log('New board inserted into Boards table');
             res.json({ newBoardId: newBoardId });
@@ -101,15 +101,15 @@ app.route('/boards/:boardId/:boardName')
         const loggedInUserId = req.user.id;
         const boardID = req.params.boardId;
 
-        connection.query('UPDATE Items SET isOnTargetList=? WHERE userID=? AND isOnTargetList=1', [0, loggedInUserId], (err, result) => {
+        pool.query('UPDATE Items SET isOnTargetList=FALSE WHERE userID=$2 AND isOnTargetList=1', [loggedInUserId], (err, result) => {
             if (err) throw err;
             console.log('Target list reset.');
         });
 
-        connection.query('SELECT * FROM Lists WHERE userID=? AND boardID=? ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
+        pool.query('SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 
-            connection.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=? ORDER BY createdAt', loggedInUserId, (err, items) => {
+            pool.query('SELECT * FROM Items WHERE isItemCompleted=0 AND userID=$1 ORDER BY createdAt', [loggedInUserId], (err, items) => {
                 if (err) throw err;
                 res.setHeader('Cache-Control', 'no-store');
                 res.render('pages/board', { lists: lists, items: items });
@@ -118,7 +118,7 @@ app.route('/boards/:boardId/:boardName')
     })
     .patch(isUserAuthenticated, (req, res) => {
         const boardId = req.body.boardId;
-        connection.query('UPDATE Boards SET isBoardDeleted=True WHERE BoardID=?', boardId, (err, result) => {
+        pool.query('UPDATE Boards SET isBoardDeleted=True WHERE BoardID=$1', [boardId], (err, result) => {
             if (err) throw err;
             console.log('Board marked as deleted');
         });
@@ -133,7 +133,7 @@ app.route('/items')
         const itemId = nanoid();
         const boardId = req.body.boardId;
 
-        connection.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [itemId, itemName, listId, loggedInUserId, boardId], (err) => {
+        pool.query('INSERT INTO Items (itemID, itemName, listID, userID, boardID) VALUES ($1, $2, $3, $4, $5)', [itemId, itemName, listId, loggedInUserId, boardId], (err) => {
             if (err) throw err;
             console.log('Item inserted into database.');
             res.json({ itemId: itemId });
@@ -144,7 +144,7 @@ app.route('/items')
         const studySessionId = nanoid();
 
         for (let i = 0; i < targetListItems.length; i++) {
-            connection.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=?', targetListItems[i], err => {
+            pool.query('UPDATE Items SET isOnTargetList=1 WHERE itemID=$1', [targetListItems[i]], err => {
                 if (err) throw err;
             });
         }
@@ -160,12 +160,12 @@ app.route('/items/:itemId')
         const completedItemId = req.body.completedItemId;
 
         if (completedItemId) {
-            connection.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=?', completedItemId, err => {
+            pool.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=$1', [completedItemId], err => {
                 if (err) throw err;
                 console.log('Item updated from database.');
             });
         } else {
-            connection.query('UPDATE Items SET itemName=? WHERE itemID=?', [updatedItemDescription, editedItemId], err => {
+            pool.query('UPDATE Items SET itemName=$1 WHERE itemID=$2', [updatedItemDescription, editedItemId], err => {
                 if (err) throw err;
                 console.log('Item updated from database.');
             });
@@ -174,7 +174,7 @@ app.route('/items/:itemId')
     .delete(isUserAuthenticated, (req, res) => {
         const deletedItemId = req.body.deletedItemId;
 
-        connection.query('DELETE FROM Items WHERE itemId=?', deletedItemId, err => {
+        pool.query('DELETE FROM Items WHERE itemId=$1', [deletedItemId], err => {
             if (err) throw err;
             console.log('Item deleted from database.');
         });
@@ -189,7 +189,7 @@ app.route('/lists')
         const loggedInUser = req.user.id;
         const listId = nanoid();
 
-        connection.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES (?, ?, ?, ?)', [listId, listName, loggedInUser, boardId], (err) => {
+        pool.query('INSERT INTO Lists (listID, listName, userID, boardId) VALUES ($1, $2, $3, $4)', [listId, listName, loggedInUser, boardId], (err) => {
             if (err) throw err;
             res.json({ listId: listId });
         });
@@ -200,7 +200,7 @@ app.route('/lists/:listId')
         const newList = req.body.newList;
         const loggedInUser = req.user.id;
 
-        connection.query('INSERT INTO Lists (listDescription, userID) VALUES (?, ?)', [newList, loggedInUser], err => {
+        pool.query('INSERT INTO Lists (listDescription, userID) VALUES ($1, $2)', [newList, loggedInUser], err => {
             if (err) throw err;
             console.log('Item inserted into database.');
             res.redirect('board');
@@ -208,23 +208,23 @@ app.route('/lists/:listId')
     })
     .delete(isUserAuthenticated, (req, res) => {
         const listId = req.body.listId;
-        connection.beginTransaction(function (err) {
+        pool.beginTransaction(function (err) {
             if (err) { throw err; }
-            connection.query('DELETE FROM Items Where listID=?', listId, function (error) {
+            pool.query('DELETE FROM Items Where listID=$1', [listId], function (error) {
                 if (error) {
-                    return connection.rollback(function () {
+                    return pool.rollback(function () {
                         throw error;
                     });
                 }
-                connection.query('DELETE FROM Lists WHERE listID=?', listId, function (error) {
+                pool.query('DELETE FROM Lists WHERE listID=$1', [listId], function (error) {
                     if (error) {
-                        return connection.rollback(function () {
+                        return pool.rollback(function () {
                             throw error;
                         });
                     }
-                    connection.commit(function (err) {
+                    pool.commit(function (err) {
                         if (err) {
-                            return connection.rollback(function () {
+                            return pool.rollback(function () {
                                 throw err;
                             });
                         }
@@ -243,7 +243,7 @@ app.route('/study-session')
         const loggedInUser = req.user.id;
         const boardId = req.body.boardId;
 
-        connection.query('INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID) VALUES (?, ?, ?, ?)', [studySessionId, sessionDuration, loggedInUser, boardId], (err, result) => {
+        pool.query('INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID) VALUES ($1, $2, $3, $4)', [studySessionId, sessionDuration, loggedInUser, boardId], (err, result) => {
             if (err) {
                 console.log(err);
                 throw err;
@@ -256,7 +256,7 @@ app.route('/study-session')
         const studySessionId = req.body.sessionId;
         const sessionDuration = 3600 * req.body.hours + 60 * req.body.minutes;
 
-        connection.query('UPDATE StudySessions SET sessionDuration=? WHERE sessionId=?', [sessionDuration, studySessionId], (err, result) => {
+        pool.query('UPDATE StudySessions SET sessionDuration=$1 WHERE sessionId=$2', [sessionDuration, studySessionId], (err, result) => {
             if (err) {
                 console.log(err);
                 throw err;
@@ -271,12 +271,12 @@ app.route('/study-session/:studySessionId')
         const studySessionId = req.params.studySessionId;
         let isSessionPageVisited;
 
-        connection.query('SELECT * FROM StudySessions WHERE sessionID=?', studySessionId, (err, result) => {
+        pool.query('SELECT * FROM StudySessions WHERE sessionID=$1', [studySessionId], (err, result) => {
             if (err) throw err;
             isSessionPageVisited = result[0].isSessionPageVisited;
         });
 
-        connection.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
+        pool.query('SELECT * FROM ITEMS WHERE isOnTargetList=1 ORDER BY createdAt', (err, items) => {
             if (err) {
                 throw err;
             }
@@ -288,7 +288,7 @@ app.route('/study-session/:studySessionId')
             res.render('pages/study-session', status);
         });
 
-        connection.query('UPDATE StudySessions SET isSessionPageVisited="Yes" WHERE sessionID=?', studySessionId, (err, result) => {
+        pool.query('UPDATE StudySessions SET isSessionPageVisited="Yes" WHERE sessionID=$1', [studySessionId], (err, result) => {
             if (err) throw err;
             isSessionPageVisited = 'Yes';
             console.log('isSessionPageVisited property updated.');
@@ -302,7 +302,7 @@ app.route('/study-session/:studySessionId')
         const userAction = req.body.userAction;
         const loggedInUser = req.user.id;
 
-        connection.query('INSERT INTO STUDYSESSIONLOGS (sessionDurationRemaining, userAction, sessionID, userID, boardID) VALUES (?, ?, ?, ?, ?)', [studySessionDuration, userAction, sessionId, loggedInUser, boardId, sessionId], (err, result) => {
+        pool.query('INSERT INTO STUDYSESSIONLOGS (sessionDurationRemaining, userAction, sessionID, userID, boardID) VALUES ($1, $2, $3, $4, $5)', [studySessionDuration, userAction, sessionId, loggedInUser, boardId, sessionId], (err, result) => {
             if (err) throw err;
             console.log('User action added to study session log');
         });
@@ -328,14 +328,14 @@ app.route('/itemCountChart')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
 
-        connection.query(`
+        pool.query(`
         SELECT Boards.boardName, COUNT(*) as itemCount FROM Items 
         INNER JOIN Boards 
         ON Items.boardID = Boards.boardID  
-        WHERE Items.isItemCompleted=0 AND Items.userID=? AND isBoardDeleted=FALSE
+        WHERE Items.isItemCompleted=0 AND Items.userID=$1 AND isBoardDeleted=FALSE
         GROUP BY Items.boardID
         ORDER BY Boards.boardName;
-        `, loggedInUser, (err, data) => {
+        `, [loggedInUser], (err, data) => {
             if (err) throw err;
             const boardNames = [];
             const itemCount = [];
@@ -350,20 +350,20 @@ app.route('/itemCountChart')
 app.route('/studyTimeByBoardsChart')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
-        connection.query(`
+        pool.query(`
         SELECT T5.boardName, SUM(T5.TimeStudied) AS boardStudyTime FROM (
             SELECT T4.boardName, T4.isBoardDeleted, T3.TimeStudied FROM (
                 SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
                     SELECT * FROM StudySessionLogs 
-                    WHERE StudySessionLogs.userAction='Cancel' AND userID=?) AS T1
+                    WHERE StudySessionLogs.userAction='Cancel' AND userID=$1) AS T1
                LEFT JOIN StudySessions As T2
                ON T1.sessionID = T2.sessionId) AS T3
             INNER JOIN Boards AS T4
             ON T4.boardID = T3.boardID) AS T5
-            WHERE T5.isBoardDeleted=0
+            WHERE T5.isBoardDeleted=FALSE
         GROUP BY T5.boardName
         ORDER BY T5.boardName;
-        `, loggedInUser, (err, boardsData) => {
+        `, [loggedInUser], (err, boardsData) => {
             if (err) throw err;
             const boardNames = [];
             const boardStudyTime = [];
@@ -378,17 +378,17 @@ app.route('/studyTimeByBoardsChart')
 app.route('/daysSinceLastSession')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
-        connection.query(`
+        pool.query(`
         SELECT T3.boardName, MAX(T3.createdAt) AS LastSessionDate FROM (
 	        SELECT T1.*, T2.boardName, T2.isBoardDeleted FROM (
 		        SELECT StudySessionLogs.LogId, StudySessionLogs.boardID, StudySessionLogs.createdAt FROM StudySessionLogs 
-			    WHERE StudySessionLogs.userAction='Cancel' AND userID=?) AS T1			
+			    WHERE StudySessionLogs.userAction='Cancel' AND userID=$1) AS T1			
             JOIN Boards as T2
             ON T2.boardID = T1.boardID
-            WHERE T2.isBoardDeleted=0) AS T3
+            WHERE T2.isBoardDeleted=FALSE) AS T3
         GROUP BY T3.boardName
         ORDER BY T3.boardName;
-        `, loggedInUser, (err, boardsData) => {
+        `, [loggedInUser], (err, boardsData) => {
             if (err) throw err;
             const boardNames = [];
             const daysSinceLastSession = [];
@@ -404,18 +404,18 @@ app.route('/daysSinceLastSession')
 app.route('/pausesByBoards')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
-        connection.query(`
+        pool.query(`
         SELECT T3.SessionID, T3.pauseCount FROM (
             SELECT StudySessionLogs.SessionID, StudySessionLogs.userACTION, T2.createdAt, 
             COUNT(StudySessionLogs.userAction) AS pauseCount FROM StudySessionLogs
             INNER JOIN StudySessions AS T2
             ON StudySessionLogs.SessionID = T2.SessionID
-            WHERE StudySessionLogs.userAction = 'Pause' AND StudySessionLogs.userID=?
+            WHERE StudySessionLogs.userAction = 'Pause' AND StudySessionLogs.userID=$1
             GROUP BY StudySessionLogs.SessionID
             ORDER BY createdAt DESC
             LIMIT 10) As T3
         ORDER BY T3.createdAt ASC
-        `, loggedInUser, (err, pauseCountByBoards) => {
+        `, [loggedInUser], (err, pauseCountByBoards) => {
             const lastTenSessions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
             const pausesCount = [];
             pauseCountByBoards.forEach(pauseCountByBoard => {
@@ -429,7 +429,7 @@ app.route('/leaderboard')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
 
-        connection.query(`
+        pool.query(`
         SELECT T6.*, T7.firstName, T7.lastName, T7.email, T7.userImage  FROM (SELECT T5.userID, SUM(T5.TimeStudied) AS boardStudyTime FROM (
             SELECT T4.userID, T4.isBoardDeleted, T3.TimeStudied FROM (
                 SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
@@ -439,7 +439,7 @@ app.route('/leaderboard')
                ON T1.sessionID = T2.sessionId) AS T3
             INNER JOIN Boards AS T4
             ON T4.boardID = T3.boardID) AS T5
-            WHERE T5.isBoardDeleted=0
+            WHERE T5.isBoardDeleted=FALSE
         GROUP BY T5.userID
         ORDER BY boardStudyTime DESC) AS T6
         INNER JOIN Users AS T7
