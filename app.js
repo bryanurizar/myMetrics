@@ -112,7 +112,7 @@ app.route('/boards/:boardId/:boardName')
             pool.query('SELECT * FROM Items WHERE isItemCompleted=FALSE AND userID=$1 ORDER BY createdAt', [loggedInUserId], (err, items) => {
                 if (err) throw err;
                 res.setHeader('Cache-Control', 'no-store');
-                res.render('pages/board', { lists: lists, items: items });
+                res.render('pages/board', { lists: lists.rows, items: items.rows });
             });
         });
     })

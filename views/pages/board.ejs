@@ -12,29 +12,22 @@
     </section>
 
     <section id="board">
-      <% for (let j = 0; j < lists.length; j++) { %>
+      <% lists.forEach(list => { %>
       <div class="todo-list-container">
         <div class="list-header">
-          <h4 class="list-name" contenteditable><%= lists[j].listName %></h4>
-          <h4 id="<%= lists[j].listID%>" class="list-popup">...</h4>
-          <div id="modal-<%=lists[j].listID%>" class="modal">
+          <h4 class="list-name" contenteditable><%= list.listname %></h4>
+          <h4 id="<%= list.listid%>" class="list-popup">...</h4>
+          <div id="modal-<%=list.listid%>" class="modal">
             <h4 id="modal-title"><span>List Actions</span></h4>
-            <p id="<%= lists[j].listID%>" class="delete-list">
-              Delete This List..
-            </p>
+            <p id="<%= list.listid%>" class="delete-list">Delete This List..</p>
           </div>
         </div>
-        <div id="todo-list-<%= lists[j].listID%>" class="items">
-          <% for (let i = 0; i < items.length; i++) { %> <% if (items[i].listID
-          === lists[j].listID) { %>
-          <div
-            id="card-<%= items[i].itemID %>"
-            class="todo-card"
-            draggable="true"
-          >
+        <div id="todo-list-<%= list.listid%>" class="items">
+          <% items.forEach(item => { %> <% if (item.listid === list.listid) { %>
+          <div id="card-<%= item.itemID %>" class="todo-card" draggable="true">
             <div class="todo-content">
               <input type="checkbox" />
-              <p class="todo-description"><%= items[i].itemName %></p>
+              <p class="todo-description"><%= item.itemname %></p>
               <br />
               <div class="flaticons">
                 <img class="edit" src="../../img/edit.svg" />
@@ -42,10 +35,10 @@
               </div>
             </div>
           </div>
-          <% } %> <%}%>
+          <% } %> <% }); %>
         </div>
         <input
-          id="<%= lists[j].listID %>"
+          id="<%= list.listid %>"
           name="itemName"
           class="add-card"
           type="text"
@@ -53,7 +46,7 @@
           placeholder="Add new card.."
         />
       </div>
-      <% } %>
+      <% }); %>
 
       <div>
         <input

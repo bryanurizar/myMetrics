@@ -2,6 +2,9 @@
     "python.pythonPath": "/usr/local/bin/python3",
     "cSpell.words": [
         "boardname",
+        "itemname",
+        "listid",
+        "listname",
         "studysessionlogs"
     ]
 }
