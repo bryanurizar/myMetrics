@@ -24,7 +24,7 @@
         </div>
         <div id="todo-list-<%= list.listid%>" class="items">
           <% items.forEach(item => { %> <% if (item.listid === list.listid) { %>
-          <div id="card-<%= item.itemID %>" class="todo-card" draggable="true">
+          <div id="card-<%= item.itemid %>" class="todo-card" draggable="true">
             <div class="todo-content">
               <input type="checkbox" />
               <p class="todo-description"><%= item.itemname %></p>

@@ -153,14 +153,14 @@ app.route('/items')
     });
 
 app.route('/items/:itemId')
-
     .patch(isUserAuthenticated, (req, res) => {
         const updatedItemDescription = req.body.updatedItem;
         const editedItemId = req.body.editedItemId;
         const completedItemId = req.body.completedItemId;
+        console.log(completedItemId);
 
         if (completedItemId) {
-            pool.query('UPDATE Items SET isItemCompleted=1 WHERE itemID=$1', [completedItemId], err => {
+            pool.query('UPDATE Items SET isItemCompleted=True WHERE itemID=$1', [completedItemId], err => {
                 if (err) throw err;
                 console.log('Item updated from database.');
             });
