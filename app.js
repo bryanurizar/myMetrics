@@ -295,7 +295,7 @@ app.route('/study-session/:studySessionId')
         const userAction = req.body.userAction;
         const loggedInUser = req.user.id;
 
-        pool.query('INSERT INTO STUDYSESSIONLOGS (sessionDurationRemaining, userAction, sessionID, userID, boardID) VALUES ($1, $2, $3, $4, $5)', [studySessionDuration, userAction, sessionId, loggedInUser, boardId, sessionId], (err, result) => {
+        pool.query('INSERT INTO STUDYSESSIONLOGS (sessionDurationRemaining, userAction, sessionID, userID, boardID) VALUES ($1, $2, $3, $4, $5)', [studySessionDuration, userAction, sessionId, loggedInUser, boardId], (err, result) => {
             if (err) throw err;
             console.log('User action added to study session log');
         });
