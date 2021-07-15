@@ -266,7 +266,7 @@ app.route('/study-session/:studySessionId')
 
         pool.query('SELECT * FROM StudySessions WHERE sessionID=$1', [studySessionId], (err, result) => {
             if (err) throw err;
-            isSessionPageVisited = result[0].isSessionPageVisited;
+            isSessionPageVisited = result.rows[0].isSessionPageVisited;
         });
 
         pool.query('SELECT * FROM ITEMS WHERE isOnTargetList=True ORDER BY createdAt', (err, items) => {
@@ -274,16 +274,16 @@ app.route('/study-session/:studySessionId')
                 throw err;
             }
             const status = {
-                items: items,
+                items: items.rows,
                 isSessionPageVisited: isSessionPageVisited
             };
             res.setHeader('Cache-Control', 'no-store');
             res.render('pages/study-session', status);
         });
 
-        pool.query('UPDATE StudySessions SET isSessionPageVisited="Yes" WHERE sessionID=$1', [studySessionId], (err, result) => {
+        pool.query('UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1', [studySessionId], (err, result) => {
             if (err) throw err;
-            isSessionPageVisited = 'Yes';
+            isSessionPageVisited = true;
             console.log('isSessionPageVisited property updated.');
         });
     })

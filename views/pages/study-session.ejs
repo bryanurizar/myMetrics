@@ -20,15 +20,15 @@
             </div>
           </div>
           <div class="items">
-            <% for (let i = 0; i < items.length; i++) { %>
+            <% items.forEach(item => { %>
             <div
-              id="card-<%= items[i].itemID %>"
+              id="card-<%= item.itemid %>"
               class="todo-card"
               draggable="true"
             >
               <div class="todo-content">
                 <input type="checkbox" />
-                <p class="todo-description"><%= items[i].itemName %></p>
+                <p class="todo-description"><%= item.itemname %></p>
                 <br />
                 <div class="flaticons">
                   <img class="edit" src="../../img/edit.svg" />
@@ -36,7 +36,7 @@
                 </div>
               </div>
             </div>
-            <% } %>
+            <% }); %>
           </div>
         </div>
       </div>
