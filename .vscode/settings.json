@@ -4,6 +4,7 @@
         "boardname",
         "boardstudytime",
         "firstname",
+        "itemcount",
         "itemname",
         "lastname",
         "listid",

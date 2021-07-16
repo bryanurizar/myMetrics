@@ -326,15 +326,17 @@ app.route('/itemCountChart')
         INNER JOIN Boards 
         ON Items.boardID = Boards.boardID  
         WHERE Items.isItemCompleted=FALSE AND Items.userID=$1 AND isBoardDeleted=FALSE
-        GROUP BY Items.boardID
+        GROUP BY boards.boardName
         ORDER BY Boards.boardName;
         `, [loggedInUser], (err, data) => {
+            console.log(data);
             if (err) throw err;
             const boardNames = [];
             const itemCount = [];
-            for (let i = 0; i < data.length; i++) {
-                boardNames.push(data[i].boardName);
-                itemCount.push(data[i].itemCount);
+            const itemCountResults = data.rows;
+            for (let i = 0; i < itemCountResults.length; i++) {
+                boardNames.push(itemCountResults[i].boardname);
+                itemCount.push(itemCountResults[i].itemcount);
             }
             res.json({ boardNames: boardNames, itemCount: itemCount });
         });
@@ -481,7 +483,6 @@ app.route('/leaderboard')
             // }
             // results = results.sort(dynamicSort('boardStudyTime'));
             let rank;
-
             const users = results.rows;
             if (users === []) {
                 rank = 0;
