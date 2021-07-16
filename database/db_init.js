@@ -17,7 +17,6 @@ pool.connect((err) => {
         return;
     }
     console.log('Database connection initiated.');
-
 });
 
 //creates the user table
@@ -137,6 +136,5 @@ pool.query(
 //     if (err) throw err;
 //     console.log('Use myMetricsDB.');
 // });
-
 
 export default pool;

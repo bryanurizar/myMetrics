@@ -118,6 +118,7 @@ app.route('/boards/:boardId/:boardName')
     })
     .patch(isUserAuthenticated, (req, res) => {
         const boardId = req.body.boardId;
+
         pool.query('UPDATE Boards SET isBoardDeleted=True WHERE BoardID=$1', [boardId], (err, result) => {
             if (err) throw err;
             console.log('Board marked as deleted');
@@ -157,7 +158,6 @@ app.route('/items/:itemId')
         const updatedItemDescription = req.body.updatedItem;
         const editedItemId = req.body.editedItemId;
         const completedItemId = req.body.completedItemId;
-        console.log(completedItemId);
 
         if (completedItemId) {
             pool.query('UPDATE Items SET isItemCompleted=True WHERE itemID=$1', [completedItemId], err => {
@@ -289,7 +289,6 @@ app.route('/study-session/:studySessionId')
     })
     .post(isUserAuthenticated, (req, res) => {
         const studySessionDuration = (req.body.hours || 0) * 3600 + (req.body.minutes || 0) * 60 + (req.body.seconds || 0) + (req.body.milliseconds || 0) / 1000;
-        console.log(studySessionDuration);
         const boardId = req.body.boardId;
         const sessionId = req.params.studySessionId;
         const userAction = req.body.userAction;
@@ -306,11 +305,6 @@ app.route('/analytics')
     .get(isUserAuthenticated, (req, res) => {
         res.render('pages/analytics');
     });
-
-// app.route('/leaderboard')
-//     .get(isUserAuthenticated, (req, res) => {
-//         res.render('pages/leaderboard');
-//     });
 
 app.route('/profile')
     .get(isUserAuthenticated, (req, res) => {
@@ -344,6 +338,7 @@ app.route('/itemCountChart')
 app.route('/studyTimeByBoardsChart')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
+
         pool.query(`
         SELECT T5.boardName, SUM(T5.TimeStudied) AS boardStudyTime FROM (
             SELECT T4.boardName, T4.isBoardDeleted, T3.TimeStudied FROM (
@@ -373,6 +368,7 @@ app.route('/studyTimeByBoardsChart')
 app.route('/daysSinceLastSession')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
+
         pool.query(`
         SELECT T3.boardName, MAX(T3.createdAt) AS LastSessionDate FROM (
 	        SELECT T1.*, T2.boardName, T2.isBoardDeleted FROM (
@@ -400,6 +396,7 @@ app.route('/daysSinceLastSession')
 app.route('/pausesByBoards')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUser = req.user.id;
+
         pool.query(`
         SELECT T3.SessionID, T3.pauseCount FROM (
             SELECT StudySessionLogs.SessionID, StudySessionLogs.userAction, T2.createdAt,
@@ -502,15 +499,3 @@ app.route('/leaderboard')
     });
 
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));
-
-
-// SELECT T3.SessionID, T3.pauseCount FROM(
-//     SELECT StudySessionLogs.SessionID, StudySessionLogs.userACTION, T2.createdAt,
-//     COUNT(StudySessionLogs.userAction) AS pauseCount FROM StudySessionLogs
-//     INNER JOIN StudySessions AS T2
-//     ON StudySessionLogs.SessionID = T2.SessionID
-//     WHERE StudySessionLogs.userAction = 'Pause'
-//     GROUP BY StudySessionLogs.SessionID
-//     ORDER BY createdAt DESC
-//     LIMIT 10) As T3
-// ORDER BY T3.createdAt ASC
