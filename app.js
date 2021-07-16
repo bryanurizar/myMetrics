@@ -480,12 +480,19 @@ app.route('/leaderboard')
             //     };
             // }
             // results = results.sort(dynamicSort('boardStudyTime'));
+            let rank;
 
-            const rank = results.findIndex(result => result.userID === loggedInUser);
+            const users = results.rows;
+            if (users === []) {
+                rank = 0;
+            } else {
+                const isUserFound = user => user.userid === loggedInUser;
+                rank = users.findIndex(isUserFound);
+            }
 
             const userRank = ordinalSuffixOf(rank + 1);
 
-            res.render('pages/leaderboard', { results: results, userRank: userRank });
+            res.render('pages/leaderboard', { results: users, userRank: userRank });
         });
     });
 

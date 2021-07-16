@@ -17,7 +17,115 @@ pool.connect((err) => {
         return;
     }
     console.log('Database connection initiated.');
+
 });
+
+//creates the user table
+pool.query(
+    `CREATE TABLE IF NOT EXISTS users (
+                userID VARCHAR(255) NOT NULL,
+                firstName VARCHAR(255) NOT NULL,
+                lastName VARCHAR(255) NOT NULL,
+                email VARCHAR(255) NOT NULL,
+                userImage VARCHAR(255),
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+                PRIMARY KEY (userID))`,
+    err => {
+        if (err) throw err;
+        console.log('User table created.');
+    });
+
+// Creates the board table
+pool.query(
+    `CREATE TABLE IF NOT EXISTS boards (
+                boardID VARCHAR(12) NOT NULL, 
+                boardName VARCHAR(255) NOT NULL, 
+                isBoardDeleted BOOLEAN DEFAULT FALSE,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+                boardPosition SERIAL NOT NULL,
+                userID VARCHAR(255),
+                PRIMARY KEY (boardID),
+                FOREIGN KEY (userID) REFERENCES users(userID))`,
+    err => {
+        if (err) throw err;
+        console.log('Board table created.');
+    });
+
+// Creates the lists table
+pool.query(
+    `CREATE TABLE IF NOT EXISTS lists (
+                listID VARCHAR(12) NOT NULL,
+                listName VARCHAR(255),
+                isListDeleted BOOLEAN DEFAULT FALSE,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+                listPosition SERIAL NOT NULL,
+                userID VARCHAR(255),
+                boardID VARCHAR(12) NOT NULL,
+                PRIMARY KEY (listID),
+                FOREIGN KEY (userID) REFERENCES users(userID),
+                FOREIGN KEY (boardID) REFERENCES boards(boardID))`,
+    err => {
+        if (err) throw err;
+        console.log('Lists table created.');
+    });
+
+// Creates the items table
+pool.query(
+    `CREATE TABLE IF NOT EXISTS items (
+                itemID VARCHAR(12) NOT NULL,
+                itemName VARCHAR(255),
+                isItemDeleted BOOLEAN DEFAULT FALSE,
+                isItemCompleted BOOLEAN DEFAULT FALSE,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
+                isOnTargetList BOOLEAN DEFAULT FALSE,
+                itemPosition SERIAL NOT NULL,
+                userID VARCHAR(255),
+                listID VARCHAR(12),
+                boardID VARCHAR(12) NOT NULL,
+                PRIMARY KEY (itemID),
+                FOREIGN KEY (userID) REFERENCES users(userID),
+                FOREIGN KEY (listID) REFERENCES lists(listID),
+                FOREIGN KEY (boardID) REFERENCES boards(boardID))`,
+    err => {
+        if (err) throw err;
+        console.log('Items table created.');
+    });
+
+// Creates the study sessions
+pool.query(
+    `CREATE TABLE IF NOT EXISTS studysessions (
+                sessionID VARCHAR(12) NOT NULL,
+                sessionDuration INTEGER NOT NULL,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                userID VARCHAR(255),
+                isSessionPageVisited VARCHAR(12) DEFAULT FALSE,
+                boardID VARCHAR(12) NOT NULL,
+                PRIMARY KEY(sessionID),
+                FOREIGN KEY (boardID) REFERENCES boards(boardID),
+                FOREIGN KEY (userID) REFERENCES users(userID))`,
+    err => {
+        if (err) throw err;
+        console.log('Study Sessions table created.');
+    });
+
+// Creates the study session logs table
+pool.query(
+    `CREATE TABLE IF NOT EXISTS studysessionlogs (
+                logID SERIAL NOT NULL,
+                sessionDurationRemaining INTEGER NOT NULL,
+                createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                userAction VARCHAR(12) NOT NULL,
+                sessionID VARCHAR(12) NOT NULL,
+                userID VARCHAR(255),
+                boardID VARCHAR(12) NOT NULL,
+                PRIMARY KEY(logID),
+                FOREIGN KEY (sessionID) REFERENCES studysessions(sessionID),
+                FOREIGN KEY (boardID) REFERENCES boards(boardID),
+                FOREIGN KEY (userID) REFERENCES users(userID))`,
+    err => {
+        if (err) throw err;
+        console.log('Study Session Logs table created.');
+    });
 
 // // creates database
 // pool.query('CREATE DATABASE IF NOT EXISTS myMetricsDB', (err) => {
@@ -30,111 +138,5 @@ pool.connect((err) => {
 //     console.log('Use myMetricsDB.');
 // });
 
-//creates the user table
-pool.query(
-    `CREATE TABLE IF NOT EXISTS Users (
-            userID CHAR(255) NOT NULL,
-            firstName CHAR(255) NOT NULL,
-            lastName CHAR(255) NOT NULL,
-            email CHAR(255) NOT NULL,
-            userImage CHAR(255),
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-            PRIMARY KEY (userID))`,
-    err => {
-        if (err) throw err;
-        console.log('User table created.');
-    });
-
-// Creates the board table
-pool.query(
-    `CREATE TABLE IF NOT EXISTS Boards (
-            boardID CHAR(12) NOT NULL, 
-            boardName CHAR(255) NOT NULL, 
-            isBoardDeleted BOOLEAN DEFAULT FALSE,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-            boardPosition SERIAL NOT NULL,
-            userID CHAR(255),
-            PRIMARY KEY (boardID),
-            FOREIGN KEY (userID) REFERENCES Users(userID))`,
-    err => {
-        if (err) throw err;
-        console.log('Board table created.');
-    });
-
-// Creates the lists table
-await pool.query(
-    `CREATE TABLE IF NOT EXISTS Lists (
-            listID CHAR(12) NOT NULL,
-            listName CHAR(255),
-            isListDeleted BOOLEAN DEFAULT FALSE,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-            listPosition SERIAL NOT NULL,
-            userID CHAR(255),
-            boardID CHAR(12) NOT NULL,
-            PRIMARY KEY (listID),
-            FOREIGN KEY (userID) REFERENCES Users(userID),
-            FOREIGN KEY (boardID) REFERENCES Boards(boardID))`,
-    err => {
-        if (err) throw err;
-        console.log('Lists table created.');
-    });
-
-// Creates the items table
-await pool.query(
-    `CREATE TABLE IF NOT EXISTS Items (
-            itemID CHAR(12) NOT NULL,
-            itemName CHAR(255),
-            isItemDeleted BOOLEAN DEFAULT FALSE,
-            isItemCompleted BOOLEAN DEFAULT FALSE,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
-            isOnTargetList BOOLEAN DEFAULT FALSE,
-            itemPosition SERIAL NOT NULL,
-            userID CHAR(255),
-            listID CHAR(12),
-            boardID CHAR(12) NOT NULL,
-            PRIMARY KEY (itemID),
-            FOREIGN KEY (userID) REFERENCES Users(userID),
-            FOREIGN KEY (listID) REFERENCES Lists(listID),
-            FOREIGN KEY (boardID) REFERENCES Boards(boardID))`,
-    err => {
-        if (err) throw err;
-        console.log('Items table created.');
-    });
-
-// Creates the study sessions
-await pool.query(
-    `CREATE TABLE IF NOT EXISTS StudySessions (
-            sessionID CHAR(12) NOT NULL,
-            sessionDuration INTEGER NOT NULL,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            userID CHAR(255),
-            isSessionPageVisited CHAR(12) DEFAULT FALSE,
-            boardID CHAR(12) NOT NULL,
-            PRIMARY KEY(sessionID),
-            FOREIGN KEY (boardID) REFERENCES Boards(boardID),
-            FOREIGN KEY (userID) REFERENCES Users(userID))`,
-    err => {
-        if (err) throw err;
-        console.log('Study Sessions table created.');
-    });
-
-// Creates the study session logs table
-await pool.query(
-    `CREATE TABLE IF NOT EXISTS StudySessionLogs (
-            logID SERIAL NOT NULL,
-            sessionDurationRemaining INTEGER NOT NULL,
-            createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-            userAction CHAR(12) NOT NULL,
-            sessionID CHAR(12) NOT NULL,
-            userID CHAR(255),
-            boardID CHAR(12) NOT NULL,
-            PRIMARY KEY(logID),
-            FOREIGN KEY (sessionID) REFERENCES StudySessions(sessionID),
-            FOREIGN KEY (boardID) REFERENCES Boards(boardID),
-            FOREIGN KEY (userID) REFERENCES Users(userID))`,
-    err => {
-        if (err) throw err;
-        console.log('Study Session Logs table created.');
-    });
 
 export default pool;
