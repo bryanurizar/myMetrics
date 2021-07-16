@@ -329,7 +329,6 @@ app.route('/itemCountChart')
         GROUP BY boards.boardName
         ORDER BY Boards.boardName;
         `, [loggedInUser], (err, data) => {
-            console.log(data);
             if (err) throw err;
             const boardNames = [];
             const itemCount = [];
@@ -358,13 +357,14 @@ app.route('/studyTimeByBoardsChart')
             WHERE T5.isBoardDeleted=FALSE
         GROUP BY T5.boardName
         ORDER BY T5.boardName;
-        `, [loggedInUser], (err, boardsData) => {
+        `, [loggedInUser], (err, data) => {
             if (err) throw err;
             const boardNames = [];
             const boardStudyTime = [];
+            const boardsData = data.rows;
             boardsData.forEach(boardData => {
-                boardNames.push(boardData.boardName);
-                boardStudyTime.push(boardData.boardStudyTime / (60 * 60));
+                boardNames.push(boardData.boardname);
+                boardStudyTime.push(boardData.boardstudytime / (60 * 60));
             });
             res.json({ boardNames: boardNames, boardStudyTime: boardStudyTime });
         });
@@ -383,13 +383,14 @@ app.route('/daysSinceLastSession')
             WHERE T2.isBoardDeleted=FALSE) AS T3
         GROUP BY T3.boardName
         ORDER BY T3.boardName;
-        `, [loggedInUser], (err, boardsData) => {
+        `, [loggedInUser], (err, data) => {
             if (err) throw err;
             const boardNames = [];
             const daysSinceLastSession = [];
+            const boardsData = data.rows;
             boardsData.forEach(boardData => {
-                const numberOfDays = Math.floor((Date.now() - boardData.LastSessionDate) / (1000 * 3600 * 24));
-                boardNames.push(boardData.boardName);
+                const numberOfDays = Math.floor((Date.now() - boardData.lastsessiondate) / (1000 * 3600 * 24));
+                boardNames.push(boardData.boardname);
                 daysSinceLastSession.push(numberOfDays);
             });
             res.json({ boardNames: boardNames, daysSinceLastSession: daysSinceLastSession });
@@ -401,20 +402,23 @@ app.route('/pausesByBoards')
         const loggedInUser = req.user.id;
         pool.query(`
         SELECT T3.SessionID, T3.pauseCount FROM (
-            SELECT StudySessionLogs.SessionID, StudySessionLogs.userACTION, T2.createdAt, 
+            SELECT StudySessionLogs.SessionID, StudySessionLogs.userAction, T2.createdAt,
             COUNT(StudySessionLogs.userAction) AS pauseCount FROM StudySessionLogs
             INNER JOIN StudySessions AS T2
             ON StudySessionLogs.SessionID = T2.SessionID
             WHERE StudySessionLogs.userAction = 'Pause' AND StudySessionLogs.userID=$1
-            GROUP BY StudySessionLogs.SessionID
+            GROUP BY StudySessionLogs.SessionID, StudySessionLogs.userAction, T2.createdAt
             ORDER BY createdAt DESC
             LIMIT 10) As T3
         ORDER BY T3.createdAt ASC
-        `, [loggedInUser], (err, pauseCountByBoards) => {
+        `, [loggedInUser], (err, data) => {
+            if (err) throw err;
+
             const lastTenSessions = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
             const pausesCount = [];
+            const pauseCountByBoards = data.rows;
             pauseCountByBoards.forEach(pauseCountByBoard => {
-                pausesCount.push(pauseCountByBoard.pauseCount);
+                pausesCount.push(pauseCountByBoard.pausecount);
             });
             res.json({ lastTenSessions: lastTenSessions, pausesCount: pausesCount });
         });
@@ -498,3 +502,15 @@ app.route('/leaderboard')
     });
 
 app.listen(port, () => console.log(`Listening on port http://localhost:${port}.`));
+
+
+// SELECT T3.SessionID, T3.pauseCount FROM(
+//     SELECT StudySessionLogs.SessionID, StudySessionLogs.userACTION, T2.createdAt,
+//     COUNT(StudySessionLogs.userAction) AS pauseCount FROM StudySessionLogs
+//     INNER JOIN StudySessions AS T2
+//     ON StudySessionLogs.SessionID = T2.SessionID
+//     WHERE StudySessionLogs.userAction = 'Pause'
+//     GROUP BY StudySessionLogs.SessionID
+//     ORDER BY createdAt DESC
+//     LIMIT 10) As T3
+// ORDER BY T3.createdAt ASC

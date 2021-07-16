@@ -9,6 +9,7 @@
         "lastname",
         "listid",
         "listname",
+        "pausecount",
         "studysessionlogs",
         "studysessions",
         "userid"
