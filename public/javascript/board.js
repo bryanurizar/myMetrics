@@ -29,7 +29,6 @@ const handleDrop = e => {
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.todo-card');
     const movedCardNode = document.querySelector(`#${cardId}`);
-    console.log(movedCardNode);
 
     if (isMouseAboveMiddle(e)) {
         dropNode.insertAdjacentElement('beforebegin', document.querySelector(`#${cardId}`));
@@ -37,12 +36,14 @@ const handleDrop = e => {
         dropNode.insertAdjacentElement('afterend', document.querySelector(`#${cardId}`));
     }
 
+    const movedCardId = movedCardNode.id.substring(5,);
+    const previousCardId = movedCardNode.previousElementSibling?.id.substring(5,);
+    const nextCardId = movedCardNode.nextElementSibling?.id.substring(5,);
+    console.log(movedCardId);
+    console.log(previousCardId);
+    console.log(nextCardId);
 
-
-    console.log(movedCardNode.previousElementSibling);
-    console.log(movedCardNode.nextElementSibling);
-
-
+    updateRank(movedCardId, previousCardId, nextCardId);
 
 };
 
@@ -61,13 +62,20 @@ dropZones.forEach(dropZone => {
     dropZone.addEventListener('dragover', handleDragOver);
 });
 
+async function updateRank(movedId, previousId, nextId) {
+    const rankData = {
+        movedCardId: movedId,
+        previousCardId: previousId,
+        nextCardId: nextId
+    };
 
-
-
-
-
-
-
+    const response = await fetch(`http://localhost:3000/items/:${movedId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(rankData),
+        headers: { 'content-type': 'application/json' }
+    });
+    return response;
+}
 
 /*
 ***
@@ -75,7 +83,7 @@ dropZones.forEach(dropZone => {
 ***
 */
 function handleModal(e) {
-    const modalId = `#modal-${e.target.id}`;
+    const modalId = `#modal - ${e.target.id}`;
     const modal = document.querySelector(modalId);
 
     if (modal.classList.contains('modal-styles')) {

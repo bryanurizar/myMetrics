@@ -158,6 +158,8 @@ app.route('/items/:itemId')
         const updatedItemDescription = req.body.updatedItem;
         const editedItemId = req.body.editedItemId;
         const completedItemId = req.body.completedItemId;
+        const rankData = req.body;
+        console.log(rankData);
 
         if (completedItemId) {
             pool.query('UPDATE Items SET isItemCompleted=True WHERE itemID=$1', [completedItemId], err => {
