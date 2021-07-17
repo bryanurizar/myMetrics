@@ -159,18 +159,23 @@ app.route('/items/:itemId')
         const editedItemId = req.body.editedItemId;
         const completedItemId = req.body.completedItemId;
         const rankData = req.body;
-        console.log(rankData);
 
-        if (completedItemId) {
-            pool.query('UPDATE Items SET isItemCompleted=True WHERE itemID=$1', [completedItemId], err => {
-                if (err) throw err;
-                console.log('Item updated from database.');
-            });
-        } else {
-            pool.query('UPDATE Items SET itemName=$1 WHERE itemID=$2', [updatedItemDescription, editedItemId], err => {
-                if (err) throw err;
-                console.log('Item updated from database.');
-            });
+        switch (!undefined) {
+            case !!completedItemId:
+                pool.query('UPDATE Items SET isItemCompleted=True WHERE itemID=$1', [completedItemId], err => {
+                    if (err) throw err;
+                    console.log('Item updated from database.');
+                });
+                break;
+            case !!editedItemId:
+                pool.query('UPDATE Items SET itemName=$1 WHERE itemID=$2', [updatedItemDescription, editedItemId], err => {
+                    if (err) throw err;
+                    console.log('Item updated from database.');
+                });
+                break;
+            default:
+                console.log('No cases matched');
+                break;
         }
     })
     .delete(isUserAuthenticated, (req, res) => {
