@@ -39,9 +39,6 @@ const handleDrop = e => {
     const movedCardId = movedCardNode.id.substring(5,);
     const previousCardId = movedCardNode.previousElementSibling?.id.substring(5,);
     const nextCardId = movedCardNode.nextElementSibling?.id.substring(5,);
-    console.log(movedCardId);
-    console.log(previousCardId);
-    console.log(nextCardId);
 
     updateRank(movedCardId, previousCardId, nextCardId);
 

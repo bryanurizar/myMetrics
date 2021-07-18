@@ -173,6 +173,16 @@ app.route('/items/:itemId')
                     console.log('Item updated from database.');
                 });
                 break;
+            case !!rankData:
+
+
+
+
+
+
+
+                console.log('In the rank data section');
+                break;
             default:
                 console.log('No cases matched');
                 break;
