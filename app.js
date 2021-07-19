@@ -198,6 +198,31 @@ app.route('/items/:itemId')
         res.send('Item deleted');
     });
 
+function updateRank() {
+
+
+
+
+
+
+
+
+
+
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 // List routes
 app.route('/lists')
     .post(isUserAuthenticated, (req, res) => {
