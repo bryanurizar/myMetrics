@@ -109,7 +109,7 @@ app.route('/boards/:boardId/:boardName')
         pool.query('SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt', [loggedInUserId, boardID], (err, lists) => {
             if (err) throw err;
 
-            pool.query('SELECT * FROM Items WHERE isItemCompleted=FALSE AND userID=$1 ORDER BY createdAt', [loggedInUserId], (err, items) => {
+            pool.query('SELECT * FROM Items WHERE isItemCompleted=FALSE AND userID=$1 ORDER BY itemposition', [loggedInUserId], (err, items) => {
                 if (err) throw err;
                 res.setHeader('Cache-Control', 'no-store');
                 res.render('pages/board', { lists: lists.rows, items: items.rows });
@@ -159,7 +159,6 @@ app.route('/items/:itemId')
         const editedItemId = req.body.editedItemId;
         const completedItemId = req.body.completedItemId;
         const rankData = req.body;
-        console.log(req.body);
 
         switch (!undefined) {
             case !!completedItemId:
@@ -209,12 +208,13 @@ async function updateRank(rankData) {
             const { rows: [{ itemposition: movedCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.movedCardId]);
             const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [rankData.nextCardId]);
 
-            if (movedCardRank < nextCardRank) {
-                await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [newListId, rankData.movedCardId]);
-                await client.query('COMMIT');
-            } else {
-                // more stuff goes here
+            if (movedCardRank > nextCardRank) {
+                await client.query('UPDATE items SET itemposition=itemposition + 1 WHERE itemposition >=$1', [nextCardRank]);
+                await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [nextCardRank, rankData.movedCardId]);
             }
+
+            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [newListId, rankData.movedCardId]);
+            await client.query('COMMIT');
         } catch (err) {
             if (err) throw err;
             await client.query('ROLLBACK');
