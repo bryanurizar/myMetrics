@@ -208,7 +208,7 @@ async function updateRank(rankData) {
 
         try {
             await client.query('BEGIN');
-            const { rows: [{ itemposition: previousCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.previousCardId]);
+            const { rows: [{ itemposition: previousCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [previousCardId]);
             const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [previousCardId]);
 
             if (movedCardRank < previousCardRank) {
