@@ -81,7 +81,7 @@ async function updateRank(movedId, previousId, nextId) {
 */
 
 function handleModal(e) {
-    const modalId = `#modal - ${e.target.id}`;
+    const modalId = `#modal-${e.target.id}`;
     const modal = document.querySelector(modalId);
 
     if (modal.classList.contains('modal-styles')) {
