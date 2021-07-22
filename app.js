@@ -193,9 +193,6 @@ app.route('/items/:itemId')
     });
 
 async function updateRank(rankData) {
-    console.log('Inside the updateRank function');
-    const newRankQuery = 'SELECT itemposition FROM items WHERE itemid=$1';
-
     if (rankData.previousCardId && rankData.nextCardId) {
         // query
 
