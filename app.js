@@ -268,15 +268,6 @@ async function updateRank(rankData) {
     }
 }
 
-
-
-
-
-
-
-
-
-// List routes
 app.route('/lists')
     .post(isUserAuthenticated, (req, res) => {
         const listName = req.body.listName;
