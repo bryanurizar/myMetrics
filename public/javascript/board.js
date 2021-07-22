@@ -401,23 +401,3 @@ board.addEventListener('keypress', e => {
         e.target.value = '';
     }
 });
-
-
-
-// Acquires a client from the pool
-const client = await pool.connect();
-
-// SQL transaction to delete a list and all its items
-try {
-    await client.query('BEGIN');
-    await client.query('DELETE FROM Items Where ListID=$1', [listId]);
-    await client.query('DELETE FROM Lists WHERE listID=$1', [listId]);
-    await client.query('COMMIT');
-    console.log('Lists removed along with its items.');
-} catch (e) {
-    await client.query('ROLLBACK');
-    throw e;
-} finally {
-    // Releases the acquired client
-    client.release();
-}

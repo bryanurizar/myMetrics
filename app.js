@@ -180,6 +180,7 @@ app.route('/items/:itemId')
                 console.log('No cases matched');
                 break;
         }
+        res.json(res.statusCode);
     })
     .delete(isUserAuthenticated, (req, res) => {
         const deletedItemId = req.body.deletedItemId;
