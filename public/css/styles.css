@@ -107,6 +107,7 @@ input {
 
 .todo-list-container > .items {
   overflow-y: scroll;
+  min-height: 50px;
 }
 
 .add-list {

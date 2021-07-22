@@ -159,6 +159,7 @@ app.route('/items/:itemId')
         const editedItemId = req.body.editedItemId;
         const completedItemId = req.body.completedItemId;
         const rankData = req.body;
+        console.log(req.body);
 
         switch (!undefined) {
             case !!completedItemId:
@@ -174,14 +175,7 @@ app.route('/items/:itemId')
                 });
                 break;
             case !!rankData:
-
-
-
-
-
-
-
-                console.log('In the rank data section');
+                updateRank(rankData);
                 break;
             default:
                 console.log('No cases matched');
@@ -198,22 +192,43 @@ app.route('/items/:itemId')
         res.send('Item deleted');
     });
 
-function updateRank() {
+async function updateRank(rankData) {
+    console.log('Inside the updateRank function');
+    const newRankQuery = 'SELECT itemposition FROM items WHERE itemid=$1';
+
+    if (rankData.previousCardId && rankData.nextCardId) {
+        // query
+
+    } else if (rankData.previousCardId) {
+        console.log('Inside the previous section');
+
+        // query
+    } else {
+        const client = await pool.connect();
+
+        try {
+            await client.query('BEGIN');
+            const { rows: [{ itemposition: nextCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.nextCardId]);
+            const { rows: [{ itemposition: movedCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.movedCardId]);
+            const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [rankData.nextCardId]);
+
+            if (movedCardRank < nextCardRank) {
+                await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [newListId, rankData.movedCardId]);
+                await client.query('COMMIT');
+            } else {
+                // more stuff goes here
+            }
+        } catch (err) {
+            if (err) throw err;
+            await client.query('ROLLBACK');
+
+        } finally {
+            client.release();
+        }
 
 
-
-
-
-
-
-
-
-
+    }
 }
-
-
-
-
 
 
 
