@@ -216,7 +216,7 @@ async function updateRank(rankData) {
             await client.query('ROLLBACK');
         } finally {
             client.release();
-        } y;
+        }
     } else {
         const client = await pool.connect();
 
