@@ -192,16 +192,17 @@ app.route('/items/:itemId')
     });
 
 async function updateRank(rankData) {
+    const client = await pool.connect();
+    const { rows: [{ itemposition: movedCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.movedCardId]);
+
     if (rankData.previousCardId && rankData.nextCardId) {
         // query
 
     } else if (rankData.previousCardId) {
-        const client = await pool.connect();
 
         try {
             await client.query('BEGIN');
             const { rows: [{ itemposition: previousCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.previousCardId]);
-            const { rows: [{ itemposition: movedCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.movedCardId]);
             const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [rankData.previousCardId]);
 
             if (movedCardRank < previousCardRank) {
@@ -218,12 +219,9 @@ async function updateRank(rankData) {
             client.release();
         }
     } else {
-        const client = await pool.connect();
-
         try {
             await client.query('BEGIN');
             const { rows: [{ itemposition: nextCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.nextCardId]);
-            const { rows: [{ itemposition: movedCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [rankData.movedCardId]);
             const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [rankData.nextCardId]);
 
             if (movedCardRank > nextCardRank) {
