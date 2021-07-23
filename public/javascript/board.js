@@ -28,30 +28,28 @@ const handleDrop = e => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.items');
+    const dropListId = dropNode.id.substring(10,);
     const nearestCard = e.target.closest('.todo-card');
     const movedCardNode = document.querySelector(`#${cardId}`);
 
-    if (dropNode.hasChildNodes() && dropNode.childNodes.nodeType === 3) {
-        if (isMouseAboveMiddle(e)) {
-            nearestCard.insertAdjacentElement('beforebegin', movedCardNode);
-        } else {
-            nearestCard.insertAdjacentElement('afterend', movedCardNode);
-        }
-    } else {
+    console.log(dropNode.firstElementChild);
+
+    if (!dropNode.firstElementChild) {
         dropNode.appendChild(movedCardNode);
+    } else {
+        isMouseAboveMiddle(e) ? nearestCard.insertAdjacentElement('beforebegin', movedCardNode) : nearestCard.insertAdjacentElement('afterend', movedCardNode);
     }
 
     const movedCardId = movedCardNode.id.substring(5,);
     const previousCardId = movedCardNode.previousElementSibling?.id.substring(5,);
     const nextCardId = movedCardNode.nextElementSibling?.id.substring(5,);
 
-    updateRank(movedCardId, previousCardId, nextCardId);
+    updateRank(movedCardId, previousCardId, nextCardId, dropListId);
 };
 
 function isMouseAboveMiddle(e) {
     const bounds = e.target.getBoundingClientRect();
     const y = e.clientY - bounds.top;
-    console.log(y < bounds.height / 2);
     return y < bounds.height / 2;
 }
 
@@ -64,11 +62,12 @@ dropZones.forEach(dropZone => {
     dropZone.addEventListener('dragover', handleDragOver);
 });
 
-async function updateRank(movedId, previousId, nextId) {
+async function updateRank(movedId, previousId, nextId, listId) {
     const rankData = {
         movedCardId: movedId,
         previousCardId: previousId,
-        nextCardId: nextId
+        nextCardId: nextId,
+        dropListId: listId
     };
 
     const response = await fetch(`http://localhost:3000/items/:${movedId}`, {
@@ -311,7 +310,8 @@ function renderList(id, listName) {
 
     const todosDiv = document.createElement('div');
     todosDiv.id = `todo-list-${id}`;
-    todosDiv.classList.add('todos');
+    todosDiv.classList.add('items');
+
     list.appendChild(todosDiv);
 
     const newListInput = document.createElement('input');

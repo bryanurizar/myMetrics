@@ -193,16 +193,16 @@ app.route('/items/:itemId')
     });
 
 async function updateRank(rankData) {
-    const { previousCardId, movedCardId, nextCardId } = rankData;
+    const { previousCardId, movedCardId, nextCardId, dropListId } = rankData;
     const client = await pool.connect();
     const { rows: [{ itemposition: movedCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [movedCardId]);
 
     if (previousCardId && nextCardId) {
+        console.log('In combined');
         try {
             const { rows: [{ itemposition: previousCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [previousCardId]);
             const { rows: [{ itemposition: nextCardRank }]
             } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [nextCardId]);
-            const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [previousCardId]);
 
             if (movedCardRank < previousCardRank) {
                 await client.query('UPDATE items SET itemposition=itemposition - 1 WHERE itemposition<=$1', [previousCardRank]);
@@ -213,7 +213,7 @@ async function updateRank(rankData) {
                 await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [nextCardRank, movedCardId]);
             }
 
-            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [newListId, movedCardId]);
+            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [dropListId, movedCardId]);
             await client.query('COMMIT');
         }
         catch (err) {
@@ -225,18 +225,34 @@ async function updateRank(rankData) {
         }
 
     } else if (previousCardId) {
-
         try {
             await client.query('BEGIN');
             const { rows: [{ itemposition: previousCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [previousCardId]);
-            const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [previousCardId]);
 
             if (movedCardRank < previousCardRank) {
                 await client.query('UPDATE items SET itemposition=itemposition - 1 WHERE itemposition <=$1', [previousCardRank]);
                 await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [previousCardRank, movedCardId]);
             }
 
-            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [newListId, movedCardId]);
+            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [dropListId, movedCardId]);
+            await client.query('COMMIT');
+        } catch (err) {
+            if (err) throw err;
+            await client.query('ROLLBACK');
+        } finally {
+            client.release();
+        }
+    } else if (nextCardId) {
+        try {
+            await client.query('BEGIN');
+            const { rows: [{ itemposition: nextCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [nextCardId]);
+
+            if (movedCardRank > nextCardRank) {
+                await client.query('UPDATE items SET itemposition=itemposition + 1 WHERE itemposition >=$1', [nextCardRank]);
+                await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [nextCardRank, movedCardId]);
+            }
+
+            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [dropListId, movedCardId]);
             await client.query('COMMIT');
         } catch (err) {
             if (err) throw err;
@@ -246,25 +262,16 @@ async function updateRank(rankData) {
         }
     } else {
         try {
-            await client.query('BEGIN');
-            const { rows: [{ itemposition: nextCardRank }] } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [nextCardId]);
-            const { rows: [{ listid: newListId }] } = await client.query('SELECT listid FROM items WHERE itemid=$1', [nextCardId]);
-
-            if (movedCardRank > nextCardRank) {
-                await client.query('UPDATE items SET itemposition=itemposition + 1 WHERE itemposition >=$1', [nextCardRank]);
-                await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [nextCardRank, movedCardId]);
-            }
-
-            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [newListId, movedCardId]);
+            await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [dropListId, movedCardId]);
             await client.query('COMMIT');
-        } catch (err) {
+        }
+        catch (err) {
             if (err) throw err;
             await client.query('ROLLBACK');
-        } finally {
+        }
+        finally {
             client.release();
         }
-
-
     }
 }
 
