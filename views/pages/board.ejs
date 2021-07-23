@@ -15,7 +15,9 @@
       <% lists.forEach(list => { %>
       <div class="todo-list-container">
         <div class="list-header">
-          <h4 class="list-name" contenteditable><%= list.listname %></h4>
+          <h4 class="list-name" ondrop="return false;" contenteditable>
+            <%= list.listname %>
+          </h4>
           <h4 id="<%= list.listid%>" class="list-popup">...</h4>
           <div id="modal-<%=list.listid%>" class="modal">
             <h4 id="modal-title"><span>List Actions</span></h4>
@@ -26,7 +28,7 @@
           <% items.forEach(item => { %> <% if (item.listid === list.listid) { %>
           <div id="card-<%= item.itemid %>" class="todo-card" draggable="true">
             <div class="todo-content">
-              <input type="checkbox" />
+              <input type="checkbox" ondrop="return false;" />
               <p class="todo-description"><%= item.itemname %></p>
               <br />
               <div class="flaticons">
@@ -42,6 +44,7 @@
           name="itemName"
           class="add-card"
           type="text"
+          ondrop="return false;"
           autocomplete="off"
           placeholder="Add new card.."
         />
@@ -54,6 +57,7 @@
           type="text"
           class="add-list"
           placeholder="Add new list"
+          ondrop="return false;"
         />
       </div>
     </section>

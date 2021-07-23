@@ -27,13 +27,18 @@ const handleDragOver = e => {
 const handleDrop = e => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
-    const dropNode = e.target.closest('.todo-card');
+    const dropNode = e.target.closest('.items');
+    const nearestCard = e.target.closest('.todo-card');
     const movedCardNode = document.querySelector(`#${cardId}`);
 
-    if (isMouseAboveMiddle(e)) {
-        dropNode.insertAdjacentElement('beforebegin', document.querySelector(`#${cardId}`));
+    if (dropNode.hasChildNodes() && dropNode.childNodes.nodeType === 3) {
+        if (isMouseAboveMiddle(e)) {
+            nearestCard.insertAdjacentElement('beforebegin', movedCardNode);
+        } else {
+            nearestCard.insertAdjacentElement('afterend', movedCardNode);
+        }
     } else {
-        dropNode.insertAdjacentElement('afterend', document.querySelector(`#${cardId}`));
+        dropNode.appendChild(movedCardNode);
     }
 
     const movedCardId = movedCardNode.id.substring(5,);
@@ -41,12 +46,12 @@ const handleDrop = e => {
     const nextCardId = movedCardNode.nextElementSibling?.id.substring(5,);
 
     updateRank(movedCardId, previousCardId, nextCardId);
-
 };
 
 function isMouseAboveMiddle(e) {
     const bounds = e.target.getBoundingClientRect();
     const y = e.clientY - bounds.top;
+    console.log(y < bounds.height / 2);
     return y < bounds.height / 2;
 }
 
@@ -235,6 +240,7 @@ function handleTodoCardClick(e) {
 
 // Create new list using JavaScript object
 const newListInput = document.querySelector('.add-list');
+newListInput.addEventListener('drop', e => e.preventDefault());
 
 newListInput.addEventListener('keypress', e => {
     if (e.key === 'Enter') {
@@ -282,6 +288,8 @@ function renderList(id, listName) {
     listTitle.innerText = listName;
     header.appendChild(listTitle);
 
+    listTitle.addEventListener('drop', e => e.preventDefault());
+
     const listModal = document.createElement('h4');
     listModal.id = id;
     listModal.classList.add('list-popup');
@@ -313,6 +321,7 @@ function renderList(id, listName) {
     newListInput.type = 'text';
     newListInput.autoComplete = 'off';
     newListInput.placeholder = 'Add new card...';
+    newListInput.addEventListener('drop', e => e.preventDefault());
     list.appendChild(newListInput);
 
     const boardSection = document.querySelector('#board');
