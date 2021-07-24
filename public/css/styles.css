@@ -6,7 +6,7 @@ html {
 
 body {
   color: #293b5d;
-  height: 100vh;
+  /* height: 100vh; */
   font-family: "Montserrat", sans-serif;
   letter-spacing: 0.2px;
   background-color: #fcfbf9;
@@ -22,11 +22,11 @@ section {
 
 nav {
   padding: 8px 1.5%;
+  /* margin-bottom: 5px; */
   display: flex;
   height: 50px;
   justify-content: center;
   align-items: center;
-  position: sticky;
   box-shadow: 0 8px 8px -10px rgb(0 0 0 / 15%);
 }
 
@@ -544,21 +544,31 @@ span {
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 90%;
-  overflow-y: scroll;
+  /* overflow-y: scroll; */
+  height: calc(100vh - 69px);
 }
 
 #charts-container {
   flex: 1;
   flex-direction: row;
   flex-wrap: wrap;
+  height: 100%;
   width: 50%;
   display: flex;
   justify-content: center;
   align-items: center;
+  overflow: auto;
 }
 
-.chart {
+.chart-container {
+  margin: 10px;
+  padding: 8px 20px;
+  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
+  border-radius: 5px;
+  background-color: white;
+}
+
+canvas {
   margin: 10px;
   padding: 8px 20px;
   box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
