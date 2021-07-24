@@ -347,7 +347,8 @@ span {
 }
 
 #boards-section {
-  padding-top: 75px;
+  padding-top: 30px;
+  height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;

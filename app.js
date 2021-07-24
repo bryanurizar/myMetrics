@@ -10,7 +10,6 @@ import nanoid from './helpers/nanoid.js';
 import passport from 'passport';
 import findById from './helpers/findById.js';
 import isUserAuthenticated from './helpers/isUserAuthenticated.js';
-import faker from 'faker';
 import ordinalSuffixOf from './helpers/ordinalSuffix.js';
 
 const port = process.env.PORT || 3000;
@@ -123,6 +122,7 @@ app.route('/boards/:boardId/:boardName')
             if (err) throw err;
             console.log('Board marked as deleted');
         });
+        res.json(res.statusCode);
     });
 
 // Items routes
@@ -535,49 +535,9 @@ app.route('/leaderboard')
         ON T6.userID = T7.userID;
     `, (err, results) => {
             if (err) throw err;
-
-            // // Generates fake data
-            // results = [];
-            // for (let i = 0; i < 100; i++) {
-            //     const user = {
-            //         userID: faker.datatype.uuid(),
-            //         boardStudyTime: faker.datatype.number(),
-            //         firstName: faker.name.firstName(),
-            //         lastName: faker.name.lastName(),
-            //         email: faker.internet.email(),
-            //         userImage: faker.image.avatar()
-            //     };
-            //     results.push(user);
-            // }
-
-            // const myself = {
-            //     userID: '12345',
-            //     boardStudyTime: 459,
-            //     firstName: 'John',
-            //     lastName: 'Dude',
-            //     email: 'john.dude@outlook.com',
-            //     userImage: 'https://lh3.googleusercontent.com'
-            // };
-            // results.push(myself);
-            // console.log(results);
-
-            // function dynamicSort(property) {
-            //     var sortOrder = 1;
-            //     if (property[0] === '-') {
-            //         sortOrder = -1;
-            //         property = property.substr(1);
-            //     }
-            //     return function (a, b) {
-            //         /* next line works with strings and numbers, 
-            //          * and you may want to customize it to your needs
-            //          */
-            //         var result = (a[property] > b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
-            //         return result * sortOrder;
-            //     };
-            // }
-            // results = results.sort(dynamicSort('boardStudyTime'));
             let rank;
             const users = results.rows;
+
             if (users === []) {
                 rank = 0;
             } else {
