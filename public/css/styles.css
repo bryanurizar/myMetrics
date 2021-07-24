@@ -544,7 +544,6 @@ span {
   display: flex;
   justify-content: center;
   align-items: center;
-  /* overflow-y: scroll; */
   height: calc(100vh - 69px);
 }
 
@@ -557,7 +556,7 @@ span {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto;
+  overflow-y: auto;
 }
 
 .chart-container {
