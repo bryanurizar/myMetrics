@@ -1,27 +1,28 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
-import pg from 'pg';
+import pg from "pg";
 const { Pool } = pg;
+
 const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_NAME,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT
+  user: process.env.username,
+  host: process.env.host,
+  database: process.env.database,
+  password: process.env.password,
+  port: process.env.port,
 });
 
 pool.connect((err) => {
-    if (err) {
-        console.error('error connecting: ' + err.stack);
-        return;
-    }
-    console.log('Database connection initiated.');
+  if (err) {
+    console.error("error connecting: " + err.stack);
+    return;
+  }
+  console.log("Database connection initiated.");
 });
 
 //creates the user table
 pool.query(
-    `CREATE TABLE IF NOT EXISTS users (
+  `CREATE TABLE IF NOT EXISTS users (
                 userID VARCHAR(255) NOT NULL,
                 firstName VARCHAR(255) NOT NULL,
                 lastName VARCHAR(255) NOT NULL,
@@ -29,14 +30,15 @@ pool.query(
                 userImage VARCHAR(255),
                 createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP, 
                 PRIMARY KEY (userID))`,
-    err => {
-        if (err) throw err;
-        console.log('User table created.');
-    });
+  (err) => {
+    if (err) throw err;
+    console.log("User table created.");
+  }
+);
 
 // Creates the board table
 pool.query(
-    `CREATE TABLE IF NOT EXISTS boards (
+  `CREATE TABLE IF NOT EXISTS boards (
                 boardID VARCHAR(12) NOT NULL, 
                 boardName VARCHAR(255) NOT NULL, 
                 isBoardDeleted BOOLEAN DEFAULT FALSE,
@@ -45,14 +47,15 @@ pool.query(
                 userID VARCHAR(255),
                 PRIMARY KEY (boardID),
                 FOREIGN KEY (userID) REFERENCES users(userID))`,
-    err => {
-        if (err) throw err;
-        console.log('Board table created.');
-    });
+  (err) => {
+    if (err) throw err;
+    console.log("Board table created.");
+  }
+);
 
 // Creates the lists table
 pool.query(
-    `CREATE TABLE IF NOT EXISTS lists (
+  `CREATE TABLE IF NOT EXISTS lists (
                 listID VARCHAR(12) NOT NULL,
                 listName VARCHAR(255),
                 isListDeleted BOOLEAN DEFAULT FALSE,
@@ -63,14 +66,15 @@ pool.query(
                 PRIMARY KEY (listID),
                 FOREIGN KEY (userID) REFERENCES users(userID),
                 FOREIGN KEY (boardID) REFERENCES boards(boardID))`,
-    err => {
-        if (err) throw err;
-        console.log('Lists table created.');
-    });
+  (err) => {
+    if (err) throw err;
+    console.log("Lists table created.");
+  }
+);
 
 // Creates the items table
 pool.query(
-    `CREATE TABLE IF NOT EXISTS items (
+  `CREATE TABLE IF NOT EXISTS items (
                 itemID VARCHAR(12) NOT NULL,
                 itemName VARCHAR(255),
                 isItemDeleted BOOLEAN DEFAULT FALSE,
@@ -85,14 +89,15 @@ pool.query(
                 FOREIGN KEY (userID) REFERENCES users(userID),
                 FOREIGN KEY (listID) REFERENCES lists(listID),
                 FOREIGN KEY (boardID) REFERENCES boards(boardID))`,
-    err => {
-        if (err) throw err;
-        console.log('Items table created.');
-    });
+  (err) => {
+    if (err) throw err;
+    console.log("Items table created.");
+  }
+);
 
 // Creates the study sessions
 pool.query(
-    `CREATE TABLE IF NOT EXISTS studysessions (
+  `CREATE TABLE IF NOT EXISTS studysessions (
                 sessionID VARCHAR(12) NOT NULL,
                 sessionDuration INT NOT NULL,
                 createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -102,14 +107,15 @@ pool.query(
                 PRIMARY KEY(sessionID),
                 FOREIGN KEY (boardID) REFERENCES boards(boardID),
                 FOREIGN KEY (userID) REFERENCES users(userID))`,
-    err => {
-        if (err) throw err;
-        console.log('Study Sessions table created.');
-    });
+  (err) => {
+    if (err) throw err;
+    console.log("Study Sessions table created.");
+  }
+);
 
 // Creates the study session logs table
 pool.query(
-    `CREATE TABLE IF NOT EXISTS studysessionlogs (
+  `CREATE TABLE IF NOT EXISTS studysessionlogs (
                 logID INT GENERATED ALWAYS AS IDENTITY,
                 sessionDurationRemaining INT NOT NULL,
                 createdAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
@@ -121,10 +127,11 @@ pool.query(
                 FOREIGN KEY (sessionID) REFERENCES studysessions(sessionID),
                 FOREIGN KEY (boardID) REFERENCES boards(boardID),
                 FOREIGN KEY (userID) REFERENCES users(userID))`,
-    err => {
-        if (err) throw err;
-        console.log('Study Session Logs table created.');
-    });
+  (err) => {
+    if (err) throw err;
+    console.log("Study Session Logs table created.");
+  }
+);
 
 // // creates database
 // pool.query('CREATE DATABASE IF NOT EXISTS myMetricsDB', (err) => {
