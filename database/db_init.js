@@ -8,7 +8,6 @@ const pool = new Pool({
   user: process.env.username,
   host: process.env.host,
   database: process.env.database,
-  password: process.env.password,
   port: process.env.port,
 });
 
