@@ -5,10 +5,10 @@ import pg from "pg";
 const { Pool } = pg;
 
 const pool = new Pool({
-  user: process.env.username,
-  host: process.env.host,
-  database: process.env.database,
-  port: process.env.port,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  port: process.env.DB_PORT,
 });
 
 pool.connect((err) => {
