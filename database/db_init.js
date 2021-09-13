@@ -12,8 +12,6 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-console.log(process.env.DB_PASSWORD);
-
 pool.connect((err) => {
   if (err) {
     console.error("error connecting: " + err.stack);
