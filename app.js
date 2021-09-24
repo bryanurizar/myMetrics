@@ -12,7 +12,7 @@ import findById from './helpers/findById.js';
 import isUserAuthenticated from './helpers/isUserAuthenticated.js';
 import ordinalSuffixOf from './helpers/ordinalSuffix.js';
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT || 80;
 
 app.use(cookieParser());
 app.use(express.static('public'));
