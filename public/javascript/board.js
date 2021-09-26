@@ -70,7 +70,7 @@ async function updateRank(movedId, previousId, nextId, listId) {
         dropListId: listId
     };
 
-    const response = await fetch(`http://localhost:3000/items/:${movedId}`, {
+    const response = await fetch(`${process.env.API_URL}/items/:${movedId}`, {
         method: 'PATCH',
         body: JSON.stringify(rankData),
         headers: { 'content-type': 'application/json' }
@@ -117,7 +117,7 @@ function handleDeleteListClick(e) {
 
     (async () => {
         try {
-            const response = await fetch(`http://localhost:3000/lists/${listId.listId}`, {
+            const response = await fetch(`${process.env.API_URL}/lists/${listId.listId}`, {
                 method: 'DELETE',
                 body: JSON.stringify(listId),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
@@ -178,14 +178,14 @@ function checkLengthOfTargetList() {
 
 async function updateTargetList(items) {
     try {
-        const response = await fetch('http://localhost:3000/items', {
+        const response = await fetch(`${process.env.API_URL}/items`, {
             method: 'PATCH',
             body: JSON.stringify(items),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
         });
         const res = await response.json();
         console.log(await postStudySession(res.studySessionId));
-        window.location.replace(`http://localhost:3000/study-session/${res.studySessionId}`);
+        window.location.replace(`${process.env.API_URL}/study-session/${res.studySessionId}`);
     } catch (err) {
         console.log(err);
     }
@@ -202,7 +202,7 @@ async function postStudySession(studySessionId) {
         boardId: boardId
     };
 
-    const response = await fetch('http://localhost:3000/study-session', {
+    const response = await fetch(`${process.env.API_URL}/study-session`, {
         method: 'POST',
         headers: {
             'content-type': 'application/json'
@@ -259,7 +259,7 @@ function createList(listName) {
 
     (async () => {
         try {
-            const response = await fetch('http://localhost:3000/lists', {
+            const response = await fetch(`${process.env.API_URL}/lists`, {
                 method: 'POST',
                 body: JSON.stringify(newList),
                 headers: { 'Content-type': 'application/json; charset=UTF-8' }
@@ -354,7 +354,7 @@ function addCard(listId, itemName) {
     };
 
     (async () => {
-        const response = await fetch('http://localhost:3000/items', {
+        const response = await fetch(`${process.env.API_URL}/items`, {
             method: 'POST',
             body: JSON.stringify(itemData),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
