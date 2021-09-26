@@ -27,7 +27,7 @@ async function createBoard(boardName) {
         newBoardName: boardName
     };
 
-    const response = await fetch(`${process.env.API_URL}/boards`, {
+    const response = await fetch('/boards', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -79,7 +79,7 @@ async function deleteBoard(id, name) {
         boardName: name
     };
 
-    const response = fetch(`${process.env.API_URL}/boards/${boardData.boardId}/${boardData.boardName}`, {
+    const response = fetch(`/boards/${boardData.boardId}/${boardData.boardName}`, {
         method: 'PATCH',
         headers: {
             'content-type': 'application/json'

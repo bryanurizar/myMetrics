@@ -32,7 +32,7 @@ export function handleCheckboxClick(e) {
 
 async function postedCompletedItem(item) {
     try {
-        const response = await fetch(`${process.env.API_URL}/items/${item.id}`, {
+        const response = await fetch(`/items/${item.id}`, {
             method: 'PATCH',
             body: JSON.stringify(item),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
@@ -68,7 +68,7 @@ export function handleEditIconClick(e) {
 
 async function updateEditedItem(item) {
     try {
-        const response = await fetch(`${process.env.API_URL}/items/${item.id}`, {
+        const response = await fetch(`/items/${item.id}`, {
             method: 'PATCH',
             body: JSON.stringify(item),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }
@@ -92,7 +92,7 @@ export function handleTrashIconClick(e) {
 
 async function removeDeletedItem(item) {
     try {
-        const response = await fetch(`${process.env.API_URL}/items/${item.deletedItemId}`, {
+        const response = await fetch(`/items/${item.deletedItemId}`, {
             method: 'DELETE',
             body: JSON.stringify(item),
             headers: { 'Content-type': 'application/json; charset=UTF-8' }

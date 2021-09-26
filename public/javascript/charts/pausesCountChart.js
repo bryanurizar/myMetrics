@@ -1,5 +1,5 @@
 export async function getPausesCountChart() {
-    const response = await fetch(`${process.env.API_URL}/pausesByBoards`, {
+    const response = await fetch('/pausesByBoards', {
         method: 'GET'
     });
     return response.json();

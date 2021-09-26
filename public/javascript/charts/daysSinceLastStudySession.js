@@ -1,5 +1,5 @@
 export async function getNoOfDaysSinceLastSessionChartData() {
-    const response = await fetch(`${process.env.API_URL}/daysSinceLastSession`, {
+    const response = await fetch('/daysSinceLastSession', {
         method: 'GET'
     });
     return response.json();

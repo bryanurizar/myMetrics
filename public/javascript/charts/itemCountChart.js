@@ -1,5 +1,5 @@
 export async function getItemCountChartData() {
-    const response = await fetch(`${process.env.API_URL}/itemCountChart`, {
+    const response = await fetch('/itemCountChart', {
         method: 'GET'
     });
     return response.json();

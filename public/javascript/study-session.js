@@ -175,7 +175,7 @@ function decrement() {
 
 // API Function Calls
 async function updateStudySession(data) {
-    const response = await fetch(`${process.env.API_URL}/study-session/`, {
+    const response = await fetch('/study-session/', {
         method: 'PATCH',
         headers: {
             'Content-Type': 'application/json'
@@ -196,7 +196,7 @@ async function postStudySessionLog(action, duration) {
         milliseconds: duration.milliseconds,
     };
 
-    const response = await fetch(`${process.env.API_URL}/study-session/${sessionData.sessionId}`, {
+    const response = await fetch(`/study-session/${sessionData.sessionId}`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -1,5 +1,5 @@
 export async function getStudyTimeByBoardsData() {
-    const response = await fetch(`${process.env.API_URL}/studyTimeByBoardsChart`, {
+    const response = await fetch('/studyTimeByBoardsChart', {
         method: 'GET'
     });
     return response.json();
