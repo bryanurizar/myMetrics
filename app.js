@@ -437,7 +437,7 @@ app
         const boardId = req.body.boardId;
 
         pool.query(
-            'INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID) VALUES ($1, $2, $3, $4)',
+            'INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID, isSessionPageVisited) VALUES ($1, $2, $3, $4, false)',
             [studySessionId, sessionDuration, loggedInUser, boardId],
             (err, result) => {
                 if (err) {
@@ -469,22 +469,24 @@ app
 
 app
     .route('/study-session/:studySessionId')
-    .get(isUserAuthenticated, (req, res) => {
+    .get(isUserAuthenticated, async (req, res) => {
         const studySessionId = req.params.studySessionId;
         const loggedInUser = req.user.id;
 
-        let isSessionPageVisited;
 
-        pool.query(
-            'SELECT * FROM StudySessions WHERE sessionID=$1',
+        const client = await pool.connect();
+
+        await client.query('BEGIN');
+        let isSessionPageVisited = await client.query('SELECT * FROM StudySessions WHERE sessionID=$1',
             [studySessionId],
             (err, result) => {
                 if (err) throw err;
-                isSessionPageVisited = result.rows[0].isSessionPageVisited;
+                isSessionPageVisited = result.rows[0].issessionpagevisited;
+                console.log('initial', isSessionPageVisited);
             }
         );
 
-        pool.query(
+        await pool.query(
             'SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt', [loggedInUser],
             (err, items) => {
                 if (err) {
@@ -494,18 +496,19 @@ app
                     items: items.rows,
                     isSessionPageVisited: isSessionPageVisited,
                 };
+                console.log('sent', status.isSessionPageVisited);
                 res.setHeader('Cache-Control', 'no-store');
-                res.render('pages/study-session', status);
+                res.render('pages/study-session', {status: status});
             }
         );
 
-        pool.query(
+        await pool.query(
             'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
             [studySessionId],
             (err, result) => {
                 if (err) throw err;
                 isSessionPageVisited = true;
-                console.log('isSessionPageVisited property updated.');
+                console.log('isSessionPageVisited property updated', isSessionPageVisited);
             }
         );
     })

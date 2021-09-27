@@ -554,7 +554,7 @@ span {
   flex-direction: row;
   flex-wrap: wrap;
   height: 100%;
-  max-width: 70%;
+  max-width: 80%;
   display: flex;
   justify-content: center;
   align-items: center;

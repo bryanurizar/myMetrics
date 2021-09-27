@@ -4,6 +4,7 @@
         "boardname",
         "boardstudytime",
         "firstname",
+        "issessionpagevisited",
         "itemcount",
         "itemid",
         "itemname",
