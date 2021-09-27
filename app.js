@@ -473,44 +473,24 @@ app
         const studySessionId = req.params.studySessionId;
         const loggedInUser = req.user.id;
 
-
-        const client = await pool.connect();
-
-        await client.query('BEGIN');
-        let isSessionPageVisited = await client.query('SELECT * FROM StudySessions WHERE sessionID=$1',
-            [studySessionId],
-            (err, result) => {
-                if (err) throw err;
-                isSessionPageVisited = result.rows[0].issessionpagevisited;
-                console.log('initial', isSessionPageVisited);
-            }
-        );
-
-        await pool.query(
-            'SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt', [loggedInUser],
-            (err, items) => {
-                if (err) {
-                    throw err;
-                }
-                const status = {
-                    items: items.rows,
-                    isSessionPageVisited: isSessionPageVisited,
-                };
-                console.log('sent', status.isSessionPageVisited);
-                res.setHeader('Cache-Control', 'no-store');
-                res.render('pages/study-session', {status: status});
-            }
-        );
-
-        await pool.query(
-            'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
-            [studySessionId],
-            (err, result) => {
-                if (err) throw err;
-                isSessionPageVisited = true;
-                console.log('isSessionPageVisited property updated', isSessionPageVisited);
-            }
-        );
+        try {
+            const session = await pool.query('SELECT * FROM StudySessions WHERE sessionID=$1', [studySessionId]);
+            let isSessionPageVisited = session.rows[0].issessionpagevisited;
+            
+            const targetItems = await pool.query('SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt', [loggedInUser]);
+            const status = {
+                items: targetItems.rows,
+                isSessionPageVisited: isSessionPageVisited,
+            };
+            res.setHeader('Cache-Control', 'no-store');
+            res.render('pages/study-session', {status: status}); 
+            
+            await pool.query(
+                'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
+                [studySessionId]);
+        } catch(err) {
+            console.error(err);
+        }
     })
     .post(isUserAuthenticated, (req, res) => {
         const studySessionDuration =
