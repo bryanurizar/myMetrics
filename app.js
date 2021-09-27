@@ -698,8 +698,6 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
                 };
             });
 
-            console.log(users);
-
             if (users === []) {
                 rank = 0;
             } else {
