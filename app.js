@@ -471,6 +471,8 @@ app
     .route('/study-session/:studySessionId')
     .get(isUserAuthenticated, (req, res) => {
         const studySessionId = req.params.studySessionId;
+        const loggedInUser = req.user.id;
+
         let isSessionPageVisited;
 
         pool.query(
@@ -483,7 +485,7 @@ app
         );
 
         pool.query(
-            'SELECT * FROM ITEMS WHERE isOnTargetList=True ORDER BY createdAt',
+            'SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt', [loggedInUser],
             (err, items) => {
                 if (err) {
                     throw err;
