@@ -66,6 +66,15 @@ function handleEditOrDeleteClick(e) {
     const parentBoard = e.target.closest('.board-card');
 
     if (e.target.className === 'edit') {
+        // const boardNameTag = parentBoard.querySelector('.board-name');
+        // boardNameTag.setAttribute('contenteditable', 'true');
+        // boardNameTag.focus();
+
+        // boardNameTag.addEventListener('keypress', e => {
+        //     if (e.key === 'Enter') {
+        //         boardNameTag.removeAttribute('contenteditable');
+        //     }
+        // });
         // TODO: Add name edit functionality 
     } else if (e.target.className === 'trash') {
         parentBoard.remove();
@@ -87,4 +96,10 @@ async function deleteBoard(id, name) {
         body: JSON.stringify(boardData)
     });
     return response;
+}
+
+async function editBoard(id, name) {
+    const boardData = {
+
+    };
 }
