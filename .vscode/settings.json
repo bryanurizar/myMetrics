@@ -15,6 +15,7 @@
         "pausecount",
         "studysessionlogs",
         "studysessions",
-        "userid"
+        "userid",
+        "userimage"
     ]
 }

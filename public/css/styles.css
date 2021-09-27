@@ -661,3 +661,11 @@ header,
 #rank-emoji {
   font-size: 1.8rem;
 }
+
+.total-time {
+  font-family: monospace;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  font-size: 1.35rem;
+}

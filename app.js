@@ -11,7 +11,7 @@ import passport from 'passport';
 import findById from './helpers/findById.js';
 import isUserAuthenticated from './helpers/isUserAuthenticated.js';
 import ordinalSuffixOf from './helpers/ordinalSuffix.js';
-import duration, { Duration } from 'luxon';
+import { Duration } from 'luxon';
 
 const port = process.env.PORT || 3000;
 
