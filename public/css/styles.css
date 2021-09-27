@@ -451,8 +451,8 @@ span {
 #study {
   display: flex;
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  /* align-items: center; */
+  justify-content: flex-start;
   margin-top: 100px;
 }
 
@@ -460,7 +460,8 @@ span {
   display: flex;
   flex: 3;
   justify-content: center;
-  align-items: center;
+  /* align-items: flex-end; */
+  height: 100%;
 }
 
 #study-list > .todo-list-container {
@@ -536,7 +537,7 @@ span {
 }
 
 #session-ended {
-  font-size: 4rem;
+  font-size: 2.5rem;
 }
 
 /* Analytics page styling */
@@ -553,11 +554,12 @@ span {
   flex-direction: row;
   flex-wrap: wrap;
   height: 100%;
-  width: 50%;
+  max-width: 70%;
   display: flex;
   justify-content: center;
   align-items: center;
   overflow-y: auto;
+  align-content: center;
 }
 
 .chart-container {

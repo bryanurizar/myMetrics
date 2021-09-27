@@ -7,7 +7,7 @@
   <body>
     <%- include('../partials/header');%>
     <section id="study">
-      <% if(isSessionPageVisited === 'Yes') { %>
+      <% if(status.isSessionPageVisited) { %>
       <h2 id="session-ended">Your Study Session Has Ended.</h2>
       <%} else { %>
       <div id="study-list">
@@ -20,7 +20,7 @@
             </div>
           </div>
           <div class="items">
-            <% items.forEach(item => { %>
+            <% status.items.forEach(item => { %>
             <div
               id="card-<%= item.itemid %>"
               class="todo-card"
