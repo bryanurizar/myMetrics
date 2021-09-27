@@ -14,7 +14,7 @@
         <header>
           <div class="rank">Rank</div>
           <div class="username">User</div>
-          <div class="time">Time (hours)</div>
+          <div class="time">Time</div>
         </header>
         
         <div id="leaderboard-rows">
@@ -27,7 +27,7 @@
                 <%=`${result.firstname} ${result.lastname.substring(0, 1)}.`%>
               </div>
             </div>
-            <div class="time"><%=Math.round(result.boardstudytime/(60 * 60))%></div>
+            <div class="time"><%= result.boardstudytime%> </div>
           </div>
           <% }) %>
         </div>

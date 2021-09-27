@@ -11,6 +11,7 @@ import passport from 'passport';
 import findById from './helpers/findById.js';
 import isUserAuthenticated from './helpers/isUserAuthenticated.js';
 import ordinalSuffixOf from './helpers/ordinalSuffix.js';
+import duration, { Duration } from 'luxon';
 
 const port = process.env.PORT || 3000;
 
@@ -686,7 +687,18 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
         (err, results) => {
             if (err) throw err;
             let rank;
-            const users = results.rows;
+
+            const users = results.rows.map(user => {
+                return {
+                    userid: user.userid,
+                    firstname: user.firstname,
+                    lastname: user.lastname,
+                    userimage: user.userimage,
+                    boardstudytime: Duration.fromMillis(user.boardstudytime * 1000).toFormat('hh:mm:ss')
+                };
+            });
+
+            console.log(users);
 
             if (users === []) {
                 rank = 0;
