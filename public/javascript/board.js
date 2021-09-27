@@ -84,24 +84,21 @@ async function updateRank(movedId, previousId, nextId, listId) {
 ***
 */
 
-function handleModal(e) {
-    const modalId = `#modal-${e.target.id}`;
-    const modal = document.querySelector(modalId);
+document.addEventListener('click', handleModal);
 
-    if (modal.classList.contains('modal-styles')) {
-        modal.classList.remove('modal-styles');
-        modal.classList.add('modal');
-    } else {
+function handleModal(e) {
+    if (e.target.classList.contains('list-popup')) {
+        const modalId = `#modal-${e.target.id}`;
+        const modal = document.querySelector(modalId); 
         modal.classList.add('modal-styles');
         modal.classList.remove('modal');
+    } else if (e.target.closest('.modal-styles') === null &&  document.querySelector('.modal-styles')) {
+        document.querySelectorAll('.modal-styles').forEach(el => {
+            el.classList.add('modal');
+            el.classList.remove('modal-styles');
+        });
     }
 }
-
-const modalLinks = document.querySelectorAll('.list-popup');
-
-modalLinks.forEach(modalLink => {
-    modalLink.addEventListener('click', handleModal);
-});
 
 const deleteList = document.querySelectorAll('.delete-list');
 
