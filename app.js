@@ -486,8 +486,7 @@ app
             res.render('pages/study-session', {status: status}); 
             
             await pool.query(
-                'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
-                [studySessionId]);
+                'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1', [studySessionId]);
         } catch(err) {
             console.error(err);
         }
