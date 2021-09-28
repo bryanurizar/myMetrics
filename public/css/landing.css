@@ -1,11 +1,38 @@
+#main {
+    display: flex;
+    height: min(100vh - 70px);
+    width: min(90%);
+    justify-content: center;
+}
+
 #main > div {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    align-content: center;
+    flex-direction: row;
+;
+}
+
+#header {
+    margin-top: 15rem;
+}
+
+h1 {
+    font-size: 2em;
+}
+
+p {
+    width: min(70%, 70.5rem);
+    font-size: 1.2em;
 }
 
  #main > div > div {
     flex: 1;
+}
+
+#links {
+
+}
+
+img {
+    max-width: 100%;
 }
 
