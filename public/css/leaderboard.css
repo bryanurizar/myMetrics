@@ -1,0 +1,84 @@
+#leaderboard-section {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+  }
+  
+  #leaderboard-title {
+    margin-top: 20px;
+    margin-bottom: 0px;
+  }
+  
+  #leaderboard-rank {
+    margin-bottom: 10px;
+    font-weight: 600;
+    font-size: 1.1rem;
+  }
+  
+  #leaderboard-table {
+    flex: 1;
+    min-width: 450px;
+    box-shadow: 0 2px 20px 0 rgb(0 0 0 / 6%);
+    padding: 16px;
+    background-color: white;
+    /* overflow-y: scroll; */
+    border-radius: 10px;
+  }
+  
+  #leaderboard-rows {
+    max-height: 68vh;
+    overflow-y: scroll;
+  }
+  
+  #leaderboard-table > header {
+    font-weight: bold;
+    font-size: 1.24rem;
+    box-shadow: 0 8px 8px -10px rgb(0 0 0 / 15%);
+  }
+  
+  header,
+  .row {
+    display: flex;
+    margin-bottom: 8px;
+    font-size: 1.24rem;
+  }
+  
+  .rank {
+    flex: 1;
+    display: flex;
+    align-items: center;
+  }
+  
+  .username {
+    flex: 2;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+  }
+  
+  .time {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+  }
+  
+  .username > img {
+    border-radius: 50%;
+    width: 25px;
+    margin-right: 8px;
+  }
+  
+  #rank-emoji {
+    font-size: 1.8rem;
+  }
+  
+  .total-time {
+    font-family: monospace;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    font-size: 1.35rem;
+  }
