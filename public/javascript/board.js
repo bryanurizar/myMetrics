@@ -166,8 +166,6 @@ function enableTargetItemsSelection(buttonName) {
 }
 
 function checkLengthOfTargetList() {
-    console.log(targetItems);
-    console.log(targetItems.length);
     if (targetItems.length > 0) {
         updateTargetList(targetItems);
     } else {
