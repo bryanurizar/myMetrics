@@ -1,0 +1,95 @@
+
+#board {
+    display: flex;
+    position: absolute;
+    margin-top: 12px;
+    flex-direction: row;
+    align-items: flex-start;
+    overflow-x: auto;
+    left: 0;
+    right: 0;
+    padding-left: 1%;
+    padding-right: 1%;
+    min-height: 100%;
+  }
+  
+  .add-list {
+    margin-top: 0;
+    width: 272px;
+    border-radius: 20px;
+    height: 35px;
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
+  }
+  .add-list:focus {
+    outline: none;
+  }
+  
+  .targeted {
+    background-color: #F4735E;
+    border-style: solid;
+    border-width: 2px;
+    color: white;
+    border-color: #F4735E;
+  }
+  
+  .targeted:hover {
+    background-color: #F4735E;
+  }
+  
+  .list-popup {
+    text-align: center;
+    vertical-align: top;
+    line-height: 1;
+    cursor: pointer;
+    letter-spacing: 1px;
+  }
+  
+  .modal {
+    display: none;
+  }
+  
+  .modal-styles {
+    border-radius: 5px;
+    border: 1px solid #dfe2e7;
+    font-size: 12px;
+    position: absolute;
+    width: 272px;
+    top: 30px;
+    left: 259px;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  }
+  
+  #modal-title {
+    font-weight: 500;
+    text-align: center;
+    margin: 12px;
+  }
+  
+  span {
+    border-bottom: solid 1px #dfe2e7;
+  }
+  
+  .delete-list {
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  .delete-list:hover {
+    background-color: #f7f7f7;
+  }
+  
+  #target-list {
+    margin-top: 40px;
+    display: flex;
+    align-items: flex-end;
+    /* transition: all 0.5s; */
+  }
+  
+  #target-list > input {
+    height: 40px;
+  }
+  
+  #target-list > button {
+    height: 40px;
+  }
