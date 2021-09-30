@@ -6,8 +6,8 @@ html {
 
   background-color: var(--bg-clr);
   font-family: "Montserrat", sans-serif;
-  /* max-height: 100vh; */
-  max-width: 100vw;
+  font-size: 16px;
+  min-width: 360px;
 }
 
 body,
@@ -55,6 +55,12 @@ nav #logo {
 a {
   text-decoration: none;
   color: var(--primary-font-clr); */
+}
+
+/* Sets the max width of the img. Overrides the width and never exceeds it. */
+img {
+  display: block;
+  max-width: 100%;
 }
 
 /*******************************/
