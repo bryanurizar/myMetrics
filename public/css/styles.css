@@ -1,100 +1,77 @@
-:root 
-
-
-
 html {
-  height: 100vh;
-  font-size: 12px;
+  --neutral-font-clr: #FFFFFF;
+  --primary-font-clr:#293b5d; 
+  --bg-clr:#FDFBF9;
+  --btn-clr: #2F74F2;
+
+  background-color: var(--bg-clr);
+  font-family: "Montserrat", sans-serif;
+  /* max-height: 100vh; */
+  max-width: 100vw;
+}
+
+body,
+h1,
+h2,
+h3,
+p {
   margin: 0;
 }
 
 body {
-  color: #293b5d;
-  /* height: 100vh; */
-  font-family: "Montserrat", sans-serif;
-  letter-spacing: 0.2px;
-  background-color: #FDFBF9;
-  margin-bottom: 0;
-  overflow-x: auto;
-  /* overflow-y: hidden; */
-  margin: 0;
-  padding: 0 1.6%
+  color: var(--primary-font-clr);
+  letter-spacing: 0.0325em;
+  padding: 0 1rem;
 }
 
+/*****************************/
+/****** Navbar styling ******/
+/****************************/
+
 nav {
-  padding: 0.6%  0%;
-  /* margin-bottom: 5px; */
+  /* align-items: center;
+  box-shadow: 0 0.5em 0.5em -0.625em rgb(0 0 0 / 15%);
   display: flex;
   height: 3rem;
   justify-content: center;
+  padding: 0.75rem  0; */
+}
+
+nav ul {
   align-items: center;
-  box-shadow: 0 8px 8px -10px rgb(0 0 0 / 15%);
-}
-
-#logo {
-  flex: 5;
-  font-size: 2.25rem;
-  font-weight: 700;
-}
-
-#links {
   display: flex;
-  flex: 1;
-  flex-direction: row;
-  align-items: center;
-  justify-content: flex-end;
+  list-style: none;
+  justify-content: flex-start; 
+  margin: 0.5;
+  padding: 0;
 }
 
-#links > a {
-  margin-left: 15px;
+nav #logo {
+  flex: 3;
+  font-size: 1.6em;
+  font-weight: 700;
 }
 
 a {
   text-decoration: none;
-  color: #293b5e;
-  font-size: 1.2rem;
+  color: var(--primary-font-clr); */
 }
 
-#btn {
-  background-color: #2F74F2;
-  border-radius: 20px;
-  padding: 10px 18px;
+/*******************************/
+/****** Utilities styling ******/
+/*******************************/
+
+.btn {
+  background-color: var(--btn-clr);
+  border-radius: 1.25rem;
+  padding: 0.625rem 1.125rem;
   border: none;
   color: white;
-  box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0.5em 1.125em 0 rgba(0, 0, 0, 0.2);
 }
 
-#btn:hover {
+.btn:hover {
   background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
-}
-
-/* Utilities styling */
-input {
-  width: 100%;
-  padding: 8px 20px;
-  margin: 6px 0;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
-.flaticons {
-  padding: 0;
-  flex: 2;
-  margin: 0;
-  align-self: center;
-}
-
-img:hover {
-  opacity: 0.5;
-}
-
-.flaticons > img {
-  padding: 0;
-  margin: 0;
-  width: 10px; /* you can use % */
-  height: auto;
-  visibility: hidden;
 }
 
 .cancel-btn {
@@ -114,15 +91,37 @@ img:hover {
   cursor: pointer;
 }
 
+input {
+  width: 100%;
+  padding: 0.5rem 1.25rem;
+  margin: 0.325rem 0;
+  border: 0.0625em solid #ccc;
+  border-radius: 0.25em;
+  box-sizing: border-box;
+}
 
+.flaticons {
+  padding: 0;
+  flex: 2;
+  margin: 0;
+  align-self: center;
+}
 
+.flaticons > img {
+  padding: 0;
+  margin: 0;
+  width: 10px; /* you can use % */
+  height: auto;
+  visibility: hidden;
+}
 
+.flaticons > img:hover {
+  opacity: 0.5;
+}
 
-
-
-
-
-/* List styling */
+/***************************/
+/****** List styling ******/
+/**************************/
 
 .todo-list-container {
   display: flex;

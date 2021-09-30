@@ -1,9 +1,9 @@
-#main {
+/* #main {
     display: flex;
     height: min(100vh - 70px);
     width: min(90%);
     justify-content: center;
-}
+} */
 /* 
 #main > div {
     display: flex;

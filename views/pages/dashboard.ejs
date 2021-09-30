@@ -20,8 +20,8 @@
         <% results.forEach(result => {%>
             <div class="board-card">
               <div class="dashboard-flaticons">
-                <img class="edit" src="img/edit.svg" />
-                <img class="trash" src="img/trash.svg" />
+                <img class="flaticons edit" src="img/edit.svg" />
+                <img class="flaticons trash" src="img/trash.svg" />
               </div>
               <a class="board-name" href="/boards/<%=result.boardid%>/<%=encodeURI(decodeURI(result.boardname.toLowerCase()).replace(/ /g, "-"))%>"><%= result.boardname %></a>
             </div>
