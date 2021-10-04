@@ -24,6 +24,13 @@ body {
   padding: 0 1.5rem;
 }
 
+.page-container {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+}
+
 /*****************************/
 /****** Navbar styling ******/
 /****************************/
@@ -62,9 +69,14 @@ nav #logo {
   margin-right: 0.2rem;
 }
 
-a {
-  text-decoration: none;
-  color: var(--primary-font-clr);
+/* Styling of page container */
+
+#main {
+  flex-grow: 1;
+}
+
+nav, #main, footer {
+  flex-shrink: 0;
 }
 
 .header-title {
@@ -76,31 +88,24 @@ a {
   line-height: 1.5;
 }
 
-#header {
-  margin-top: 30px;
-  /* max-width: 40%; */
+.header {
+  margin-top: 2rem;
+  max-width: 40%;
 }
 .header-container {
   display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.page-container {
-  display: flex;
-  flex-direction: column;
+  flex-flow: row wrap;
   justify-content: center;
   align-items: center;
 }
 
 footer {
-  position: absolute;
-  bottom: 0;
   align-items: center;
+  align-content: flex-end;
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  margin-bottom: 1em;
+  margin-bottom: 1rem;
 }
 
 .copyright {
@@ -108,29 +113,25 @@ footer {
   color: #c5c5c5;
 }
 @media screen and (max-width: 1024px) {
-
-  #header {
+  .header {
     max-width: 100%;
-  }
 
-  .header-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
   }
 }
 
 @media screen and (min-width: 1024px) {
-
   #header {
     max-width: 40%;
   }
-
 }
 
 /*******************************/
 /****** Utilities styling ******/
 /*******************************/
+a {
+  text-decoration: none;
+  color: var(--primary-font-clr);
+}
 
 /* Sets the max width of the img. Overrides the width and never exceeds it. */
 img {
