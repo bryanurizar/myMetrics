@@ -2,19 +2,25 @@
   <head>
     <title>Log In | myMetrics</title>
     <%- include('../partials/head'); %>
-    <link rel="stylesheet" href="/css/login.css">
+    <link rel="stylesheet" href="/css/login.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap"
+      rel="stylesheet"
+    />
     <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
     <section id="login-section">
-      <div id="login">
-        <h1 class="login">Login to myMetrics</h1>
+      <div id="login-container">
+        <h1 class="login-header">Sign in to myMetrics</h1>
         <a
           class="signup-button google-signup-button"
           data-segioevent='{"name":"RegisterFlow Initiate","method":"google","source":"home_simple_lp"}'
           href="/auth/google"
           target="_parent"
-          >Sign In With Google</a
+          >Sign in with Google</a
         >
       </div>
     </section>
