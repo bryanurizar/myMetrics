@@ -21,7 +21,7 @@ p {
 body {
   color: var(--primary-font-clr);
   letter-spacing: 0.0325em;
-  padding: 0 1rem;
+  padding: 0 1.5rem;
 }
 
 /*****************************/
@@ -48,8 +48,18 @@ nav ul {
 
 nav #logo {
   flex: 3;
+  display: flex;
+  align-items: center;
   font-weight: 700;
   font-size: 1.5rem;
+}
+
+.logo-img {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  height: 2.3rem;
+  margin-right: 0.2rem;
 }
 
 a {
@@ -57,10 +67,23 @@ a {
   color: var(--primary-font-clr);
 }
 
-/* Sets the max width of the img. Overrides the width and never exceeds it. */
-img {
-  display: block;
-  max-width: 100%;
+.header-title {
+  padding-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+.header-para {
+  line-height: 1.5;
+}
+
+#header {
+  margin-top: 30px;
+  /* max-width: 40%; */
+}
+.header-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .page-container {
@@ -77,72 +100,43 @@ footer {
   display: flex;
   flex-direction: column;
   font-size: 1rem;
-  justify-content: center;
   margin-bottom: 1em;
 }
 
 .copyright {
   font-size: 0.8rem;
+  color: #c5c5c5;
 }
-
-.fab-github {
-  
-}
-
-@media screen and (min-width: 768px) {
+@media screen and (max-width: 1024px) {
 
   #header {
-    max-width: 50%;
+    max-width: 100%;
   }
+
   .header-container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
-    align-content: center;
   }
 }
 
+@media screen and (min-width: 1024px) {
 
+  #header {
+    max-width: 40%;
+  }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
 
 /*******************************/
 /****** Utilities styling ******/
 /*******************************/
+
+/* Sets the max width of the img. Overrides the width and never exceeds it. */
+img {
+  display: block;
+  max-width: 100%;
+}
 
 .btn {
   background-color: var(--btn-clr);
