@@ -379,8 +379,8 @@ function renderCard(listId, cardId, cardContent) {
            <p class="todo-description">${cardContent}</p>
            <br />
            <div class="flaticons">
-               <img class="edit" src=${edit} />
-               <img class="trash" src=${trash} />
+               <img class="flaticons edit" src=${edit} />
+               <img class="flaticons trash" src=${trash} />
            </div>
         </div>
         `;

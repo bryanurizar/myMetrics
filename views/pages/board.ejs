@@ -3,7 +3,8 @@
   <head>
     <title>Board | myMetrics</title>
     <%- include('../partials/head'); %> <link rel="stylesheet"
-    href="/css/header.css" class="css" /
+    href="/css/header.css" class="css" />
+    <link rel="stylesheet" href="/css/styles.css">
     <link rel="stylesheet" href="/css/board.css" />
   </head>
   <body>
@@ -33,9 +34,9 @@
               <input type="checkbox" ondrop="return false;" />
               <p class="todo-description"><%= item.itemname %></p>
               <br />
-              <div class="flaticons">
-                <img class="edit" src="../../img/edit.svg" />
-                <img class="trash" src="../../img/trash.svg" />
+              <div class="board-flaticons">
+                <img class="flaticons edit" src="/img/edit.svg" />
+                <img class="flaticons trash" src="/img/trash.svg" />
               </div>
             </div>
           </div>
