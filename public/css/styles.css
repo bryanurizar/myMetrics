@@ -1,8 +1,8 @@
 html {
-  --neutral-font-clr: #FFFFFF;
-  --primary-font-clr:#293b5d; 
-  --bg-clr:#FDFBF9;
-  --btn-clr: #2F74F2;
+  --neutral-font-clr: #ffffff;
+  --primary-font-clr: #293b5d;
+  --bg-clr: #fdfbf9;
+  --btn-clr: #2f74f2;
 
   background-color: var(--bg-clr);
   font-family: "Montserrat", sans-serif;
@@ -31,24 +31,15 @@ body {
   align-items: stretch;
 }
 
-/*****************************/
-/****** Navbar styling ******/
-/****************************/
-
-/* nav {
-  /* align-items: center;
-  box-shadow: 0 0.5em 0.5em -0.625em rgb(0 0 0 / 15%);
-  display: flex;
-  height: 3rem;
-  justify-content: center;
-  padding: 0.75rem  0; */
-
+/******************************************/
+/****** Landing page navbar styling ******/
+/****************************************/
 
 nav ul {
   align-items: center;
   display: flex;
   list-style: none;
-  justify-content: flex-start; 
+  justify-content: flex-start;
   margin: 0.5;
   padding: 0;
 }
@@ -75,7 +66,9 @@ nav #logo {
   flex-grow: 1;
 }
 
-nav, #main, footer {
+nav,
+#main,
+footer {
   flex-shrink: 0;
 }
 
@@ -115,7 +108,6 @@ footer {
 @media screen and (max-width: 1024px) {
   .header {
     max-width: 100%;
-
   }
 }
 
