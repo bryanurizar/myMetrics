@@ -1,6 +1,7 @@
 #greeting {
-  font-size: 1.5rem;
-  margin: 40px 0;
+  font-weight: 600;
+  margin: 1.5em 0;
+  text-align: center;
 }
 
 #user-name {
@@ -17,6 +18,25 @@
 .dashboard-flaticons > img {
   width: 10px;
   visibility: hidden;
+}
+
+.flaticons {
+  padding: 0;
+  flex: 2;
+  margin: 0;
+  align-self: center;
+}
+
+.flaticons > img {
+  padding: 0;
+  margin: 0;
+  width: 10px; /* you can use % */
+  height: auto;
+  visibility: hidden;
+}
+
+.flaticons > img:hover {
+  opacity: 0.5;
 }
 
 .board-card:hover img {
