@@ -171,22 +171,18 @@ input {
   box-sizing: border-box;
 }
 
-.flaticons {
-  padding: 0;
-  flex: 2;
-  margin: 0;
-  align-self: center;
-}
-
-.flaticons > img {
-  padding: 0;
-  margin: 0;
-  width: 10px; /* you can use % */
-  height: auto;
+.dashboard-flaticons {
+  position: absolute;
+  display: flex;
+  justify-content: row;
+  top: 0.5rem;
+  left: 10.5rem;
   visibility: hidden;
+  gap: 0.2em;
+  width: 10px;
 }
 
-.flaticons > img:hover {
+.flaticons:hover {
   opacity: 0.5;
 }
 

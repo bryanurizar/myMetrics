@@ -8,7 +8,7 @@ createBoardBtn.addEventListener('click', () => {
     createBoard(newBoardName);
 });
 
-createBoardInput.addEventListener('keypress', e => {
+createBoardInput.addEventListener('keypress', (e) => {
     if (e.target.className === 'create-board' && e.key === 'Enter') {
         const newBoardName = e.target.value;
         createBoard(newBoardName);
@@ -24,15 +24,15 @@ async function createBoard(boardName) {
     }
 
     const data = {
-        newBoardName: boardName
+        newBoardName: boardName,
     };
 
     const response = await fetch('/boards', {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     });
     const res = await response.json();
     document.querySelector('input').value = '';
@@ -45,12 +45,14 @@ function renderNewBoard(boardName, boardId) {
     const newBoardName = document.createElement('a');
     newBoardName.className = 'board-name';
     newBoardName.textContent = boardName;
-    newBoardName.href = `/boards/${boardId}/${encodeURI(decodeURI(boardName.toLowerCase()).replace(/ /g, '-'))}`;
+    newBoardName.href = `/boards/${boardId}/${encodeURI(
+        decodeURI(boardName.toLowerCase()).replace(/ /g, '-')
+    )}`;
     const editTrashDiv = document.createElement('div');
     editTrashDiv.className = 'dashboard-flaticons';
     editTrashDiv.innerHTML = ` 
-        <img class="edit" src="img/edit.svg" />
-        <img class="trash" src="img/trash.svg" />
+        <img class="flaticons edit" src="img/edit.svg" />
+        <img class="flaticons trash" src="img/trash.svg" />
         `;
     boardCard.appendChild(editTrashDiv);
     boardCard.appendChild(newBoardName);
@@ -61,22 +63,24 @@ const boardsSection = document.querySelector('#boards');
 boardsSection.addEventListener('click', handleEditOrDeleteClick);
 
 function handleEditOrDeleteClick(e) {
-    const boardId = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(29, 41);
-    const boardName = e.target.closest('.dashboard-flaticons').nextElementSibling.href.substring(42,);
+    const boardId = e.target
+        .closest('.dashboard-flaticons')
+        .nextElementSibling.href.substring(29, 41);
+    const boardName = e.target
+        .closest('.dashboard-flaticons')
+        .nextElementSibling.href.substring(42);
     const parentBoard = e.target.closest('.board-card');
-
-    if (e.target.className === 'edit') {
-        // const boardNameTag = parentBoard.querySelector('.board-name');
-        // boardNameTag.setAttribute('contenteditable', 'true');
-        // boardNameTag.focus();
-
-        // boardNameTag.addEventListener('keypress', e => {
-        //     if (e.key === 'Enter') {
-        //         boardNameTag.removeAttribute('contenteditable');
-        //     }
-        // });
-        // TODO: Add name edit functionality 
-    } else if (e.target.className === 'trash') {
+    if (e.target.classList.contains('edit')) {
+    // const boardNameTag = parentBoard.querySelector('.board-name');
+    // boardNameTag.setAttribute('contenteditable', 'true');
+    // boardNameTag.focus();
+    // boardNameTag.addEventListener('keypress', e => {
+    //     if (e.key === 'Enter') {
+    //         boardNameTag.removeAttribute('contenteditable');
+    //     }
+    // });
+    // TODO: Add name edit functionality
+    } else if (e.target.classList.contains('trash')) {
         parentBoard.remove();
         deleteBoard(boardId, boardName);
     }
@@ -85,21 +89,22 @@ function handleEditOrDeleteClick(e) {
 async function deleteBoard(id, name) {
     const boardData = {
         boardId: id,
-        boardName: name
+        boardName: name,
     };
 
-    const response = fetch(`/boards/${boardData.boardId}/${boardData.boardName}`, {
-        method: 'PATCH',
-        headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify(boardData)
-    });
+    const response = fetch(
+        `/boards/${boardData.boardId}/${boardData.boardName}`,
+        {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(boardData),
+        }
+    );
     return response;
 }
 
-async function editBoard(id, name) {
-    const boardData = {
-
-    };
-}
+// async function editBoard(id, name) {
+//     const boardData = {};
+// }
