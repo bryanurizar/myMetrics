@@ -80,3 +80,14 @@
   font-size: 16px;
   text-align: center;
 }
+
+.dashboard-flaticons {
+  position: absolute;
+  display: flex;
+  justify-content: row;
+  top: 0.5rem;
+  left: 10.5rem;
+  visibility: hidden;
+  gap: 0.2em;
+  width: 10px;
+}

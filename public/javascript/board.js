@@ -378,7 +378,7 @@ function renderCard(listId, cardId, cardContent) {
            <input type="checkbox"/>
            <p class="todo-description">${cardContent}</p>
            <br />
-           <div class="flaticons">
+           <div class="list-flaticons">
                <img class="flaticons edit" src=${edit} />
                <img class="flaticons trash" src=${trash} />
            </div>

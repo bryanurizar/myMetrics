@@ -32,10 +32,11 @@
           <% items.forEach(item => { %> <% if (item.listid === list.listid) { %>
           <div id="card-<%= item.itemid %>" class="todo-card" draggable="true">
             <div class="todo-content">
-              <input type="checkbox" ondrop="return false;" />
-              <p class="todo-description"><%= item.itemname %></p>
-              <br />
-              <div class="board-flaticons">
+              <div class="wrapper">
+                <input type="checkbox" ondrop="return false;" />
+                <p class="todo-description"><%= item.itemname %></p>
+              </div>
+              <div class="list-flaticons">
                 <img class="flaticons edit" src="/img/edit.svg" />
                 <img class="flaticons trash" src="/img/trash.svg" />
               </div>
