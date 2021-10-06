@@ -23,6 +23,7 @@ body {
   color: var(--primary-font-clr);
   letter-spacing: 0.0325em;
   padding: 0 1.5rem;
+  max-height: 100vh;
 }
 
 .page-container {
@@ -188,110 +189,6 @@ input {
   width: 10px;
 }
 
-
-
-
-
 .flaticons:hover {
   opacity: 0.5;
-}
-
-/***************************/
-/****** List styling ******/
-/**************************/
-
-.todo-list-container {
-  display: flex;
-  flex-direction: column;
-  border-color: white;
-  border-style: 1px solid;
-  border-radius: 5px;
-  padding: 1px 8px;
-  margin: 0px 5px 40px;
-  min-width: 272px;
-  max-width: 272px;
-  max-height: 77vh;
-  box-shadow: 0 2px 16px 0 rgb(0 0 0 / 6%);
-  background-color: #eaedf0;
-}
-
-.todo-list-container > .items {
-  overflow-y: scroll;
-  min-height: 30px;
-}
-
-.add-card {
-  background-color: #eaedf0;
-  border: none;
-  margin-top: 0;
-}
-
-.add-card:hover {
-  background-color: #f4f5f4;
-}
-
-.todos {
-  overflow-y: auto;
-  margin-bottom: 5%;
-}
-
-.todo-card {
-  flex-direction: row;
-  align-items: center;
-  margin-bottom: 9px;
-  padding: 0 1%;
-  flex: 1;
-  border-radius: 5px;
-  background-color: white;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-  cursor: pointer;
-}
-
-.todo-card input {
-  visibility: hidden;
-}
-
-.todo-card:hover img {
-  visibility: visible;
-}
-
-.todo-card:hover input {
-  visibility: visible;
-}
-
-.todo-card:hover {
-  background-color: #f4f5f7;
-}
-
-.todo-content {
-  display: flex;
-  flex-direction: row;
-}
-
-.todo-description {
-  flex: 14;
-  margin-right: 2%;
-  font-size: 12px;
-}
-
-input[type="checkbox"] {
-  flex: 1.5;
-  align-self: center;
-  margin-right: 1px;
-}
-
-.completed-tag {
-  color: red;
-  font-size: 12px;
-}
-
-.list-header {
-  display: flex;
-  direction: row;
-  padding: 0;
-  position: relative;
-}
-
-.list-name {
-  flex: 10;
 }

@@ -1,15 +1,18 @@
 #board {
     display: flex;
     position: absolute;
-    margin-top: 12px;
+    margin-top: 0.75rem;
     flex-direction: row;
     align-items: flex-start;
-    overflow-x: auto;
+    overflow-x: scroll;
     left: 0;
     right: 0;
-    /* padding-left: 1%; */
-    /* padding-right: 1%; */
-    min-height: 100%;
+    padding: 0 1.5rem;
+    /* min-height: 100%; */
+  }
+
+  .todo-list-container:first-child {
+    margin-left: 0;
   }
   
   .add-list {
