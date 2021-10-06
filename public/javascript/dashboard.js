@@ -1,16 +1,17 @@
 'use strict';
 
-const createBoardBtn = document.querySelector('button');
+const createBoardBtn = document.querySelector('.create-btn');
 const createBoardInput = document.querySelector('.create-board');
 
 createBoardBtn.addEventListener('click', () => {
-    const newBoardName = document.querySelector('input').value;
+    const newBoardName = document.querySelector('.create-board').value;
     createBoard(newBoardName);
 });
 
 createBoardInput.addEventListener('keypress', (e) => {
     if (e.target.className === 'create-board' && e.key === 'Enter') {
         const newBoardName = e.target.value;
+        console.log(newBoardName);
         createBoard(newBoardName);
     }
 });
@@ -35,7 +36,7 @@ async function createBoard(boardName) {
         body: JSON.stringify(data),
     });
     const res = await response.json();
-    document.querySelector('input').value = '';
+    document.querySelector('.create-board').value = '';
     renderNewBoard(boardName, res.newBoardId);
 }
 
