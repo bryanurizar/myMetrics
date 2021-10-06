@@ -18,7 +18,9 @@
 } */
 
 .create-board {
-  margin-right: 5px;
+  padding: 0 1.25rem;
+  margin: 0.325rem 0;
+  border: 0.0625em solid #ccc;
   border-radius: 20px;
   width: 210px;
   height: 35px;
