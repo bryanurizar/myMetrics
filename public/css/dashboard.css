@@ -13,16 +13,12 @@
   cursor: pointer;
 }
 
-/* .dashboard-flaticons:hover {
-  visibility: visible;
-} */
-
 .create-board {
   padding: 0 1.25rem;
   margin: 0.325rem 0;
   border: 0.0625em solid #ccc;
   border-radius: 20px;
-  width: 210px;
+  width: 11rem;
   height: 35px;
   box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
 }
@@ -41,7 +37,7 @@
 }
 
 #boards {
-  width: 60%;
+  width: 80%;
   height: 58vh;
   display: flex;
   flex-flow: wrap;
@@ -73,12 +69,6 @@
 .board-card:hover {
   box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
-/* .vl {
-  height: 100%;
-  width: 5px;
-  position: relative;
-  background-color: green;
-} */
 
 .board-name {
   display: flex;
