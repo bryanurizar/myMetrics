@@ -1,127 +1,89 @@
 .todo-list-container {
-    display: flex;
-    flex-direction: column;
-    border-radius: 0.3125rem;
-    padding: 0.25rem 0.5rem;
-    margin: 0em 0.5rem;
-    min-width: 30rem;
-    max-width: 30rem;;
-    box-shadow: 0 2px 16px 0 rgb(0 0 0 / 6%);
-    background-color: #eaedf0;
+  display: flex;
+  flex-direction: column;
+  border-radius: 0.3125rem;
+  padding: 0.25rem 0.5rem;
+  margin: 0em 0.5rem;
+  min-width: 17rem;
+  max-width: 17rem;
+  box-shadow: 0 2px 16px 0 rgb(0 0 0 / 6%);
+  background-color: #eaedf0;
 }
 
 .list-header {
-display: flex;
-direction: row;
-justify-content: space-between
+  display: flex;
+  direction: row;
+  justify-content: space-between;
 }
 
 .items {
-/* overflow-y: scroll; */
-display: flex;
-flex-direction: column;
-gap: 0.5rem;
-/* min-height: 30px; */
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/*****************************************/
+
+.todo-card {
+  background-color: white;
+  padding: 0.75rem 0.25rem;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+  cursor: pointer;
 }
 
 .todo-content {
-    display: flex;
-    justify-content: space-between;
+  display: flex;
+  justify-content: space-between;
 }
 
-.wrapper{
-    display: flex;
-    /* justify-content: space-between; */
+.wrapper {
+  display: flex;
 }
 
-.todo-card {
-/* padding: 0.75rem 0.25rem; */
-border-radius: 5px;
-background-color: white;
- box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-/* cursor: pointer; */
+.list-flaticons {
+  display: flex;
+  justify-content: space-between;
 }
-/* 
+
+.edit,
+.trash {
+  width: 10px;
+}
+
 .todo-card input {
-visibility: hidden;
+  visibility: hidden;
 }
 
 .todo-card:hover img {
-visibility: visible;
+  visibility: visible;
 }
 
 .todo-card:hover input {
-visibility: visible;
+  visibility: visible;
 }
 
 .todo-card:hover {
-background-color: #f4f5f7;
-} */
-
-input[type="checkbox"] {
-align-self: center;
-/* margin: 0; */
+  background-color: #f4f5f7;
+}
+*/ input[type="checkbox"] {
+  align-self: center;
+  /* margin: 0; */
 }
 
-
-/* .list-flaticons {
-  display: flex;
-  justify-content: row;
-  width: 10px;
-} */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 .add-card {
-background-color: #eaedf0;
-border: none;
-margin-top: 0;
+  background-color: #eaedf0;
+  border: none;
+  margin-top: 0;
 }
 
 .add-card:hover {
-background-color: #f4f5f4;
+  background-color: #f4f5f4;
 }
 
 .completed-tag {
-    color: red;
-    font-size: 12px;
+  color: red;
+  font-size: 12px;
 }
 
 /* input {

@@ -1,34 +1,39 @@
 'use strict';
 import { edit, trash } from './icons.js';
-import { addItemEventListeners, handleCheckboxClick, handleEditIconClick, handleTrashIconClick } from './itemEventHandlers.js';
+import {
+    addItemEventListeners,
+    handleCheckboxClick,
+    handleEditIconClick,
+    handleTrashIconClick,
+} from './itemEventHandlers.js';
 
 // Adds checkbox, edit and trash icon event handlers to items in lists
 addItemEventListeners();
 
 /*
-***
-*** Drag and Drop API Implementation
-***
-*/
+ ***
+ *** Drag and Drop API Implementation
+ ***
+ */
 
 const draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.items');
 
-const handleDragStart = e => {
+const handleDragStart = (e) => {
     e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
 };
 
-const handleDragOver = e => {
+const handleDragOver = (e) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
-const handleDrop = e => {
+const handleDrop = (e) => {
     e.preventDefault();
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.items');
-    const dropListId = dropNode.id.substring(10,);
+    const dropListId = dropNode.id.substring(10);
     const nearestCard = e.target.closest('.todo-card');
     const movedCardNode = document.querySelector(`#${cardId}`);
 
@@ -37,12 +42,14 @@ const handleDrop = e => {
     if (!dropNode.firstElementChild) {
         dropNode.appendChild(movedCardNode);
     } else {
-        isMouseAboveMiddle(e) ? nearestCard.insertAdjacentElement('beforebegin', movedCardNode) : nearestCard.insertAdjacentElement('afterend', movedCardNode);
+        isMouseAboveMiddle(e)
+            ? nearestCard.insertAdjacentElement('beforebegin', movedCardNode)
+            : nearestCard.insertAdjacentElement('afterend', movedCardNode);
     }
 
-    const movedCardId = movedCardNode.id.substring(5,);
-    const previousCardId = movedCardNode.previousElementSibling?.id.substring(5,);
-    const nextCardId = movedCardNode.nextElementSibling?.id.substring(5,);
+    const movedCardId = movedCardNode.id.substring(5);
+    const previousCardId = movedCardNode.previousElementSibling?.id.substring(5);
+    const nextCardId = movedCardNode.nextElementSibling?.id.substring(5);
 
     updateRank(movedCardId, previousCardId, nextCardId, dropListId);
 };
@@ -53,11 +60,11 @@ function isMouseAboveMiddle(e) {
     return y < bounds.height / 2;
 }
 
-draggableCards.forEach(draggableCard => {
+draggableCards.forEach((draggableCard) => {
     draggableCard.addEventListener('dragstart', handleDragStart);
 });
 
-dropZones.forEach(dropZone => {
+dropZones.forEach((dropZone) => {
     dropZone.addEventListener('drop', handleDrop);
     dropZone.addEventListener('dragover', handleDragOver);
 });
@@ -67,33 +74,36 @@ async function updateRank(movedId, previousId, nextId, listId) {
         movedCardId: movedId,
         previousCardId: previousId,
         nextCardId: nextId,
-        dropListId: listId
+        dropListId: listId,
     };
 
     const response = await fetch(`/items/:${movedId}`, {
         method: 'PATCH',
         body: JSON.stringify(rankData),
-        headers: { 'content-type': 'application/json' }
+        headers: { 'content-type': 'application/json' },
     });
     return response;
 }
 
 /*
-***
-**** List modal that appears when user clicks on the "..."
-***
-*/
+ ***
+ **** List modal that appears when user clicks on the "..."
+ ***
+ */
 
 document.addEventListener('click', handleModal);
 
 function handleModal(e) {
     if (e.target.classList.contains('list-popup')) {
         const modalId = `#modal-${e.target.id}`;
-        const modal = document.querySelector(modalId); 
+        const modal = document.querySelector(modalId);
         modal.classList.add('modal-styles');
         modal.classList.remove('modal');
-    } else if (e.target.closest('.modal-styles') === null &&  document.querySelector('.modal-styles')) {
-        document.querySelectorAll('.modal-styles').forEach(el => {
+    } else if (
+        e.target.closest('.modal-styles') === null &&
+    document.querySelector('.modal-styles')
+    ) {
+        document.querySelectorAll('.modal-styles').forEach((el) => {
             el.classList.add('modal');
             el.classList.remove('modal-styles');
         });
@@ -102,14 +112,14 @@ function handleModal(e) {
 
 const deleteList = document.querySelectorAll('.delete-list');
 
-deleteList.forEach(list => {
+deleteList.forEach((list) => {
     list.addEventListener('click', handleDeleteListClick);
 });
 
 function handleDeleteListClick(e) {
     console.log('delete list clicked on');
     const listId = {
-        listId: e.target.id
+        listId: e.target.id,
     };
 
     (async () => {
@@ -117,10 +127,12 @@ function handleDeleteListClick(e) {
             const response = await fetch(`/lists/${listId.listId}`, {
                 method: 'DELETE',
                 body: JSON.stringify(listId),
-                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                headers: { 'Content-type': 'application/json; charset=UTF-8' },
             });
             await response.text();
-            const deletedTodoList = document.querySelector(`#todo-list-${e.target.id}`).closest('.todo-list-container');
+            const deletedTodoList = document
+                .querySelector(`#todo-list-${e.target.id}`)
+                .closest('.todo-list-container');
             console.log(deletedTodoList);
             deletedTodoList.remove();
         } catch (err) {
@@ -130,10 +142,10 @@ function handleDeleteListClick(e) {
 }
 
 /*
-***
-*** Create target list when user clicks the selection button
-***
-*/
+ ***
+ *** Create target list when user clicks the selection button
+ ***
+ */
 
 const createTargetListBtn = document.querySelector('.create-list');
 createTargetListBtn.addEventListener('click', handleButtonClick);
@@ -160,7 +172,7 @@ function enableTargetItemsSelection(buttonName) {
     createTargetListBtn.innerText = 'Create Study Session';
 
     const todoCards = document.querySelectorAll('.todo-card');
-    todoCards.forEach(todoCard => {
+    todoCards.forEach((todoCard) => {
         todoCard.addEventListener('click', handleTodoCardClick);
     });
 }
@@ -178,7 +190,7 @@ async function updateTargetList(items) {
         const response = await fetch('/items', {
             method: 'PATCH',
             body: JSON.stringify(items),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+            headers: { 'Content-type': 'application/json; charset=UTF-8' },
         });
         const res = await response.json();
         console.log(await postStudySession(res.studySessionId));
@@ -196,15 +208,15 @@ async function postStudySession(studySessionId) {
         sessionID: studySessionId,
         sessionDuration: 0,
         isSessionPageVisited: 'No',
-        boardId: boardId
+        boardId: boardId,
     };
 
     const response = await fetch('/study-session', {
         method: 'POST',
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
         },
-        body: JSON.stringify(studySessionData)
+        body: JSON.stringify(studySessionData),
     });
     return response;
 }
@@ -213,19 +225,20 @@ function handleCancelBtn(e) {
     targetItems = [];
     e.target.remove();
     createTargetListBtn.innerText = 'Select Target Items';
-    createTargetListBtn.addEventListener('click', handleButtonClick, { once: true });
+    createTargetListBtn.addEventListener('click', handleButtonClick, {
+        once: true,
+    });
 
     const todoCards = document.querySelectorAll('.todo-card');
-    todoCards.forEach(todoCard => {
+    todoCards.forEach((todoCard) => {
         todoCard.classList.remove('targeted');
         todoCard.removeEventListener('click', handleTodoCardClick);
-
     });
 }
 
 function handleTodoCardClick(e) {
     const todoCard = e.target.closest('.todo-card');
-    const todoCardId = todoCard.id.substring(5,);
+    const todoCardId = todoCard.id.substring(5);
     todoCard.classList.toggle('targeted');
 
     if (targetItems.includes(todoCardId)) {
@@ -240,9 +253,9 @@ function handleTodoCardClick(e) {
 
 // Create new list using JavaScript object
 const newListInput = document.querySelector('.add-list');
-newListInput.addEventListener('drop', e => e.preventDefault());
+newListInput.addEventListener('drop', (e) => e.preventDefault());
 
-newListInput.addEventListener('keypress', e => {
+newListInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         createList(newListInput.value);
         newListInput.value = '';
@@ -255,7 +268,7 @@ function createList(listName) {
 
     const newList = {
         listName: listName,
-        boardId: boardId
+        boardId: boardId,
     };
 
     (async () => {
@@ -263,7 +276,7 @@ function createList(listName) {
             const response = await fetch('/lists', {
                 method: 'POST',
                 body: JSON.stringify(newList),
-                headers: { 'Content-type': 'application/json; charset=UTF-8' }
+                headers: { 'Content-type': 'application/json; charset=UTF-8' },
             });
             const res = await response.json();
             renderList(res.listId, listName);
@@ -271,7 +284,6 @@ function createList(listName) {
             console.log(err);
         }
     })();
-
 }
 
 function renderList(id, listName) {
@@ -288,7 +300,7 @@ function renderList(id, listName) {
     listTitle.innerText = listName;
     header.appendChild(listTitle);
 
-    listTitle.addEventListener('drop', e => e.preventDefault());
+    listTitle.addEventListener('drop', (e) => e.preventDefault());
 
     const listModal = document.createElement('h4');
     listModal.id = id;
@@ -322,7 +334,7 @@ function renderList(id, listName) {
     newListInput.type = 'text';
     newListInput.autoComplete = 'off';
     newListInput.placeholder = 'Add new card...';
-    newListInput.addEventListener('drop', e => e.preventDefault());
+    newListInput.addEventListener('drop', (e) => e.preventDefault());
     list.appendChild(newListInput);
 
     const boardSection = document.querySelector('#board');
@@ -351,20 +363,19 @@ function addCard(listId, itemName) {
     const itemData = {
         listId: listId,
         itemName: itemName,
-        boardId: boardId
+        boardId: boardId,
     };
 
     (async () => {
         const response = await fetch('/items', {
             method: 'POST',
             body: JSON.stringify(itemData),
-            headers: { 'Content-type': 'application/json; charset=UTF-8' }
+            headers: { 'Content-type': 'application/json; charset=UTF-8' },
         });
         const res = await response.json();
         renderCard(itemData.listId, res.itemId, itemData.itemName);
     })();
 }
-
 
 function renderCard(listId, cardId, cardContent) {
     const list = document.querySelector(`#todo-list-${listId}`);
@@ -375,13 +386,14 @@ function renderCard(listId, cardId, cardContent) {
     todoCard.draggable = 'true';
     todoCard.innerHTML = `
         <div class="todo-content" >
-           <input type="checkbox"/>
-           <p class="todo-description">${cardContent}</p>
-           <br />
-           <div class="list-flaticons">
-               <img class="flaticons edit" src=${edit} />
-               <img class="flaticons trash" src=${trash} />
-           </div>
+            <div class="wrapper">
+                <input type="checkbox"/>
+                <p class="todo-description">${cardContent}</p>
+            </div>
+            <div class="list-flaticons">
+                <img class="flaticons edit" src=${edit} />
+                <img class="flaticons trash" src=${trash} />
+            </div>
         </div>
         `;
 
@@ -403,7 +415,7 @@ function renderCard(listId, cardId, cardContent) {
 // Added event listener to the input elements of the list by using event delegation
 const board = document.querySelector('#board');
 
-board.addEventListener('keypress', e => {
+board.addEventListener('keypress', (e) => {
     if (e.target.className === 'add-card' && e.key === 'Enter') {
         const cardContent = e.target.value;
         const listId = e.target.id;
