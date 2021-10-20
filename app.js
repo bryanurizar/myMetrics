@@ -60,15 +60,13 @@ app.route('/auth/google').get(
     })
 );
 
-app
-    .route('/auth/google/callback')
-    .get(
-        passport.authenticate('google', { failureredirect: '/login' }),
-        function (req, res) {
-            req.session.user = req.user;
-            res.redirect('/dashboard');
-        }
-    );
+app.route('/auth/google/callback').get(
+    passport.authenticate('google', { failureredirect: '/login' }),
+    function (req, res) {
+        req.session.user = req.user;
+        res.redirect('/dashboard');
+    }
+);
 
 app.route('/logout').get((req, res) => {
     req.session.destroy(function (err) {
@@ -87,7 +85,10 @@ app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
         (err, results) => {
             if (err) throw err;
             res.setHeader('Cache-Control', 'no-store');
-            res.render('pages/dashboard', { user: req.user, results: results.rows });
+            res.render('pages/dashboard', {
+                user: req.user,
+                results: results.rows,
+            });
         }
     );
 });
@@ -109,8 +110,7 @@ app.route('/boards').post(isUserAuthenticated, (req, res) => {
     );
 });
 
-app
-    .route('/boards/:boardId/:boardName')
+app.route('/boards/:boardId/:boardName')
     .get(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
         const boardID = req.params.boardId;
@@ -136,7 +136,10 @@ app
                     (err, items) => {
                         if (err) throw err;
                         res.setHeader('Cache-Control', 'no-store');
-                        res.render('pages/board', { lists: lists.rows, items: items.rows });
+                        res.render('pages/board', {
+                            lists: lists.rows,
+                            items: items.rows,
+                        });
                     }
                 );
             }
@@ -157,8 +160,7 @@ app
     });
 
 // Items routes
-app
-    .route('/items')
+app.route('/items')
     .post(isUserAuthenticated, (req, res) => {
         const loggedInUserId = req.user.id;
         const itemName = req.body.itemName;
@@ -193,8 +195,7 @@ app
         console.log('TargetList updated in database');
     });
 
-app
-    .route('/items/:itemId')
+app.route('/items/:itemId')
     .patch(isUserAuthenticated, (req, res) => {
         const updatedItemDescription = req.body.updatedItem;
         const editedItemId = req.body.editedItemId;
@@ -234,10 +235,14 @@ app
     .delete(isUserAuthenticated, (req, res) => {
         const deletedItemId = req.body.deletedItemId;
 
-        pool.query('DELETE FROM Items WHERE itemId=$1', [deletedItemId], (err) => {
-            if (err) throw err;
-            console.log('Item deleted from database.');
-        });
+        pool.query(
+            'DELETE FROM Items WHERE itemId=$1',
+            [deletedItemId],
+            (err) => {
+                if (err) throw err;
+                console.log('Item deleted from database.');
+            }
+        );
         res.send('Item deleted');
     });
 
@@ -255,33 +260,35 @@ async function updateRank(rankData) {
         try {
             const {
                 rows: [{ itemposition: previousCardRank }],
-            } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [
-                previousCardId,
-            ]);
+            } = await client.query(
+                'SELECT itemposition FROM items WHERE itemid=$1',
+                [previousCardId]
+            );
             const {
                 rows: [{ itemposition: nextCardRank }],
-            } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [
-                nextCardId,
-            ]);
+            } = await client.query(
+                'SELECT itemposition FROM items WHERE itemid=$1',
+                [nextCardId]
+            );
 
             if (movedCardRank < previousCardRank) {
                 await client.query(
                     'UPDATE items SET itemposition=itemposition - 1 WHERE itemposition<=$1',
                     [previousCardRank]
                 );
-                await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [
-                    previousCardRank,
-                    movedCardId,
-                ]);
+                await client.query(
+                    'UPDATE items SET itemposition=$1 WHERE itemid=$2',
+                    [previousCardRank, movedCardId]
+                );
             } else if (movedCardRank > nextCardRank) {
                 await client.query(
                     'UPDATE items SET itemposition=itemposition + 1 WHERE itemposition>=$1',
                     [nextCardRank]
                 );
-                await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [
-                    nextCardRank,
-                    movedCardId,
-                ]);
+                await client.query(
+                    'UPDATE items SET itemposition=$1 WHERE itemid=$2',
+                    [nextCardRank, movedCardId]
+                );
             }
 
             await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [
@@ -300,19 +307,20 @@ async function updateRank(rankData) {
             await client.query('BEGIN');
             const {
                 rows: [{ itemposition: previousCardRank }],
-            } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [
-                previousCardId,
-            ]);
+            } = await client.query(
+                'SELECT itemposition FROM items WHERE itemid=$1',
+                [previousCardId]
+            );
 
             if (movedCardRank < previousCardRank) {
                 await client.query(
                     'UPDATE items SET itemposition=itemposition - 1 WHERE itemposition <=$1',
                     [previousCardRank]
                 );
-                await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [
-                    previousCardRank,
-                    movedCardId,
-                ]);
+                await client.query(
+                    'UPDATE items SET itemposition=$1 WHERE itemid=$2',
+                    [previousCardRank, movedCardId]
+                );
             }
 
             await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [
@@ -331,19 +339,20 @@ async function updateRank(rankData) {
             await client.query('BEGIN');
             const {
                 rows: [{ itemposition: nextCardRank }],
-            } = await client.query('SELECT itemposition FROM items WHERE itemid=$1', [
-                nextCardId,
-            ]);
+            } = await client.query(
+                'SELECT itemposition FROM items WHERE itemid=$1',
+                [nextCardId]
+            );
 
             if (movedCardRank > nextCardRank) {
                 await client.query(
                     'UPDATE items SET itemposition=itemposition + 1 WHERE itemposition >=$1',
                     [nextCardRank]
                 );
-                await client.query('UPDATE items SET itemposition=$1 WHERE itemid=$2', [
-                    nextCardRank,
-                    movedCardId,
-                ]);
+                await client.query(
+                    'UPDATE items SET itemposition=$1 WHERE itemid=$2',
+                    [nextCardRank, movedCardId]
+                );
             }
 
             await client.query('UPDATE items SET listid=$1 WHERE itemid=$2', [
@@ -389,8 +398,7 @@ app.route('/lists').post(isUserAuthenticated, (req, res) => {
     );
 });
 
-app
-    .route('/lists/:listId')
+app.route('/lists/:listId')
     .post(isUserAuthenticated, (req, res) => {
         const newList = req.body.newList;
         const loggedInUser = req.user.id;
@@ -428,8 +436,7 @@ app
         res.json({});
     });
 
-app
-    .route('/study-session')
+app.route('/study-session')
     .post(isUserAuthenticated, (req, res) => {
         const studySessionId = req.body.sessionID;
         const sessionDuration = req.body.sessionDuration;
@@ -467,36 +474,43 @@ app
         res.json({});
     });
 
-app
-    .route('/study-session/:studySessionId')
+app.route('/study-session/:studySessionId')
     .get(isUserAuthenticated, async (req, res) => {
         const studySessionId = req.params.studySessionId;
         const loggedInUser = req.user.id;
 
         try {
-            const session = await pool.query('SELECT * FROM StudySessions WHERE sessionID=$1', [studySessionId]);
+            const session = await pool.query(
+                'SELECT * FROM StudySessions WHERE sessionID=$1',
+                [studySessionId]
+            );
             let isSessionPageVisited = session.rows[0].issessionpagevisited;
-            
-            const targetItems = await pool.query('SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt', [loggedInUser]);
+
+            const targetItems = await pool.query(
+                'SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt',
+                [loggedInUser]
+            );
             const status = {
                 items: targetItems.rows,
                 isSessionPageVisited: isSessionPageVisited,
             };
             res.setHeader('Cache-Control', 'no-store');
-            res.render('pages/study-session', {status: status}); 
-            
+            res.render('pages/study-session', { status: status });
+
             await pool.query(
-                'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1', [studySessionId]);
-        } catch(err) {
+                'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
+                [studySessionId]
+            );
+        } catch (err) {
             console.error(err);
         }
     })
     .post(isUserAuthenticated, (req, res) => {
         const studySessionDuration =
-      (req.body.hours || 0) * 3600 +
-      (req.body.minutes || 0) * 60 +
-      (req.body.seconds || 0) +
-      (req.body.milliseconds || 0) / 1000;
+            (req.body.hours || 0) * 3600 +
+            (req.body.minutes || 0) * 60 +
+            (req.body.seconds || 0) +
+            (req.body.milliseconds || 0) / 1000;
         const boardId = req.body.boardId;
         const sessionId = req.params.studySessionId;
         const userAction = req.body.userAction;
@@ -504,7 +518,13 @@ app
 
         pool.query(
             'INSERT INTO STUDYSESSIONLOGS (sessionDurationRemaining, userAction, sessionID, userID, boardID) VALUES ($1, $2, $3, $4, $5)',
-            [studySessionDuration, userAction, sessionId, loggedInUser, boardId],
+            [
+                studySessionDuration,
+                userAction,
+                sessionId,
+                loggedInUser,
+                boardId,
+            ],
             (err, result) => {
                 if (err) throw err;
                 console.log('User action added to study session log');
@@ -576,7 +596,10 @@ app.route('/studyTimeByBoardsChart').get(isUserAuthenticated, (req, res) => {
                 boardNames.push(boardData.boardname);
                 boardStudyTime.push(boardData.boardstudytime / (60 * 60));
             });
-            res.json({ boardNames: boardNames, boardStudyTime: boardStudyTime });
+            res.json({
+                boardNames: boardNames,
+                boardStudyTime: boardStudyTime,
+            });
         }
     );
 });
@@ -604,7 +627,8 @@ app.route('/daysSinceLastSession').get(isUserAuthenticated, (req, res) => {
             const boardsData = data.rows;
             boardsData.forEach((boardData) => {
                 const numberOfDays = Math.floor(
-                    (Date.now() - boardData.lastsessiondate) / (1000 * 3600 * 24)
+                    (Date.now() - boardData.lastsessiondate) /
+                        (1000 * 3600 * 24)
                 );
                 boardNames.push(boardData.boardname);
                 daysSinceLastSession.push(numberOfDays);
@@ -643,7 +667,10 @@ app.route('/pausesByBoards').get(isUserAuthenticated, (req, res) => {
             pauseCountByBoards.forEach((pauseCountByBoard) => {
                 pausesCount.push(pauseCountByBoard.pausecount);
             });
-            res.json({ lastTenSessions: lastTenSessions, pausesCount: pausesCount });
+            res.json({
+                lastTenSessions: lastTenSessions,
+                pausesCount: pausesCount,
+            });
         }
     );
 });
@@ -672,13 +699,15 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
             if (err) throw err;
             let rank;
 
-            const users = results.rows.map(user => {
+            const users = results.rows.map((user) => {
                 return {
                     userid: user.userid,
                     firstname: user.firstname,
                     lastname: user.lastname,
                     userimage: user.userimage,
-                    boardstudytime: Duration.fromMillis(user.boardstudytime * 1000).toFormat('hh:mm:ss')
+                    boardstudytime: Duration.fromMillis(
+                        user.boardstudytime * 1000
+                    ).toFormat('hh:mm:ss'),
                 };
             });
 
@@ -691,7 +720,10 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
 
             const userRank = ordinalSuffixOf(rank + 1);
 
-            res.render('pages/leaderboard', { results: users, userRank: userRank });
+            res.render('pages/leaderboard', {
+                results: users,
+                userRank: userRank,
+            });
         }
     );
 });

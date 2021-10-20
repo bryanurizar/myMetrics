@@ -1,42 +1,44 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Analytics | myMetrics</title>
-    <%- include('../partials/head'); %>
-    <link rel="stylesheet" href="/css/header.css" class="css" />
-    <link rel="stylesheet" href="/css/charts.css" />
-  </head>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <body>
-    <%- include('../partials/header'); %>
-    <section id="charts-section">
-      <div id="charts-container">
-        <div class="chart-container">
-          <h3 class="chart-title">
-            How busy are your boards? <span class="emoji">😅</span>
-          </h3>
-          <canvas
-            id="item-count-by-boards"
-            class="chart"
-            width="325px"
-            height="180x"
-            arial-label="item-count-by-boards"
-            role="img"
-            ><p>A chart of the number of items for each board.</p></canvas
-          >
-        </div>
-        <div class="chart-container">
-          <h3 class="chart-title">
-            How long have you worked? <span class="emoji">⏳︎</span>
-          </h3>
-          <canvas
-            id="study-time-by-board"
-            class="chart"
-            width="325px"
-            height="180px"
-          ></canvas>
-        </div>
-        <!-- <div class="chart">
+    <head>
+        <title>Analytics | myMetrics</title>
+        <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="/css/header.css" class="css" />
+        <link rel="stylesheet" href="/css/charts.css" />
+    </head>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <body>
+        <%- include('../partials/header'); %>
+        <section id="charts-section">
+            <div id="charts-container">
+                <div class="chart-container">
+                    <h3 class="chart-title">
+                        How busy are your boards? <span class="emoji">😅</span>
+                    </h3>
+                    <canvas
+                        id="item-count-by-boards"
+                        class="chart"
+                        width="325px"
+                        height="180x"
+                        arial-label="item-count-by-boards"
+                        role="img"
+                        ><p>
+                            A chart of the number of items for each board.
+                        </p></canvas
+                    >
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">
+                        How long have you worked? <span class="emoji">⏳︎</span>
+                    </h3>
+                    <canvas
+                        id="study-time-by-board"
+                        class="chart"
+                        width="325px"
+                        height="180px"
+                    ></canvas>
+                </div>
+                <!-- <div class="chart">
           <canvas
             id="study-time-by-periods"
             class="chart"
@@ -44,29 +46,31 @@
             height="225px"
           ></canvas>
         </div> -->
-        <div class="chart-container">
-          <h3 class="chart-title">
-            How many breaks have you taken? <span class="emoji">☕ </span>
-          </h3>
-          <canvas
-            id="pauses-per-study-sessions"
-            class="chart"
-            width="325x"
-            height="180px"
-          ></canvas>
-        </div>
-        <div class="chart-container">
-          <h3 class="chart-title">
-            What hasn't been worked on? <span class="emoji">🙈</span>
-          </h3>
-          <canvas
-            id="number-of-days-since-last-study-session"
-            class="chart"
-            width="325px"
-            height="180px"
-          ></canvas>
-        </div>
-        <!-- <div class="chart">
+                <div class="chart-container">
+                    <h3 class="chart-title">
+                        How many breaks have you taken?
+                        <span class="emoji">☕ </span>
+                    </h3>
+                    <canvas
+                        id="pauses-per-study-sessions"
+                        class="chart"
+                        width="325x"
+                        height="180px"
+                    ></canvas>
+                </div>
+                <div class="chart-container">
+                    <h3 class="chart-title">
+                        What hasn't been worked on?
+                        <span class="emoji">🙈</span>
+                    </h3>
+                    <canvas
+                        id="number-of-days-since-last-study-session"
+                        class="chart"
+                        width="325px"
+                        height="180px"
+                    ></canvas>
+                </div>
+                <!-- <div class="chart">
           <canvas
             id="leaderboard-position"
             class="chart"
@@ -74,8 +78,8 @@
             height="225px"
           ></canvas>
         </div> -->
-      </div>
-    </section>
-    <script type="module" src="javascript/charts.js"></script>
-  </body>
+            </div>
+        </section>
+        <script type="module" src="javascript/charts.js"></script>
+    </body>
 </html>

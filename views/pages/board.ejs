@@ -1,72 +1,88 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <title>Board | myMetrics</title>
-    <%- include('../partials/head'); %>
-    <link rel="stylesheet" href="/css/header.css" class="css" />
-    <link rel="stylesheet" href="/css/styles.css" />
-    <link rel="stylesheet" href="/css/list.css" />
-    <link rel="stylesheet" href="/css/board.css" />
-</head>
-  <body>
-    <%- include('../partials/header'); %>
+<html lang="en">
+    <head>
+        <title>Board | myMetrics</title>
+        <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="/css/header.css" class="css" />
+        <link rel="stylesheet" href="/css/styles.css" />
+        <link rel="stylesheet" href="/css/list.css" />
+        <link rel="stylesheet" href="/css/board.css" />
+    </head>
+    <body>
+        <%- include('../partials/header'); %>
 
-    <div id="target-list">
-      <button class="btn create-list">Select Target Items</button>
-    </div>
-
-    <section id="board">
-      <% lists.forEach(list => { %>
-      <div class="todo-list-container">
-        <div class="list-header">
-          <h4 class="list-name" ondrop="return false;" contenteditable>
-            <%= list.listname %>
-          </h4>
-          <h4 id="<%= list.listid%>" class="list-popup">...</h4>
-          <div id="modal-<%=list.listid%>" class="modal">
-            <h4 id="modal-title"><span>List Actions</span></h4>
-            <p id="<%= list.listid%>" class="delete-list">Delete This List..</p>
-          </div>
+        <div id="target-list">
+            <button class="btn create-list">Select Target Items</button>
         </div>
-        <div id="todo-list-<%= list.listid%>" class="items">
-          <% items.forEach(item => { %> <% if (item.listid === list.listid) { %>
-          <div id="card-<%= item.itemid %>" class="todo-card" draggable="true">
-            <div class="todo-content">
-              <div class="wrapper">
-                <input type="checkbox" ondrop="return false;" />
-                <p class="todo-description"><%= item.itemname %></p>
-              </div>
-              <div class="list-flaticons">
-                <img class="flaticons edit" src="/img/edit.svg" />
-                <img class="flaticons trash" src="/img/trash.svg" />
-              </div>
+
+        <section id="board">
+            <% lists.forEach(list => { %>
+            <div class="todo-list-container">
+                <div class="list-header">
+                    <h4
+                        class="list-name"
+                        ondrop="return false;"
+                        contenteditable
+                    >
+                        <%= list.listname %>
+                    </h4>
+                    <h4 id="<%= list.listid%>" class="list-popup">...</h4>
+                    <div id="modal-<%=list.listid%>" class="modal">
+                        <h4 id="modal-title"><span>List Actions</span></h4>
+                        <p id="<%= list.listid%>" class="delete-list">
+                            Delete This List..
+                        </p>
+                    </div>
+                </div>
+                <div id="todo-list-<%= list.listid%>" class="items">
+                    <% items.forEach(item => { %> <% if (item.listid ===
+                    list.listid) { %>
+                    <div
+                        id="card-<%= item.itemid %>"
+                        class="todo-card"
+                        draggable="true"
+                    >
+                        <div class="todo-content">
+                            <div class="wrapper">
+                                <input type="checkbox" ondrop="return false;" />
+                                <p class="todo-description">
+                                    <%= item.itemname %>
+                                </p>
+                            </div>
+                            <div class="list-flaticons">
+                                <img
+                                    class="flaticons edit"
+                                    src="/img/edit.svg"
+                                />
+                                <img
+                                    class="flaticons trash"
+                                    src="/img/trash.svg"
+                                />
+                            </div>
+                        </div>
+                    </div>
+                    <% } %> <% }); %>
+                </div>
+                <textarea
+                    id="<%= list.listid %>"
+                    name="itemName"
+                    class="add-card"
+                    placeholder="Add new card.."
+                ></textarea>
             </div>
-          </div>
-          <% } %> <% }); %>
-        </div>
-        <input
-          id="<%= list.listid %>"
-          name="itemName"
-          class="add-card"
-          type="text"
-          ondrop="return false;"
-          autocomplete="off"
-          placeholder="Add new card.."
-        />
-      </div>
-      <% }); %>
+            <% }); %>
 
-      <div>
-        <input
-          name="newList"
-          type="text"
-          class="add-list"
-          placeholder="Add new list"
-          ondrop="return false;"
-        />
-      </div>
-    </section>
+            <div>
+                <input
+                    name="newList"
+                    type="text"
+                    class="add-list"
+                    placeholder="Add new list"
+                    ondrop="return false;"
+                />
+            </div>
+        </section>
 
-    <script type="module" src="/javascript/board.js" async defer></script>
-  </body>
+        <script type="module" src="/javascript/board.js" async defer></script>
+    </body>
 </html>

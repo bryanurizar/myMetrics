@@ -4,7 +4,7 @@ import { addItemEventListeners } from './itemEventHandlers.js';
 import { isNumeric } from './isNumeric.js';
 
 // Checks if user wants to navigate away without cancelling
-window.addEventListener('beforeunload', e => {
+window.addEventListener('beforeunload', (e) => {
     const isSessionOver = document.querySelector('#session-ended');
     if (!isSessionOver) {
         e.preventDefault();
@@ -69,7 +69,8 @@ startButton.addEventListener('click', displayTimer);
 let studySessionDuration;
 
 function displayTimer() {
-    const areInputsNumbers = isNumeric(hoursInput.value) && isNumeric(minutesInput.value);
+    const areInputsNumbers =
+        isNumeric(hoursInput.value) && isNumeric(minutesInput.value);
     if (!areInputsNumbers) {
         alert('Inputs are not numbers. Please try again');
         return;
@@ -86,7 +87,10 @@ function displayTimer() {
     };
 
     // Creates the duration object and prepends it so it can be displayed
-    studySessionDuration = Duration.fromObject({ hours: sessionData.hours, minutes: sessionData.minutes });
+    studySessionDuration = Duration.fromObject({
+        hours: sessionData.hours,
+        minutes: sessionData.minutes,
+    });
     countdownTimer.innerHTML = studySessionDuration.toFormat('hh : mm : ss');
     studySection.append(countdownTimer);
 
@@ -114,7 +118,6 @@ function displayTimer() {
     // Posts the study session to the db
     updateStudySession(sessionData);
     postStudySessionLog('Start', studySessionDuration);
-
 }
 
 // Timer logic (i.e. pause, resume, cancel logic)
@@ -125,7 +128,9 @@ let startTime;
 function startTimer() {
     startButton.remove();
     timerHeader.innerText = 'Session Started!';
-    countdownTimer.innerHTML = studySessionDuration.minus(elapsedTime).toFormat('hh:mm:ss');
+    countdownTimer.innerHTML = studySessionDuration
+        .minus(elapsedTime)
+        .toFormat('hh:mm:ss');
     startTime = new Date().getTime();
     decrement();
     // ticker = setInterval(decrement, 1000);
@@ -162,9 +167,12 @@ function cancelTimer() {
 function decrement() {
     const now = new Date().getTime();
     elapsedTime = 1000 * Math.floor((now - startTime) / 1000);
-    countdownTimer.innerHTML = studySessionDuration.minus(elapsedTime).toFormat('hh:mm:ss');
+    countdownTimer.innerHTML = studySessionDuration
+        .minus(elapsedTime)
+        .toFormat('hh:mm:ss');
 
-    let isSessionDurationOver = Number(studySessionDuration.minus(elapsedTime).toFormat('s')) < 0;
+    let isSessionDurationOver =
+        Number(studySessionDuration.minus(elapsedTime).toFormat('s')) < 0;
     ticker = setTimeout(decrement, 1000);
 
     if (isSessionDurationOver) {
@@ -178,9 +186,9 @@ async function updateStudySession(data) {
     const response = await fetch('/study-session/', {
         method: 'PATCH',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
-        body: JSON.stringify(data)
+        body: JSON.stringify(data),
     });
     return response;
 }

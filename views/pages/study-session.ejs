@@ -1,46 +1,54 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Study Session | myMetrics</title>
-    <%- include('../partials/head'); %> <link rel="stylesheet"
-    href="/css/header.css" class="css" /
-    <link rel="stylesheet" href="/css/study-session.css" />
-  </head>
-  <body>
-    <%- include('../partials/header');%>
-    <section id="study">
-      <% if(status.isSessionPageVisited === 'true') { %>
-      <h2 id="session-ended">Your Study Session Has Ended.</h2>
-      <%} else { %>
-      <div id="study-list">
-        <div class="todo-list-container">
-          <div class="list-header">
-            <h4 class="list-name" contenteditable>Target List</h4>
-          </div>
-          <div class="items">
-            <% status.items.forEach(item => { %>
-            <div
-              id="card-<%= item.itemid %>"
-              class="todo-card"
-              draggable="true"
-            >
-              <div class="todo-content">
-                <input type="checkbox" />
-                <p class="todo-description"><%= item.itemname %></p>
-                <br />
-                <div class="flaticons">
-                  <img class="edit" src="../../img/edit.svg" />
-                  <img class="trash" src="../../img/trash.svg" />
+    <head>
+        <title>Study Session | myMetrics</title>
+        <%- include('../partials/head'); %> <link rel="stylesheet"
+        href="/css/header.css" class="css" /
+        <link rel="stylesheet" href="/css/study-session.css" />
+    </head>
+    <body>
+        <%- include('../partials/header');%>
+        <section id="study">
+            <% if(status.isSessionPageVisited === 'true') { %>
+            <h2 id="session-ended">Your Study Session Has Ended.</h2>
+            <%} else { %>
+            <div id="study-list">
+                <div class="todo-list-container">
+                    <div class="list-header">
+                        <h4 class="list-name" contenteditable>Target List</h4>
+                    </div>
+                    <div class="items">
+                        <% status.items.forEach(item => { %>
+                        <div
+                            id="card-<%= item.itemid %>"
+                            class="todo-card"
+                            draggable="true"
+                        >
+                            <div class="todo-content">
+                                <input type="checkbox" />
+                                <p class="todo-description">
+                                    <%= item.itemname %>
+                                </p>
+                                <br />
+                                <div class="flaticons">
+                                    <img
+                                        class="edit"
+                                        src="../../img/edit.svg"
+                                    />
+                                    <img
+                                        class="trash"
+                                        src="../../img/trash.svg"
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <% }); %>
+                    </div>
                 </div>
-              </div>
             </div>
-            <% }); %>
-          </div>
-        </div>
-      </div>
-      <div id="study-timer"></div>
-    </section>
-    <script type="module" src="/javascript/study-session.js" async></script>
-    <% } %>
-  </body>
+            <div id="study-timer"></div>
+        </section>
+        <script type="module" src="/javascript/study-session.js" async></script>
+        <% } %>
+    </body>
 </html>

@@ -1,89 +1,121 @@
 .todo-list-container {
-  display: flex;
-  flex-direction: column;
-  border-radius: 0.3125rem;
-  padding: 0.25rem 0.5rem;
-  margin: 0em 0.5rem;
-  min-width: 17rem;
-  max-width: 17rem;
-  box-shadow: 0 2px 16px 0 rgb(0 0 0 / 6%);
-  background-color: #eaedf0;
+    display: flex;
+    flex-direction: column;
+    border-radius: 0.3125rem;
+    padding: 0.25rem 0.5rem;
+    margin: 0em 0.5rem;
+    min-width: 17rem;
+    max-width: 17rem;
+    box-shadow: 0 2px 16px 0 rgb(0 0 0 / 6%);
+    background-color: #eaedf0;
+    font-size: 0.75rem;
 }
 
 .list-header {
-  display: flex;
-  direction: row;
-  justify-content: space-between;
+    display: flex;
+    direction: row;
+    justify-content: space-between;
 }
 
 .items {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 /*****************************************/
 
 .todo-card {
-  background-color: white;
-  padding: 0.75rem 0.25rem;
-  border-radius: 5px;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-  cursor: pointer;
+    background-color: white;
+    padding: 0.75rem 0.25rem;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    cursor: pointer;
 }
 
 .todo-content {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
+    max-width: 100%;
 }
 
 .wrapper {
-  display: flex;
+    display: flex;
 }
 
 .list-flaticons {
-  display: flex;
-  justify-content: space-between;
+    display: flex;
+    justify-content: space-between;
 }
 
 .edit,
 .trash {
-  width: 10px;
+    max-width: 10px;
 }
 
 .todo-card input {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .todo-card:hover img {
-  visibility: visible;
+    visibility: visible;
 }
 
 .todo-card:hover input {
-  visibility: visible;
+    visibility: visible;
 }
 
 .todo-card:hover {
-  background-color: #f4f5f7;
+    background-color: #f4f5f7;
 }
-*/ input[type="checkbox"] {
-  align-self: center;
-  /* margin: 0; */
+
+input[type='checkbox'] {
+    align-self: center;
+    margin: 0;
 }
 
 .add-card {
-  background-color: #eaedf0;
-  border: none;
-  margin-top: 0;
+    background-color: #eaedf0;
+    border: none;
+    height: 20px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    overflow-wrap: anywhere;
+    resize: vertical;
+    word-break: break-all;
+    box-sizing: border-box;
+    /* padding: 0.75rem 0.25rem; */
+}
+
+textarea {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 1rem 1rem;
 }
 
 .add-card:hover {
-  background-color: #f4f5f4;
+    background-color: #f4f5f4;
+}
+
+.add-card:focus {
+    background-color: white;
+    border: none;
+    border-radius: 5px;
+    box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
+    height: 50px;
+    outline: none;
 }
 
 .completed-tag {
-  color: red;
-  font-size: 12px;
+    color: red;
+    font-size: 12px;
+}
+
+.todo-description {
+    overflow-wrap: anywhere;
+    margin: 0 0.25rem;
 }
 
 /* input {

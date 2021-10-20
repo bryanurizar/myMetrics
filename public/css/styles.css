@@ -1,14 +1,14 @@
 html {
-  --neutral-font-clr: #ffffff;
-  --primary-font-clr: #293b5d;
-  --bg-clr: #fdfbf9;
-  --btn-clr: #2f74f2;
+    --neutral-font-clr: #ffffff;
+    --primary-font-clr: #293b5d;
+    --bg-clr: #fdfbf9;
+    --btn-clr: #2f74f2;
 
-  background-color: var(--bg-clr);
-  font-family: "Montserrat", sans-serif;
-  font-size: 1em;
-  /* font-weight: 600; */
-  min-width: 360px;
+    background-color: var(--bg-clr);
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1em;
+    /* font-weight: 600; */
+    min-width: 360px;
 }
 
 body,
@@ -16,21 +16,21 @@ h1,
 h2,
 h3,
 p {
-  margin: 0;
+    margin: 0;
 }
 
 body {
-  color: var(--primary-font-clr);
-  letter-spacing: 0.0325em;
-  padding: 0 1.5rem;
-  max-height: 100vh;
+    color: var(--primary-font-clr);
+    letter-spacing: 0.0325em;
+    padding: 0 1.5rem;
+    max-height: 100vh;
 }
 
 .page-container {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
 }
 
 /******************************************/
@@ -38,136 +38,136 @@ body {
 /****************************************/
 
 nav ul {
-  align-items: center;
-  display: flex;
-  list-style: none;
-  justify-content: flex-start;
-  margin: 0.5;
-  padding: 0;
+    align-items: center;
+    display: flex;
+    list-style: none;
+    justify-content: flex-start;
+    margin: 0.5;
+    padding: 0;
 }
 
 nav #logo {
-  flex: 3;
-  display: flex;
-  align-items: center;
-  font-weight: 700;
-  font-size: 1.5rem;
+    flex: 3;
+    display: flex;
+    align-items: center;
+    font-weight: 700;
+    font-size: 1.5rem;
 }
 
 .logo-img {
-  display: flex;
-  flex-direction: row;
-  width: auto;
-  height: 2.3rem;
-  margin-right: 0.2rem;
+    display: flex;
+    flex-direction: row;
+    width: auto;
+    height: 2.3rem;
+    margin-right: 0.2rem;
 }
 
 /* Styling of page container */
 
 #main {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 nav,
 #main,
 footer {
-  flex-shrink: 0;
+    flex-shrink: 0;
 }
 
 .header-title {
-  padding-bottom: 0.8rem;
-  font-weight: 600;
+    padding-bottom: 0.8rem;
+    font-weight: 600;
 }
 
 .header-para {
-  line-height: 1.5;
+    line-height: 1.5;
 }
 
 .header {
-  margin-top: 2rem;
-  max-width: 40%;
+    margin-top: 2rem;
+    max-width: 40%;
 }
 .header-container {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    align-items: center;
 }
 
 footer {
-  align-items: center;
-  align-content: flex-end;
-  display: flex;
-  flex-direction: column;
-  font-size: 1rem;
-  margin-bottom: 1rem;
+    align-items: center;
+    align-content: flex-end;
+    display: flex;
+    flex-direction: column;
+    font-size: 1rem;
+    margin-bottom: 1rem;
 }
 
 .copyright {
-  font-size: 0.8rem;
-  color: #c5c5c5;
+    font-size: 0.8rem;
+    color: #c5c5c5;
 }
 @media screen and (max-width: 1024px) {
-  .header {
-    max-width: 100%;
-  }
+    .header {
+        max-width: 100%;
+    }
 }
 
 @media screen and (min-width: 1024px) {
-  #header {
-    max-width: 40%;
-  }
+    #header {
+        max-width: 40%;
+    }
 }
 
 /*******************************/
 /****** Utilities styling ******/
 /*******************************/
 a {
-  text-decoration: none;
-  color: var(--primary-font-clr);
+    text-decoration: none;
+    color: var(--primary-font-clr);
 }
 
 /* Sets the max width of the img. Overrides the width and never exceeds it. */
 img {
-  display: block;
-  max-width: 100%;
+    display: block;
+    max-width: 100%;
 }
 
 .btn {
-  background-color: var(--btn-clr);
-  border-radius: 1.25rem;
-  padding: 0.625rem 1.125rem;
-  border: none;
-  color: white;
-  box-shadow: 0 0.5em 1.125em 0 rgba(0, 0, 0, 0.2);
+    background-color: var(--btn-clr);
+    border-radius: 1.25rem;
+    padding: 0.625rem 1.125rem;
+    border: none;
+    color: white;
+    box-shadow: 0 0.5em 1.125em 0 rgba(0, 0, 0, 0.2);
 }
 
 .btn:hover {
-  background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
 }
 
 .cancel-btn {
-  background-color: white;
-  margin-left: 5px;
-  border-radius: 20px;
-  padding: 10px 18px;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #9e9e9e;
-  color: #666767;
-  /* box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2); */
+    background-color: white;
+    margin-left: 5px;
+    border-radius: 20px;
+    padding: 10px 18px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #9e9e9e;
+    color: #666767;
+    /* box-shadow: 0 8px 18px 0 rgba(0, 0, 0, 0.2); */
 }
 
 .cancel-btn:hover {
-  background-color: rgb(248, 248, 248);
-  cursor: pointer;
+    background-color: rgb(248, 248, 248);
+    cursor: pointer;
 }
 
 .flaticons {
-  visibility: hidden;
+    visibility: hidden;
 }
 
 .flaticons:hover {
-  opacity: 0.5;
-  visibility: visible;
+    opacity: 0.5;
+    visibility: visible;
 }

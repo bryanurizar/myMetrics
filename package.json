@@ -1,34 +1,34 @@
 {
-  "name": "mysql-app",
-  "version": "1.0.0",
-  "description": "",
-  "main": "app.js",
-  "type": "module",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon app.js"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "dependencies": {
-    "@fortawesome/fontawesome-free": "^5.15.4",
-    "cookie-parser": "^1.4.5",
-    "cors": "^2.8.5",
-    "dotenv": "^8.2.0",
-    "ejs": "^3.1.5",
-    "express": "^4.17.1",
-    "express-session": "^1.17.2",
-    "luxon": "^2.0.2",
-    "nanoid": "^3.1.22",
-    "passport": "^0.4.1",
-    "passport-google-oauth20": "^2.0.0",
-    "pg": "^8.6.0"
-  },
-  "devDependencies": {
-    "eslint": "^7.16.0",
-    "eslint-plugin-html": "^6.2.0",
-    "faker": "^5.5.3",
-    "nodemon": "^2.0.6"
-  }
+    "name": "mysql-app",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "type": "module",
+    "scripts": {
+        "start": "node app.js",
+        "dev": "nodemon app.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "cookie-parser": "^1.4.5",
+        "cors": "^2.8.5",
+        "dotenv": "^8.2.0",
+        "ejs": "^3.1.5",
+        "express": "^4.17.1",
+        "express-session": "^1.17.2",
+        "luxon": "^2.0.2",
+        "nanoid": "^3.1.22",
+        "passport": "^0.4.1",
+        "passport-google-oauth20": "^2.0.0",
+        "pg": "^8.6.0"
+    },
+    "devDependencies": {
+        "eslint": "^7.16.0",
+        "eslint-plugin-html": "^6.2.0",
+        "faker": "^5.5.3",
+        "nodemon": "^2.0.6"
+    }
 }

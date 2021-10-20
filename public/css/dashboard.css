@@ -1,93 +1,93 @@
 #greeting {
-  font-weight: 600;
-  margin: 1.5em 0;
-  text-align: center;
+    font-weight: 600;
+    margin: 1.5em 0;
+    text-align: center;
 }
 
 #user-name {
-  color: #2f75f2;
+    color: #2f75f2;
 }
 
 .board-card:hover img {
-  visibility: visible;
-  cursor: pointer;
+    visibility: visible;
+    cursor: pointer;
 }
 
 .create-board {
-  padding: 0 1.25rem;
-  margin: 0.325rem 0;
-  border: 0.0625em solid #ccc;
-  border-radius: 20px;
-  width: 11rem;
-  height: 35px;
-  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
+    padding: 0 1.25rem;
+    margin: 0.325rem 0;
+    border: 0.0625em solid #ccc;
+    border-radius: 20px;
+    width: 11rem;
+    height: 35px;
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
 }
 
 .create-board:focus {
-  outline: none;
+    outline: none;
 }
 
 #boards-section {
-  padding-top: 30px;
-  height: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
+    padding-top: 30px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
 }
 
 #boards {
-  width: 80%;
-  height: 58vh;
-  display: flex;
-  flex-flow: wrap;
-  justify-content: center;
-  align-items: center;
-  align-content: flex-start;
-  padding: 10px;
-  overflow-y: scroll;
+    width: 80%;
+    height: 58vh;
+    display: flex;
+    flex-flow: wrap;
+    justify-content: center;
+    align-items: center;
+    align-content: flex-start;
+    padding: 10px;
+    overflow-y: scroll;
 }
 
 .board-card {
-  position: relative;
-  font-weight: 400;
-  display: flex;
-  margin: 2%;
-  display: flex;
-  height: 170px;
-  width: 200px;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  border-radius: 10px;
-  box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
-  transition: all 0.5s;
-  letter-spacing: 0.5px;
-  background-color: #ffffff;
+    position: relative;
+    font-weight: 400;
+    display: flex;
+    margin: 2%;
+    display: flex;
+    height: 170px;
+    width: 200px;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
+    transition: all 0.5s;
+    letter-spacing: 0.5px;
+    background-color: #ffffff;
 }
 
 .board-card:hover {
-  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
 .board-name {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-  height: 100%;
-  width: 100%;
-  font-size: 16px;
-  text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
+    height: 100%;
+    width: 100%;
+    font-size: 16px;
+    text-align: center;
 }
 
 .dashboard-flaticons {
-  position: absolute;
-  display: flex;
-  justify-content: row;
-  top: 0.5rem;
-  left: 10.5rem;
-  visibility: hidden;
-  gap: 0.2em;
-  width: 10px;
+    position: absolute;
+    display: flex;
+    justify-content: row;
+    top: 0.5rem;
+    left: 10.5rem;
+    visibility: hidden;
+    gap: 0.2em;
+    width: 10px;
 }

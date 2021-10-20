@@ -48,7 +48,8 @@ const handleDrop = (e) => {
     }
 
     const movedCardId = movedCardNode.id.substring(5);
-    const previousCardId = movedCardNode.previousElementSibling?.id.substring(5);
+    const previousCardId =
+        movedCardNode.previousElementSibling?.id.substring(5);
     const nextCardId = movedCardNode.nextElementSibling?.id.substring(5);
 
     updateRank(movedCardId, previousCardId, nextCardId, dropListId);
@@ -101,7 +102,7 @@ function handleModal(e) {
         modal.classList.remove('modal');
     } else if (
         e.target.closest('.modal-styles') === null &&
-    document.querySelector('.modal-styles')
+        document.querySelector('.modal-styles')
     ) {
         document.querySelectorAll('.modal-styles').forEach((el) => {
             el.classList.add('modal');
@@ -417,9 +418,19 @@ const board = document.querySelector('#board');
 
 board.addEventListener('keypress', (e) => {
     if (e.target.className === 'add-card' && e.key === 'Enter') {
+        e.preventDefault();
         const cardContent = e.target.value;
         const listId = e.target.id;
         addCard(listId, cardContent);
         e.target.value = '';
+        e.target.removeAttribute('style');
     }
+});
+
+// Dynamically increases size of add card text area as user  types
+const textarea = document.querySelector('.add-card');
+
+textarea.addEventListener('input', (e) => {
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
 });

@@ -1,0 +1,5 @@
+[x] Original input size is 20px
+[x] User clicks, size increases to 40px
+[x] User types, size remains constant until text goes to next line etc
+[x] User hits enter, new task is created
+[x] Original size of input goes back to 20px
