@@ -17,6 +17,13 @@
     justify-content: space-between;
 }
 
+.list-name {
+    padding: 0.25rem;
+}
+
+.list-name:focus {
+    padding: 0.25rem;
+}
 .items {
     display: flex;
     flex-direction: column;
@@ -84,11 +91,11 @@ input[type='checkbox'] {
     border: none;
     height: 2rem;
     min-height: 2rem;
-    margin-top: 0.5rem;
+    margin: 0.5rem 0 0.3rem;
     overflow: hidden;
     resize: vertical;
     box-sizing: border-box;
-    padding: 0.5rem 1.4rem;
+    padding: 0.5rem 1.5rem;
 }
 
 textarea {
@@ -96,6 +103,8 @@ textarea {
     align-content: center;
     align-items: center;
     box-sizing: border-box;
+    font-family: inherit;
+    font-size: inherit;
 }
 
 .add-card:hover {
@@ -111,7 +120,7 @@ textarea {
     outline: none;
     overflow-wrap: anywhere;
     word-break: normal;
-    padding: 0.5rem 1.4rem;
+    padding: 0.5rem 1.5rem;
 }
 
 .completed-tag {

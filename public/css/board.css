@@ -28,10 +28,7 @@
 
 .targeted {
     background-color: #f4735e;
-    border-style: solid;
-    border-width: 2px;
     color: white;
-    border-color: #f4735e;
 }
 
 .targeted:hover {
