@@ -434,3 +434,8 @@ textarea.addEventListener('input', (e) => {
     e.target.style.height = 'auto';
     e.target.style.height = e.target.scrollHeight + 'px';
 });
+
+// Sets add card textarea back to the original default size on blur
+textarea.addEventListener('blur', (e) => {
+    e.target.value === '' ? e.target.removeAttribute('style') : null;
+});

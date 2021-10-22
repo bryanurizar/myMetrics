@@ -53,6 +53,9 @@
     max-width: 10px;
 }
 
+.edit {
+    margin-right: 0.125rem;
+}
 .todo-card input {
     visibility: hidden;
 }
@@ -63,6 +66,7 @@
 
 .todo-card:hover input {
     visibility: visible;
+    margin-right: 0.25rem;
 }
 
 .todo-card:hover {
@@ -72,19 +76,19 @@
 input[type='checkbox'] {
     align-self: center;
     margin: 0;
+    margin-right: 0.25rem;
 }
 
 .add-card {
     background-color: #eaedf0;
     border: none;
-    height: 20px;
+    height: 2rem;
+    min-height: 2rem;
     margin-top: 0.5rem;
     overflow: hidden;
-    overflow-wrap: anywhere;
     resize: vertical;
-    word-break: break-all;
     box-sizing: border-box;
-    /* padding: 0.75rem 0.25rem; */
+    padding: 0.5rem 1.3rem;
 }
 
 textarea {
@@ -92,7 +96,6 @@ textarea {
     align-content: center;
     align-items: center;
     box-sizing: border-box;
-    padding: 1rem 1rem;
 }
 
 .add-card:hover {
@@ -104,8 +107,11 @@ textarea {
     border: none;
     border-radius: 5px;
     box-shadow: rgba(0, 0, 0, 0.1) 0px 1px 2px 0px;
-    height: 50px;
+    height: 46px;
     outline: none;
+    overflow-wrap: anywhere;
+    word-break: normal;
+    padding: 0.5rem 1.3rem;
 }
 
 .completed-tag {
@@ -115,7 +121,12 @@ textarea {
 
 .todo-description {
     overflow-wrap: anywhere;
-    margin: 0 0.25rem;
+    word-break: normal;
+    margin: 0;
+}
+
+.todo-description:focus {
+    padding: 0.5rem;
 }
 
 /* input {
