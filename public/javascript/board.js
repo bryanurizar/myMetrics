@@ -152,14 +152,14 @@ const createTargetListBtn = document.querySelector('.create-list');
 createTargetListBtn.addEventListener('click', handleButtonClick);
 let targetItems = [];
 
-function handleButtonClick() {
+async function handleButtonClick() {
     const targetButtonsSection = document.querySelector('#target-list');
     const buttonText = targetButtonsSection.innerText;
 
     if (buttonText === 'Select Target Items') {
         enableTargetItemsSelection(targetButtonsSection);
     } else {
-        checkLengthOfTargetList();
+        await checkLengthOfTargetList();
     }
 }
 
@@ -178,9 +178,9 @@ function enableTargetItemsSelection(buttonName) {
     });
 }
 
-function checkLengthOfTargetList() {
+async function checkLengthOfTargetList() {
     if (targetItems.length > 0) {
-        updateTargetList(targetItems);
+        await updateTargetList(targetItems);
     } else {
         alert('No items have been selected.');
     }
@@ -194,7 +194,7 @@ async function updateTargetList(items) {
             headers: { 'Content-type': 'application/json; charset=UTF-8' },
         });
         const res = await response.json();
-        console.log(await postStudySession(res.studySessionId));
+        await postStudySession(res.studySessionId);
         window.location.replace(`/study-session/${res.studySessionId}`);
     } catch (err) {
         console.log(err);
@@ -243,12 +243,10 @@ function handleTodoCardClick(e) {
     todoCard.classList.toggle('targeted');
 
     if (targetItems.includes(todoCardId)) {
-        console.log(targetItems);
         const index = targetItems.indexOf(todoCardId);
         targetItems.splice(index, 1);
     } else {
         targetItems.push(todoCardId);
-        console.log(targetItems);
     }
 }
 

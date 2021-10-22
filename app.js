@@ -447,6 +447,7 @@ app.route('/study-session')
             'INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID, isSessionPageVisited) VALUES ($1, $2, $3, $4, false)',
             [studySessionId, sessionDuration, loggedInUser, boardId],
             (err, result) => {
+                console.log(result);
                 if (err) {
                     console.log(err);
                     throw err;
@@ -484,6 +485,7 @@ app.route('/study-session/:studySessionId')
                 'SELECT * FROM StudySessions WHERE sessionID=$1',
                 [studySessionId]
             );
+
             let isSessionPageVisited = session.rows[0].issessionpagevisited;
 
             const targetItems = await pool.query(
@@ -495,17 +497,18 @@ app.route('/study-session/:studySessionId')
                 isSessionPageVisited: isSessionPageVisited,
             };
             res.setHeader('Cache-Control', 'no-store');
-            res.render('pages/study-session', { status: status });
 
             await pool.query(
                 'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
                 [studySessionId]
             );
+            res.render('pages/study-session', { status: status });
         } catch (err) {
             console.error(err);
         }
     })
     .post(isUserAuthenticated, (req, res) => {
+        console.log('in post route');
         const studySessionDuration =
             (req.body.hours || 0) * 3600 +
             (req.body.minutes || 0) * 60 +
