@@ -447,7 +447,6 @@ app.route('/study-session')
             'INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID, isSessionPageVisited) VALUES ($1, $2, $3, $4, false)',
             [studySessionId, sessionDuration, loggedInUser, boardId],
             (err, result) => {
-                console.log(result);
                 if (err) {
                     console.log(err);
                     throw err;
