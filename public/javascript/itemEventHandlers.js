@@ -50,7 +50,7 @@ export function handleEditIconClick(e) {
 
     nearestItemCardDescription.setAttribute('contenteditable', true);
     nearestItemCardDescription.focus();
-
+    window.getSelection().selectAllChildren(nearestItemCardDescription);
     nearestItemCardDescription.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') {
             nearestItemCardDescription.removeAttribute('contenteditable');
@@ -62,6 +62,7 @@ export function handleEditIconClick(e) {
             editedItemId: nearestItemCard.id.slice(5),
             updatedItem: e.target.innerText,
         };
+        nearestItemCardDescription.setAttribute('contenteditable', false);
         updateEditedItem(editedItem);
     });
 }

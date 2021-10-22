@@ -88,7 +88,7 @@ input[type='checkbox'] {
     overflow: hidden;
     resize: vertical;
     box-sizing: border-box;
-    padding: 0.5rem 1.3rem;
+    padding: 0.5rem 1.4rem;
 }
 
 textarea {
@@ -111,7 +111,7 @@ textarea {
     outline: none;
     overflow-wrap: anywhere;
     word-break: normal;
-    padding: 0.5rem 1.3rem;
+    padding: 0.5rem 1.4rem;
 }
 
 .completed-tag {
@@ -123,10 +123,12 @@ textarea {
     overflow-wrap: anywhere;
     word-break: normal;
     margin: 0;
+    padding: 0.25rem;
 }
 
 .todo-description:focus {
-    padding: 0.5rem;
+    padding: 0.25rem;
+    font-size: 0.75rem;
 }
 
 /* input {
