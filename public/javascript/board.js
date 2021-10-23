@@ -435,5 +435,6 @@ textarea.addEventListener('input', (e) => {
 
 // Sets add card textarea back to the original default size on blur
 textarea.addEventListener('blur', (e) => {
+    console.log(e.target.value);
     e.target.value === '' ? e.target.removeAttribute('style') : null;
 });
