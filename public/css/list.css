@@ -30,7 +30,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 /*****************************************/
@@ -112,6 +112,7 @@ textarea {
 
 .add-card:hover {
     background-color: #f4f5f4;
+    border-radius: 5px;
 }
 
 .add-card:focus {
@@ -143,11 +144,19 @@ textarea {
     font-size: 0.75rem;
 }
 
-/* input {
-width: 100%;
-padding: 0.5rem 1.25rem;
-margin: 0.325rem 0;
-border: 0.0625em solid #ccc;
-border-radius: 0.25em;
-box-sizing: border-box;
-} */
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 8px;
+    margin: 2px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    background-color: rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
+}
+
+::-webkit-scrollbar-track-piece {
+    background: #091e4214;
+    border-radius: 4px;
+}
