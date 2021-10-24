@@ -143,33 +143,22 @@ textarea {
     padding: 0.25rem;
     font-size: 0.75rem;
 }
-/* 
-.items > ::-webkit-scrollbar {
+
+::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 8px;
-    width: 10px;
 }
 
-.items > ::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
     border-radius: 4px;
-    background-color: rgba(0, 0, 0, 0.2);
-    box-shadow: 0 0 1px rgba(255, 255, 255, 0.2);
-    border: 20px green solid;
-    box-shadow: inset 0 0 14px 14px #bbbbbe;
-    border: solid 5px;
-    border-color: yellow;
-    border-radius: 50px;
-    border-radius: 10px;
+    box-shadow: inset 0 0 14px 14px #bec5cd;
 }
 
-.items > ::-webkit-scrollbar-track {
-    background: #091e4214;
+::-webkit-scrollbar-track {
     border-radius: 4px;
-    box-shadow: inset 0 0 14px 14px #eaedf0;
-    border: solid 10px;
-    color: green;
+    box-shadow: inset 0 0 14px 14px #d8dbe3;
 }
 
-.items > ::-webkit-scrollbar-button {
+::-webkit-scrollbar-button {
     display: none;
-} */
+}
