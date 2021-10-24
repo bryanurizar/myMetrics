@@ -4,11 +4,11 @@
     margin-top: 0.75rem;
     flex-direction: row;
     align-items: flex-start;
-    /* overflow-x: scroll; */
+    overflow-x: scroll;
     left: 0;
     right: 0;
     padding: 0 1.5rem;
-    max-height: 75%;
+    max-height: 70%;
 }
 
 .todo-list-container:first-child {
