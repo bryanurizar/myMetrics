@@ -28,12 +28,12 @@
 }
 
 #boards-section {
-    padding-top: 30px;
-    height: 100%;
+    max-height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    padding-top: 4rem;
 }
 
 #boards {
@@ -44,8 +44,8 @@
     justify-content: center;
     align-items: center;
     align-content: flex-start;
-    padding: 10px;
-    overflow-y: scroll;
+    padding: 0.7rem;
+    overflow-y: auto;
 }
 
 .board-card {

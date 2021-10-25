@@ -9,22 +9,28 @@ html {
     font-size: 1em;
     /* font-weight: 600; */
     min-width: 360px;
+    box-sizing: border-box;
 }
 
+html,
 body,
 h1,
 h2,
 h3,
 p {
+    padding: 0;
     margin: 0;
-    max-height: 100vh;
+    border: 0;
 }
 
 body {
+    position: relative;
+    height: 100vh;
+    max-height: 100vh;
     color: var(--primary-font-clr);
     letter-spacing: 0.0325em;
     padding: 0 1.5rem;
-    max-height: 100vh;
+    vertical-align: top;
 }
 
 .page-container {
@@ -43,8 +49,8 @@ nav ul {
     display: flex;
     list-style: none;
     justify-content: flex-start;
-    margin: 0.5;
-    padding: 0;
+    padding: 1rem 0;
+    margin: 0;
 }
 
 nav #logo {
@@ -171,4 +177,23 @@ img {
 .flaticons:hover {
     opacity: 0.5;
     visibility: visible;
+}
+
+::-webkit-scrollbar {
+    -webkit-appearance: none;
+    width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+    border-radius: 4px;
+    box-shadow: inset 0 0 14px 14px #bec5cd;
+}
+
+::-webkit-scrollbar-track {
+    border-radius: 4px;
+    box-shadow: inset 0 0 14px 14px #d8dbe3;
+}
+
+::-webkit-scrollbar-button {
+    display: none;
 }

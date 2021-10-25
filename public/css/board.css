@@ -7,7 +7,10 @@
     left: 0;
     right: 0;
     padding: 0 1.5rem;
-    max-height: 70%;
+    overflow-x: auto;
+    height: calc(
+        100vh - 160.797px
+    ); /* calculates remaining space after nav/select target list elements */
 }
 
 .todo-list-container:first-child {
@@ -79,7 +82,7 @@ span {
 }
 
 #target-list {
-    margin-top: 4.125rem;
+    margin-top: 2.5rem;
     display: flex;
     align-items: flex-end;
     /* transition: all 0.5s; */
