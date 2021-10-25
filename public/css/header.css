@@ -6,13 +6,13 @@
 
 .menu-icon {
     width: 1.5rem;
-    margin-top: 0.4rem;
+    margin-top: 1.4rem;
 }
 
 .close-icon {
     width: 1.5rem;
     display: none;
-    margin-top: 0.4rem;
+    margin-top: 1.4rem;
 }
 
 .nav-checkbox {
@@ -38,7 +38,6 @@ li:first-child {
 
 #nav-checkbox:checked ~ ul.nav-menu li.nav-item {
     display: block;
-    z-index: 10;
 }
 
 #nav-checkbox:checked ~ label.nav-toggle .close-icon {

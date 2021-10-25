@@ -28,12 +28,12 @@
 }
 
 #boards-section {
-    max-height: 100%;
+    max-height: calc(100vh - var(--nav-height) - 1.5rem);
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-top: 4rem;
+    padding-top: 1.5rem;
 }
 
 #boards {

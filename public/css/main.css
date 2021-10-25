@@ -3,6 +3,7 @@ html {
     --primary-font-clr: #293b5d;
     --bg-clr: #fdfbf9;
     --btn-clr: #2f74f2;
+    --nav-height: 68.797px;
 
     background-color: var(--bg-clr);
     font-family: 'Montserrat', sans-serif;

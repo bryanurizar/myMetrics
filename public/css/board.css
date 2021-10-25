@@ -9,7 +9,7 @@
     padding: 0 1.5rem;
     overflow-x: auto;
     height: calc(
-        100vh - 160.797px
+        100vh - var(--nav-height) - 92px
     ); /* calculates remaining space after nav/select target list elements */
 }
 
