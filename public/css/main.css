@@ -45,6 +45,13 @@ body {
 /****** Landing page navbar styling ******/
 /****************************************/
 
+nav {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 0;
+    background-color: #fdfbf9;
+}
+
 nav ul {
     align-items: center;
     display: flex;

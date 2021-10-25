@@ -1,18 +1,17 @@
 .nav-toggle {
     position: absolute;
-    margin: 0rem 1.5rem;
+    width: 1.5rem;
     right: 0;
+    top: 1.4rem;
 }
 
 .menu-icon {
     width: 1.5rem;
-    margin-top: 1.4rem;
 }
 
 .close-icon {
-    width: 1.5rem;
     display: none;
-    margin-top: 1.4rem;
+    width: 1.5rem;
 }
 
 .nav-checkbox {
@@ -20,10 +19,11 @@
 }
 
 .nav-menu {
+    gap: 2rem;
     display: flex;
     flex-direction: column;
-    gap: 2rem;
     align-items: center;
+    align-content: center;
 }
 
 li {
@@ -56,6 +56,8 @@ li:first-child {
 
     .nav-menu {
         flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
     }
 
     li {
