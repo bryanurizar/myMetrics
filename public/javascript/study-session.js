@@ -53,7 +53,7 @@ timerButtons.classList.add('timer-btns');
 
 const startButton = document.createElement('button');
 startButton.innerText = 'Start Timer';
-startButton.id = 'btn';
+startButton.className = 'btn';
 
 timerInputs.appendChild(hoursInput);
 timerInputs.appendChild(timerSeparator);
@@ -108,7 +108,7 @@ function displayTimer() {
     const cancelButton = document.createElement('button');
     cancelButton.id = 'cancel-btn';
     cancelButton.className = 'btn cancel-btn';
-    cancelButton.innerText = 'Cancel';
+    cancelButton.innerText = 'End';
     timerButtons.appendChild(cancelButton);
     cancelButton.addEventListener('click', cancelTimer);
 

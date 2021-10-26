@@ -4,37 +4,39 @@
     justify-content: center;
     align-content: center;
     align-items: center;
+    max-height: calc(100vh - var(--nav-height));
+    padding-top: 1.5rem;
 }
 
 #leaderboard-title {
-    margin-top: 20px;
-    margin-bottom: 0px;
+    font-weight: 600;
+    margin: 1.5rem 0 0;
 }
 
 #leaderboard-rank {
     margin-bottom: 10px;
     font-weight: 600;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 #leaderboard-table {
     flex: 1;
-    min-width: 450px;
     box-shadow: 0 2px 20px 0 rgb(0 0 0 / 6%);
     padding: 16px;
     background-color: white;
-    /* overflow-y: scroll; */
     border-radius: 10px;
+    max-width: 600px;
+    width: 100%;
 }
 
 #leaderboard-rows {
     max-height: 68vh;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 
 #leaderboard-table > header {
-    font-weight: bold;
-    font-size: 1.24rem;
+    font-weight: 600;
+    font-size: 1.2rem;
     box-shadow: 0 8px 8px -10px rgb(0 0 0 / 15%);
 }
 

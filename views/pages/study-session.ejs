@@ -10,44 +10,50 @@
     <body>
         <%- include('../partials/header');%>
         <section id="study">
-            <% if(status.isSessionPageVisited === 'true') { %>
-            <h2 id="session-ended">Your Study Session Has Ended.</h2>
-            <%} else { %>
-            <div id="study-list">
-                <div class="todo-list-container">
-                    <div class="list-header">
-                        <h4 class="list-name" contenteditable>Target List</h4>
-                    </div>
-                    <div class="items">
-                        <% status.items.forEach(item => { %>
-                        <div
-                            id="card-<%= item.itemid %>"
-                            class="todo-card"
-                            draggable="true"
-                        >
-                            <div class="todo-content">
-                                <input type="checkbox" />
-                                <p class="todo-description">
-                                    <%= item.itemname %>
-                                </p>
-                                <br />
-                                <div class="flaticons">
-                                    <img
-                                        class="edit"
-                                        src="../../img/edit.svg"
-                                    />
-                                    <img
-                                        class="trash"
-                                        src="../../img/trash.svg"
-                                    />
+            <div id="study-container">
+                <div id="study-timer"></div>
+                <% if(status.isSessionPageVisited === 'true') { %>
+                <h2 id="session-ended">Your Study Session Has Ended.</h2>
+                <%} else { %>
+                <div id="study-list">
+                    <div class="todo-list-container">
+                        <div class="list-header">
+                            <h4 class="list-name" contenteditable>
+                                Target List
+                            </h4>
+                        </div>
+                        <div class="items">
+                            <% status.items.forEach(item => { %>
+                            <div
+                                id="card-<%= item.itemid %>"
+                                class="todo-card"
+                                draggable="true"
+                            >
+                                <div class="todo-content">
+                                    <div class="wrapper">
+                                        <input type="checkbox" />
+                                        <p class="todo-description">
+                                            <%= item.itemname %>
+                                        </p>
+                                    </div>
+                                    <br />
+                                    <div class="list-flaticons">
+                                        <img
+                                            class="flaticons edit"
+                                            src="../../img/edit.svg"
+                                        />
+                                        <img
+                                            class="flaticons trash"
+                                            src="../../img/trash.svg"
+                                        />
+                                    </div>
                                 </div>
                             </div>
+                            <% }); %>
                         </div>
-                        <% }); %>
                     </div>
                 </div>
             </div>
-            <div id="study-timer"></div>
         </section>
         <script type="module" src="/javascript/study-session.js" async></script>
         <% } %>

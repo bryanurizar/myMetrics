@@ -1,14 +1,24 @@
 #study {
     display: flex;
     flex-direction: row;
-    justify-content: flex-start;
-    margin-top: 100px;
+    justify-content: center;
+    height: calc(100vh);
+    max-height: calc(100vh);
+    z-index: 1;
+}
+
+#study-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    align-content: center;
 }
 
 #study-list {
     display: flex;
     flex: 3;
     justify-content: center;
+    align-items: center;
     height: 100%;
 }
 
@@ -23,6 +33,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    padding-top: 1.5rem;
 }
 
 .timerInputs {
