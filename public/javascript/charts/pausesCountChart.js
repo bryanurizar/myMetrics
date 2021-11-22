@@ -1,6 +1,6 @@
 export async function getPausesCountChart() {
     const response = await fetch('/pausesByBoards', {
-        method: 'GET'
+        method: 'GET',
     });
     return response.json();
 }
@@ -8,28 +8,30 @@ export async function getPausesCountChart() {
 export function createPausesCountChart(chartData) {
     const data = {
         labels: chartData.lastTenSessions,
-        datasets: [{
-            label: 'No of Pauses in Last 10 Sessions',
-            backgroundColor: 'rgba(75, 192, 192, 0.2)',
-            borderColor: 'rgb(75, 192, 192)',
-            borderWidth: 1,
-            data: chartData.pausesCount
-        }]
+        datasets: [
+            {
+                label: 'No of Pauses In Last Ten Focus Sessions',
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgb(75, 192, 192)',
+                borderWidth: 1,
+                data: chartData.pausesCount,
+            },
+        ],
     };
     const options = {
         scales: {
             y: {
                 min: 0,
                 ticks: {
-                    stepSize: 1
-                }
-            }
-        }
+                    stepSize: 1,
+                },
+            },
+        },
     };
     const config = {
         type: 'bar',
         data,
-        options
+        options,
     };
 
     const pausesCountChart = new Chart(
@@ -37,4 +39,3 @@ export function createPausesCountChart(chartData) {
         config
     );
 }
-

@@ -5,7 +5,7 @@
         <%- include('../partials/head'); %>
         <link rel="stylesheet" href="/css/header.css" />
         <link rel="stylesheet" href="/css/list.css" />
-        <link rel="stylesheet" href="/css/study-session.css" />
+        <link rel="stylesheet" href="/css/focus-session.css" />
     </head>
     <body>
         <%- include('../partials/header');%>
@@ -13,7 +13,7 @@
             <div id="study-container">
                 <div id="study-timer"></div>
                 <% if(status.isSessionPageVisited === 'true') { %>
-                <h2 id="session-ended">Your Study Session Has Ended.</h2>
+                <h2 id="session-ended">Your Focus Session Has Ended.</h2>
                 <%} else { %>
                 <div id="study-list">
                     <div class="todo-list-container">
@@ -55,7 +55,7 @@
                 </div>
             </div>
         </section>
-        <script type="module" src="/javascript/study-session.js" async></script>
+        <script type="module" src="/javascript/focus-session.js" async></script>
         <% } %>
     </body>
 </html>

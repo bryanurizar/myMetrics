@@ -436,7 +436,7 @@ app.route('/lists/:listId')
         res.json({});
     });
 
-app.route('/study-session')
+app.route('/focus-session')
     .post(isUserAuthenticated, (req, res) => {
         const studySessionId = req.body.sessionID;
         const sessionDuration = req.body.sessionDuration;
@@ -474,7 +474,7 @@ app.route('/study-session')
         res.json({});
     });
 
-app.route('/study-session/:studySessionId')
+app.route('/focus-session/:studySessionId')
     .get(isUserAuthenticated, async (req, res) => {
         const studySessionId = req.params.studySessionId;
         const loggedInUser = req.user.id;
@@ -501,7 +501,7 @@ app.route('/study-session/:studySessionId')
                 'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
                 [studySessionId]
             );
-            res.render('pages/study-session', { status: status });
+            res.render('pages/focus-session', { status: status });
         } catch (err) {
             console.error(err);
         }

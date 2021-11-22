@@ -156,7 +156,7 @@ async function handleButtonClick() {
     const targetButtonsSection = document.querySelector('#target-list');
     const buttonText = targetButtonsSection.innerText;
 
-    if (buttonText === 'Select Target Items') {
+    if (buttonText === 'Select Focus Items') {
         enableTargetItemsSelection(targetButtonsSection);
     } else {
         await checkLengthOfTargetList();
@@ -170,7 +170,7 @@ function enableTargetItemsSelection(buttonName) {
     buttonName.appendChild(cancelBtn);
 
     cancelBtn.addEventListener('click', handleCancelBtn);
-    createTargetListBtn.innerText = 'Create Study Session';
+    createTargetListBtn.innerText = 'Create Focus Session';
 
     const todoCards = document.querySelectorAll('.todo-card');
     todoCards.forEach((todoCard) => {
@@ -195,7 +195,7 @@ async function updateTargetList(items) {
         });
         const res = await response.json();
         await postStudySession(res.studySessionId);
-        window.location.replace(`/study-session/${res.studySessionId}`);
+        window.location.replace(`/focus-session/${res.studySessionId}`);
     } catch (err) {
         console.log(err);
     }
@@ -212,7 +212,7 @@ async function postStudySession(studySessionId) {
         boardId: boardId,
     };
 
-    const response = await fetch('/study-session', {
+    const response = await fetch('/focus-session', {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
@@ -225,7 +225,7 @@ async function postStudySession(studySessionId) {
 function handleCancelBtn(e) {
     targetItems = [];
     e.target.remove();
-    createTargetListBtn.innerText = 'Select Target Items';
+    createTargetListBtn.innerText = 'Select Focus Items';
     createTargetListBtn.addEventListener('click', handleButtonClick, {
         once: true,
     });

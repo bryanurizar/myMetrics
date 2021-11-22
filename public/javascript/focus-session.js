@@ -160,7 +160,7 @@ function cancelTimer() {
     studySessionDuration = studySessionDuration.minus(elapsedTime - 1000);
     const studySection = document.querySelector('#study');
     studySection.innerHTML = `
-        <h2 id="session-ended">Your Study Session Has Ended.</h2>`;
+        <h2 id="session-ended">Your Focus Session Has Ended.</h2>`;
     postStudySessionLog('Cancel', studySessionDuration);
 }
 
