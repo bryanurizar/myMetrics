@@ -15,4 +15,5 @@ const passportConfig = (app) => {
         done(null, user);
     });
 };
+
 export default passportConfig;
