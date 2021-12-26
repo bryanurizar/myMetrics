@@ -10,7 +10,7 @@ export function createNoOfDaysSinceLastSessionChart(chartData) {
         labels: chartData.boardNames,
         datasets: [
             {
-                label: 'No of Days Since Last Focus Session',
+                label: "Number of Days since Board's Last Focus Session",
                 backgroundColor: 'rgba(54, 162, 235, 0.2)',
                 borderColor: 'rgb(54, 162, 235)',
                 borderWidth: 1,

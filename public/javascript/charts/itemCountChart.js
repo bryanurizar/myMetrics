@@ -1,6 +1,6 @@
 export async function getItemCountChartData() {
     const response = await fetch('/itemCountChart', {
-        method: 'GET'
+        method: 'GET',
     });
     return response.json();
 }
@@ -8,28 +8,30 @@ export async function getItemCountChartData() {
 export function createItemCountChart(chartData) {
     const data = {
         labels: chartData.boardNames,
-        datasets: [{
-            label: 'No of Tasks',
-            backgroundColor: 'rgba(255, 99, 132, 0.2)',
-            borderColor: 'rgb(255, 99, 132)',
-            borderWidth: 1,
-            data: chartData.itemCount,
-        }]
+        datasets: [
+            {
+                label: 'Number of Tasks',
+                backgroundColor: 'rgba(255, 99, 132, 0.2)',
+                borderColor: 'rgb(255, 99, 132)',
+                borderWidth: 1,
+                data: chartData.itemCount,
+            },
+        ],
     };
     const options = {
         scales: {
             y: {
                 min: 0,
                 ticks: {
-                    stepSize: 1
-                }
-            }
-        }
+                    stepSize: 1,
+                },
+            },
+        },
     };
     const config = {
         type: 'bar',
         data,
-        options
+        options,
     };
 
     const itemCount = new Chart(
@@ -38,4 +40,3 @@ export function createItemCountChart(chartData) {
     );
     return;
 }
-

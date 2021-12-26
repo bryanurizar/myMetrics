@@ -10,7 +10,7 @@ export function createPausesCountChart(chartData) {
         labels: chartData.lastTenSessions,
         datasets: [
             {
-                label: 'No of Pauses In Last Ten Focus Sessions',
+                label: 'Number of Pauses In Last Ten Focus Sessions',
                 backgroundColor: 'rgba(75, 192, 192, 0.2)',
                 borderColor: 'rgb(75, 192, 192)',
                 borderWidth: 1,
