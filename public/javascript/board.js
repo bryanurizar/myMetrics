@@ -356,6 +356,7 @@ function renderList(id, listName) {
 }
 
 function addCard(listId, itemName) {
+    if (itemName === '') return;
     const url = new URL(window.location.href);
     const boardId = url.pathname.split('/')[2];
 
