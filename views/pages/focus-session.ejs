@@ -10,16 +10,18 @@
     <body>
         <%- include('../partials/header');%>
         <section id="study">
+            <% if (status.isSessionPageVisited === 'true') { %>
+            <div id="session-ended">
+                <h2>Your Focus Session Has Ended.</h2>
+            </div>
+            <%} else { %>
             <div id="study-container">
                 <div id="study-timer"></div>
-                <% if(status.isSessionPageVisited === 'true') { %>
-                <h2 id="session-ended">Your Focus Session Has Ended.</h2>
-                <%} else { %>
                 <div id="study-list">
                     <div class="todo-list-container">
                         <div class="list-header">
                             <h4 class="list-name" contenteditable>
-                                Target List
+                                Focus Items
                             </h4>
                         </div>
                         <div class="items">

@@ -26,7 +26,7 @@ const boardId = boardUrl.pathname.split('/')[2];
 const studySection = document.querySelector('#study-timer');
 
 const timerHeader = document.createElement('h2');
-timerHeader.innerText = 'Set a Countdown Timer!';
+timerHeader.innerText = 'Focus Session Duration';
 studySection.append(timerHeader);
 
 const timerInputs = document.createElement('div');
@@ -159,8 +159,11 @@ function cancelTimer() {
     clearTimeout(ticker);
     studySessionDuration = studySessionDuration.minus(elapsedTime - 1000);
     const studySection = document.querySelector('#study');
+    console.log(studySection);
     studySection.innerHTML = `
-        <h2 id="session-ended">Your Focus Session Has Ended.</h2>`;
+        <div id="session-ended">
+            <h2>Your Focus Session Has Ended.</h2>
+        </div>`;
     postStudySessionLog('Cancel', studySessionDuration);
 }
 

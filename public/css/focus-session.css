@@ -1,24 +1,24 @@
 #study {
     display: flex;
-    flex-direction: row;
     justify-content: center;
-    height: calc(100vh);
-    max-height: calc(100vh);
-    z-index: 1;
+    align-content: center;
+    height: calc(100vh - var(--nav-height));
 }
 
 #study-container {
     display: flex;
     justify-content: center;
+    flex-direction: row;
     align-items: center;
-    align-content: center;
+    width: 100vw;
+    gap: 7rem;
+    height: calc(100vh - var(--nav-height));
 }
 
 #study-list {
     display: flex;
-    flex: 3;
     justify-content: center;
-    align-items: center;
+    height: 75%;
 }
 
 #study-list > .todo-list-container {
@@ -27,12 +27,10 @@
 }
 
 #study-timer {
-    flex: 5;
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
-    padding-top: 1.5rem;
+    height: 75%;
 }
 
 .timerInputs {
@@ -89,11 +87,32 @@
 
 #countdown-timer {
     font-family: 'Roboto Mono', monospace;
-    font-size: 5rem;
+    font-size: 4rem;
     font-weight: bold;
     padding: 20px;
 }
 
 #session-ended {
-    font-size: 2.5rem;
+    font-size: 1.5rem;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Desktop view */
+@media only screen and (max-width: 768px) {
+    #study-container {
+        flex-direction: column;
+        justify-content: none;
+        gap: 0;
+    }
+
+    #study-timer {
+        height: 30%;
+    }
+
+    #study-list {
+        height: 60%;
+    }
 }

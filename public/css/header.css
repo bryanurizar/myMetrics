@@ -35,7 +35,9 @@ li:first-child {
     margin-right: auto;
     display: block;
 }
-
+li > a:active {
+    color: var(--btn-clr);
+}
 #nav-checkbox:checked ~ ul.nav-menu li.nav-item {
     display: block;
 }
