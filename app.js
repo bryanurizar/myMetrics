@@ -45,8 +45,9 @@ passport.deserializeUser(function (id, done) {
 });
 
 // Home route
-app.route('/').get((_, res) => {
-    res.render('pages/landing');
+app.route('/').get((req, res) => {
+    const isUserLoggedIn = req.user;
+    isUserLoggedIn ? res.redirect('/dashboard') : res.render('pages/landing');
 });
 
 // Auth routes
