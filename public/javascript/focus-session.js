@@ -38,9 +38,9 @@ hoursInput.placeholder = 'HH';
 hoursInput.autocomplete = 'off';
 hoursInput.id = 'hours';
 
-const timerSeparator = document.createElement('p');
+const timerSeparator = document.createElement('div');
 timerSeparator.className = 'separator';
-timerSeparator.innerHTML = ':';
+timerSeparator.innerHTML = '<p>:</p>';
 
 const minutesInput = document.createElement('input');
 minutesInput.placeholder = 'MM';
