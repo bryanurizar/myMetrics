@@ -67,11 +67,41 @@ function handleEditOrDeleteClick(e) {
     const boardId = e.target
         .closest('.dashboard-flaticons')
         .nextElementSibling.href.substring(29, 41);
+
+    console.log(boardId);
+
     const boardName = e.target
         .closest('.dashboard-flaticons')
         .nextElementSibling.href.substring(42);
+
+    const boardElement = e.target.closest('.dashboard-flaticons')
+        .nextElementSibling.firstElementChild;
+
     const parentBoard = e.target.closest('.board-card');
+
     if (e.target.classList.contains('edit')) {
+        boardElement.setAttribute('contenteditable', true);
+        boardElement.focus();
+        window.getSelection().selectAllChildren(boardElement);
+
+        boardElement.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                boardElement.removeAttribute('contenteditable', false);
+                window.getSelection().empty();
+            }
+        });
+
+        boardElement.addEventListener('blur', (e) => {
+            const editedBoard = {
+                editedBoardId: boardId,
+                updatedBoard: e.target.innerText,
+            };
+
+            boardElement.setAttribute('contenteditable', false);
+
+            console.log(editedBoard);
+        });
+
         // const boardNameTag = parentBoard.querySelector('.board-name');
         // boardNameTag.setAttribute('contenteditable', 'true');
         // boardNameTag.focus();

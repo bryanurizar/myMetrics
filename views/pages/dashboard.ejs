@@ -24,7 +24,11 @@
                 <img class="flaticons edit" src="img/edit.svg" />
                 <img class="flaticons trash" src="img/trash.svg" />
               </div>
-              <a class="board-name" href="/boards/<%=result.boardid%>/<%=encodeURI(decodeURI(result.boardname.toLowerCase()).replace(/ /g, "-"))%>"><%= result.boardname %></a>
+              <a class="board-name" href="/boards/<%=result.boardid%>/<%=encodeURI(decodeURI(result.boardname.toLowerCase()).replace(/ /g, "-"))%>">
+                <div>
+                    <%= result.boardname %>
+                </div>
+            </a>
             </div>
         <% }); %>
       </div>
