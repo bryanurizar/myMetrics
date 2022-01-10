@@ -269,7 +269,6 @@ async function updateRank(rankData) {
     ]);
 
     if (previousCardId && nextCardId) {
-        console.log('In combined');
         try {
             const {
                 rows: [{ itemposition: previousCardRank }],
@@ -520,7 +519,6 @@ app.route('/focus-session/:studySessionId')
         }
     })
     .post(isUserAuthenticated, (req, res) => {
-        console.log('in post route');
         const studySessionDuration =
             (req.body.hours || 0) * 3600 +
             (req.body.minutes || 0) * 60 +
@@ -603,7 +601,6 @@ app.route('/studyTimeByBoardsChart').get(isUserAuthenticated, (req, res) => {
         `,
         [loggedInUser],
         (err, data) => {
-            console.log(data);
             if (err) throw err;
             const boardNames = [];
             const boardStudyTime = [];

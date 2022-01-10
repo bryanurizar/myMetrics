@@ -116,7 +116,6 @@ deleteList.forEach((list) => {
 });
 
 function handleDeleteListClick(e) {
-    console.log('delete list clicked on');
     const listId = {
         listId: e.target.id,
     };
@@ -151,7 +150,7 @@ let targetItems = [];
 
 async function handleButtonClick() {
     const targetButtonsSection = document.querySelector('#target-list');
-    const buttonText = targetButtonsSection.innerText;
+    const buttonText = targetButtonsSection.innerText.substring(0, 18);
 
     if (buttonText === 'Select Focus Items') {
         enableTargetItemsSelection(targetButtonsSection);
@@ -179,6 +178,7 @@ async function checkLengthOfTargetList() {
     if (targetItems.length > 0) {
         await updateTargetList(targetItems);
     } else {
+        console.log(targetItems.length);
         alert('No items have been selected.');
     }
 }
