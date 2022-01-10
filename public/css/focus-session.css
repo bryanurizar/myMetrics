@@ -9,16 +9,17 @@
     display: flex;
     justify-content: center;
     flex-direction: row;
-    align-items: center;
+    /* align-items: center; */
     width: 100vw;
     gap: 7rem;
-    height: calc(100vh - var(--nav-height));
+    height: calc(100vh - var(--nav-height) - 2rem);
+    margin: 1rem;
 }
 
 #study-list {
     display: flex;
+    align-items: flex-start;
     justify-content: center;
-    height: 75%;
 }
 
 #study-list > .todo-list-container {
@@ -29,7 +30,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 75%;
+    margin-bottom: 1rem;
 }
 
 .timerInputs {
@@ -101,15 +102,11 @@
 }
 
 /* Desktop view */
-@media only screen and (max-width: 768px) {
+@media only screen and (max-width: 790px) {
     #study-container {
         flex-direction: column;
         justify-content: none;
         gap: 0;
-    }
-
-    #study-timer {
-        height: 30%;
     }
 
     #study-list {
