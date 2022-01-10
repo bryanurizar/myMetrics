@@ -37,8 +37,6 @@ const handleDrop = (e) => {
     const nearestCard = e.target.closest('.todo-card');
     const movedCardNode = document.querySelector(`#${cardId}`);
 
-    console.log(dropNode.firstElementChild);
-
     if (!dropNode.firstElementChild) {
         dropNode.appendChild(movedCardNode);
     } else {
@@ -134,7 +132,6 @@ function handleDeleteListClick(e) {
             const deletedTodoList = document
                 .querySelector(`#todo-list-${e.target.id}`)
                 .closest('.todo-list-container');
-            console.log(deletedTodoList);
             deletedTodoList.remove();
         } catch (err) {
             console.log(err);
@@ -436,6 +433,5 @@ textarea.addEventListener('input', (e) => {
 
 // Sets add card textarea back to the original default size on blur
 textarea.addEventListener('blur', (e) => {
-    console.log(e.target.value);
     e.target.value === '' ? e.target.removeAttribute('style') : null;
 });

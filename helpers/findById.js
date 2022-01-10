@@ -8,9 +8,9 @@ function findById(id, callback) {
             const isUserFound = results.length === 1;
 
             if (!isUserFound) {
-                console.log('user not found in db');
+                console.log('User not found in db');
             } else {
-                console.log('user found in db');
+                console.log('User found in db');
                 return callback(null, results);
             }
         }
