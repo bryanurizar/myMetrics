@@ -12,8 +12,8 @@
     /* align-items: center; */
     width: 100vw;
     gap: 7rem;
-    height: calc(100vh - var(--nav-height) - 2rem);
-    margin: 1rem;
+    height: calc(100vh - var(--nav-height) - 6rem);
+    margin: 3rem 0;
 }
 
 #study-list {
@@ -31,6 +31,10 @@
     flex-direction: column;
     align-items: center;
     margin-bottom: 1rem;
+}
+
+#study-timer > h2 {
+    text-align: center;
 }
 
 .timerInputs {
@@ -102,7 +106,7 @@
 }
 
 /* Desktop view */
-@media only screen and (max-width: 790px) {
+@media only screen and (max-width: 768px) {
     #study-container {
         flex-direction: column;
         justify-content: none;
