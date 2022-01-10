@@ -603,6 +603,7 @@ app.route('/studyTimeByBoardsChart').get(isUserAuthenticated, (req, res) => {
         `,
         [loggedInUser],
         (err, data) => {
+            console.log(data);
             if (err) throw err;
             const boardNames = [];
             const boardStudyTime = [];
@@ -611,6 +612,7 @@ app.route('/studyTimeByBoardsChart').get(isUserAuthenticated, (req, res) => {
                 boardNames.push(boardData.boardname);
                 boardStudyTime.push(boardData.boardstudytime / (60 * 60));
             });
+            console.log(boardsData);
             res.json({
                 boardNames: boardNames,
                 boardStudyTime: boardStudyTime,
