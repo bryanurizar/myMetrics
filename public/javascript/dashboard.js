@@ -11,7 +11,6 @@ createBoardBtn.addEventListener('click', () => {
 createBoardInput.addEventListener('keypress', (e) => {
     if (e.target.className === 'create-board' && e.key === 'Enter') {
         const newBoardName = e.target.value;
-        console.log(newBoardName);
         createBoard(newBoardName);
     }
 });
@@ -43,12 +42,16 @@ async function createBoard(boardName) {
 function renderNewBoard(boardName, boardId) {
     const boardCard = document.createElement('div');
     boardCard.className = 'board-card';
+
     const newBoardName = document.createElement('a');
     newBoardName.className = 'board-name';
-    newBoardName.textContent = boardName;
     newBoardName.href = `/boards/${boardId}/${encodeURI(
         decodeURI(boardName.toLowerCase()).replace(/ /g, '-')
     )}`;
+    const boardDiv = document.createElement('div');
+    boardDiv.innerText = boardName;
+    newBoardName.appendChild(boardDiv);
+
     const editTrashDiv = document.createElement('div');
     editTrashDiv.className = 'dashboard-flaticons';
     editTrashDiv.innerHTML = ` 
@@ -67,8 +70,6 @@ function handleEditOrDeleteClick(e) {
     const boardId = e.target
         .closest('.dashboard-flaticons')
         .nextElementSibling.href.substring(29, 41);
-
-    console.log(boardId);
 
     const boardName = e.target
         .closest('.dashboard-flaticons')
@@ -99,23 +100,23 @@ function handleEditOrDeleteClick(e) {
 
             boardElement.setAttribute('contenteditable', false);
 
-            console.log(editedBoard);
+            editBoard(editedBoard.editedBoardId, editedBoard.updatedBoard);
         });
-
-        // const boardNameTag = parentBoard.querySelector('.board-name');
-        // boardNameTag.setAttribute('contenteditable', 'true');
-        // boardNameTag.focus();
-        // boardNameTag.addEventListener('keypress', e => {
-        //     if (e.key === 'Enter') {
-        //         boardNameTag.removeAttribute('contenteditable');
-        //     }
-        // });
-        // TODO: Add name edit functionality
     } else if (e.target.classList.contains('trash')) {
         parentBoard.remove();
         deleteBoard(boardId, boardName);
     }
 }
+
+// Below limits the board names to 45 characters
+const boardDiv = document.querySelector('.board-name > div');
+
+boardDiv.addEventListener('keypress', () => {
+    if (boardDiv.innerText.length >= 45) {
+        alert('Maximum of 30 characters exceeded');
+        boardDiv.innerText = boardDiv.innerText.substring(0, 44);
+    }
+});
 
 async function deleteBoard(id, name) {
     const boardData = {
@@ -136,6 +137,21 @@ async function deleteBoard(id, name) {
     return response;
 }
 
-// async function editBoard(id, name) {
-//     const boardData = {};
-// }
+async function editBoard(id, name) {
+    const boardData = {
+        boardId: id,
+        updatedBoardName: name,
+    };
+
+    const response = fetch(
+        `/boards/${boardData.boardId}/${boardData.updatedBoardName}`,
+        {
+            method: 'PATCH',
+            headers: {
+                'content-type': 'application/json',
+            },
+            body: JSON.stringify(boardData),
+        }
+    );
+    return response;
+}

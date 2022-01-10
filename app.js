@@ -148,15 +148,27 @@ app.route('/boards/:boardId/:boardName')
     })
     .patch(isUserAuthenticated, (req, res) => {
         const boardId = req.body.boardId;
+        const updatedBoardName = req.body.updatedBoardName;
 
-        pool.query(
-            'UPDATE Boards SET isBoardDeleted=True WHERE BoardID=$1',
-            [boardId],
-            (err, result) => {
-                if (err) throw err;
-                console.log('Board marked as deleted');
-            }
-        );
+        if (!updatedBoardName) {
+            pool.query(
+                'UPDATE Boards SET isBoardDeleted=True WHERE BoardID=$1',
+                [boardId],
+                (err, result) => {
+                    if (err) throw err;
+                    console.log('Board marked as deleted');
+                }
+            );
+        } else {
+            pool.query(
+                'UPDATE Boards SET boardName=$1 WHERE BoardID=$2',
+                [updatedBoardName, boardId],
+                (err, result) => {
+                    if (err) throw err;
+                    console.log('Board name updated');
+                }
+            );
+        }
         res.json(res.statusCode);
     });
 
