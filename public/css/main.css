@@ -36,7 +36,8 @@ body {
 
 input,
 select,
-textarea .board-card {
+textarea,
+.board-card {
     color: var(--primary-color);
 }
 
