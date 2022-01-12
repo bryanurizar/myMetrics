@@ -16,6 +16,26 @@ window.addEventListener('beforeunload', (e) => {
 // Adds checkbox, edit and trash icon event handlers to items in lists
 addItemEventListeners();
 
+const itemCheckboxes = document.querySelectorAll('input[type="checkbox"]');
+itemCheckboxes.forEach((itemCheckbox) => {
+    itemCheckbox.addEventListener('click', updateSessionStorage);
+});
+
+function updateSessionStorage(cardId) {
+    const targetItemSessionStorage = JSON.parse(
+        window.sessionStorage.getItem('targetItems')
+    );
+
+    const cardIdIndex = targetItemSessionStorage.indexOf(cardId);
+    targetItemSessionStorage.splice(cardIdIndex, 1);
+    window.sessionStorage.setItem(
+        'targetItems',
+        JSON.stringify(targetItemSessionStorage)
+    );
+
+    targetItemSessionStorage.length === 0 ? cancelTimer() : null;
+}
+
 // Captures the session ID / board ID to be used later in the API call
 const sessionUrl = new URL(window.location.href);
 const sessionId = sessionUrl.pathname.split('/')[2];
@@ -156,14 +176,16 @@ function pauseOrResumeTimer(e) {
 }
 
 function cancelTimer() {
-    clearTimeout(ticker);
-    studySessionDuration = studySessionDuration.minus(elapsedTime - 1000);
+    if (studySessionDuration) {
+        clearTimeout(ticker);
+        studySessionDuration = studySessionDuration.minus(elapsedTime - 1000);
+        postStudySessionLog('Cancel', studySessionDuration);
+    }
     const studySection = document.querySelector('#study');
     studySection.innerHTML = `
         <div id="session-ended">
             <h2>Your Focus Session Has Ended.</h2>
         </div>`;
-    postStudySessionLog('Cancel', studySessionDuration);
 }
 
 function decrement() {

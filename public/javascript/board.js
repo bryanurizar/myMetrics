@@ -178,7 +178,6 @@ async function checkLengthOfTargetList() {
     if (targetItems.length > 0) {
         await updateTargetList(targetItems);
     } else {
-        console.log(targetItems.length);
         alert('No items have been selected.');
     }
 }
@@ -238,13 +237,23 @@ function handleTodoCardClick(e) {
     const todoCard = e.target.closest('.todo-card');
     const todoCardId = todoCard.id.substring(5);
     todoCard.classList.toggle('targeted');
+    const targetSessionStorage = window.sessionStorage;
 
     if (targetItems.includes(todoCardId)) {
         const index = targetItems.indexOf(todoCardId);
         targetItems.splice(index, 1);
+        targetSessionStorage.setItem(
+            'targetItems',
+            JSON.stringify(targetItems)
+        );
     } else {
         targetItems.push(todoCardId);
+        targetSessionStorage.setItem(
+            'targetItems',
+            JSON.stringify(targetItems)
+        );
     }
+    console.log(targetSessionStorage);
 }
 
 // Create new list using JavaScript object
