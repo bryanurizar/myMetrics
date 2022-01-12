@@ -41,6 +41,10 @@ textarea,
     color: var(--primary-color);
 }
 
+input {
+    border: 0.0625em solid #ccc;
+}
+
 .page-container {
     min-height: 100vh;
     display: flex;
