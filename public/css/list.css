@@ -66,7 +66,7 @@
 .edit {
     margin-right: 0.125rem;
 }
-/* .todo-card input {
+.todo-card input {
     visibility: hidden;
 }
 
@@ -81,7 +81,7 @@
 
 .todo-card:hover {
     background-color: #f4f5f7;
-} */
+}
 
 input[type='checkbox'] {
     align-self: center;
@@ -110,10 +110,10 @@ textarea {
     font-size: inherit;
 }
 
-/* .add-card:hover {
+.add-card:hover {
     background-color: #f4f5f4;
     border-radius: 5px;
-} */
+}
 
 .add-card:focus {
     background-color: white;
@@ -142,23 +142,4 @@ textarea {
 .todo-description:focus {
     padding: 0.25rem;
     font-size: 0.75rem;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .add-card:hover {
-        background-color: #f4f5f4;
-        border-radius: 5px;
-    }
-    .todo-card:hover img {
-        visibility: visible;
-    }
-
-    .todo-card:hover input {
-        visibility: visible;
-        margin-right: 0.25rem;
-    }
-
-    .todo-card:hover {
-        background-color: #f4f5f7;
-    }
 }
