@@ -192,6 +192,11 @@ img {
     visibility: hidden;
 }
 
+.flaticons:hover {
+    opacity: 0.5;
+    visibility: visible;
+}
+
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 8px;
@@ -209,11 +214,4 @@ img {
 
 ::-webkit-scrollbar-button {
     display: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .flaticons:hover {
-        opacity: 0.5;
-        visibility: visible;
-    }
 }

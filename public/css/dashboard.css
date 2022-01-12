@@ -8,6 +8,11 @@
     color: #2f75f2;
 }
 
+.board-card:hover img {
+    visibility: visible;
+    cursor: pointer;
+}
+
 .create-board {
     padding: 0 1.25rem;
     margin: 0.325rem 0;
@@ -62,6 +67,10 @@
     background-color: #ffffff;
 }
 
+.board-card:hover {
+    box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
 .board-name {
     display: block;
     /* justify-content: center; */
@@ -89,15 +98,4 @@
     visibility: hidden;
     gap: 0.2em;
     width: 10px;
-}
-
-@media (hover: hover) and (pointer: fine) {
-    .board-card:hover img {
-        visibility: visible;
-        cursor: pointer;
-    }
-
-    .board-card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
-    }
 }
