@@ -44,7 +44,6 @@ textarea,
 input {
     border: 0.0625em solid #ccc;
 }
-
 .page-container {
     min-height: 100vh;
     display: flex;
@@ -165,6 +164,7 @@ img {
     padding: 0.625rem 1.125rem;
     border: none;
     color: white;
+    letter-spacing: 0.0325em;
     box-shadow: 0 0.5em 1.125em 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -192,11 +192,6 @@ img {
     visibility: hidden;
 }
 
-.flaticons:hover {
-    opacity: 0.5;
-    visibility: visible;
-}
-
 ::-webkit-scrollbar {
     -webkit-appearance: none;
     width: 8px;
@@ -214,4 +209,11 @@ img {
 
 ::-webkit-scrollbar-button {
     display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .flaticons:hover {
+        opacity: 0.5;
+        visibility: visible;
+    }
 }
