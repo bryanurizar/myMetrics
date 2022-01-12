@@ -70,16 +70,19 @@
     visibility: hidden;
 }
 
-.todo-card:hover img {
+.todo-card:hover img,
+.todo-card:active img {
     visibility: visible;
 }
 
-.todo-card:hover input {
+.todo-card:hover input,
+.todo-card:active input {
     visibility: visible;
     margin-right: 0.25rem;
 }
 
-.todo-card:hover {
+.todo-card:hover,
+.todo-card:active {
     background-color: #f4f5f7;
 }
 
