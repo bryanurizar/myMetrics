@@ -34,6 +34,12 @@ body {
     vertical-align: top;
 }
 
+input,
+select,
+textarea .board-card {
+    color: var(--primary-color);
+}
+
 .page-container {
     min-height: 100vh;
     display: flex;

@@ -16,6 +16,7 @@ window.addEventListener('beforeunload', (e) => {
 // Adds checkbox, edit and trash icon event handlers to items in lists
 addItemEventListeners();
 
+// Uses target items stored in session storage to end focus session if all items are completed
 const itemCheckboxes = document.querySelectorAll('input[type="checkbox"]');
 itemCheckboxes.forEach((itemCheckbox) => {
     itemCheckbox.addEventListener('click', updateSessionStorage);
