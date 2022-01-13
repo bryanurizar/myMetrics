@@ -70,13 +70,12 @@
     visibility: hidden;
 }
 
-.todo-card:hover img,
+.todo-card:hover .flaticons,
 .todo-card:active img {
     visibility: visible;
 }
 
-.todo-card:hover input,
-.todo-card:active input {
+.todo-card:hover input {
     visibility: visible;
     margin-right: 0.25rem;
 }
