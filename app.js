@@ -44,6 +44,14 @@ passport.deserializeUser(function (id, done) {
     findById(id, done);
 });
 
+app.route('/guest').get((req, res) => {
+    req.session.guest = {
+        id: '1',
+        name: { familyName: 'Guest', givenName: 'Guest' },
+    };
+    res.redirect('/dashboard');
+});
+
 // Home route
 app.route('/').get((req, res) => {
     const isUserLoggedIn = req.user;
@@ -78,7 +86,10 @@ app.route('/logout').get((req, res) => {
 
 // Dashboard route
 app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
-    const loggedInUserId = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
 
     pool.query(
         'SELECT boardID, boardName FROM Boards WHERE userID=$1 AND isBoardDeleted=FALSE ORDER BY createdAt',
@@ -87,7 +98,7 @@ app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
             if (err) throw err;
             res.setHeader('Cache-Control', 'no-store');
             res.render('pages/dashboard', {
-                user: req.user,
+                user: req.user || req.session.guest,
                 results: results.rows,
             });
         }
@@ -98,7 +109,10 @@ app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
 app.route('/boards').post(isUserAuthenticated, (req, res) => {
     const newBoardId = nanoid();
     const newBoardName = req.body.newBoardName;
-    const loggedInUserId = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
 
     pool.query(
         'INSERT INTO Boards (boardID, boardName, userID) VALUES($1, $2, $3)',
@@ -113,7 +127,10 @@ app.route('/boards').post(isUserAuthenticated, (req, res) => {
 
 app.route('/boards/:boardId/:boardName')
     .get(isUserAuthenticated, (req, res) => {
-        const loggedInUserId = req.user.id;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
         const boardID = req.params.boardId;
 
         pool.query(
@@ -175,7 +192,11 @@ app.route('/boards/:boardId/:boardName')
 // Items routes
 app.route('/items')
     .post(isUserAuthenticated, (req, res) => {
-        const loggedInUserId = req.user.id;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
+
         const itemName = req.body.itemName;
         const listId = req.body.listId;
         const itemId = nanoid();
@@ -397,12 +418,15 @@ async function updateRank(rankData) {
 app.route('/lists').post(isUserAuthenticated, (req, res) => {
     const listName = req.body.listName;
     const boardId = req.body.boardId;
-    const loggedInUser = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
     const listId = nanoid();
 
     pool.query(
         'INSERT INTO Lists (listID, listName, userID, boardId) VALUES ($1, $2, $3, $4)',
-        [listId, listName, loggedInUser, boardId],
+        [listId, listName, loggedInUserId, boardId],
         (err) => {
             if (err) throw err;
             res.json({ listId: listId });
@@ -413,11 +437,14 @@ app.route('/lists').post(isUserAuthenticated, (req, res) => {
 app.route('/lists/:listId')
     .post(isUserAuthenticated, (req, res) => {
         const newList = req.body.newList;
-        const loggedInUser = req.user.id;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
 
         pool.query(
             'INSERT INTO Lists (listDescription, userID) VALUES ($1, $2)',
-            [newList, loggedInUser],
+            [newList, loggedInUserId],
             (err) => {
                 if (err) throw err;
                 console.log('Item inserted into database.');
@@ -452,12 +479,15 @@ app.route('/focus-session')
     .post(isUserAuthenticated, (req, res) => {
         const studySessionId = req.body.sessionID;
         const sessionDuration = req.body.sessionDuration;
-        const loggedInUser = req.user.id;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
         const boardId = req.body.boardId;
 
         pool.query(
             'INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID, isSessionPageVisited) VALUES ($1, $2, $3, $4, false)',
-            [studySessionId, sessionDuration, loggedInUser, boardId],
+            [studySessionId, sessionDuration, loggedInUserId, boardId],
             (err, result) => {
                 if (err) {
                     console.log(err);
@@ -489,7 +519,11 @@ app.route('/focus-session')
 app.route('/focus-session/:studySessionId')
     .get(isUserAuthenticated, async (req, res) => {
         const studySessionId = req.params.studySessionId;
-        const loggedInUser = req.user.id;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
+        const boardId = req.body.boardId;
 
         try {
             const session = await pool.query(
@@ -501,7 +535,7 @@ app.route('/focus-session/:studySessionId')
 
             const targetItems = await pool.query(
                 'SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt',
-                [loggedInUser]
+                [loggedInUserId]
             );
             const status = {
                 items: targetItems.rows,
@@ -527,7 +561,10 @@ app.route('/focus-session/:studySessionId')
         const boardId = req.body.boardId;
         const sessionId = req.params.studySessionId;
         const userAction = req.body.userAction;
-        const loggedInUser = req.user.id;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
 
         pool.query(
             'INSERT INTO STUDYSESSIONLOGS (sessionDurationRemaining, userAction, sessionID, userID, boardID) VALUES ($1, $2, $3, $4, $5)',
@@ -535,7 +572,7 @@ app.route('/focus-session/:studySessionId')
                 studySessionDuration,
                 userAction,
                 sessionId,
-                loggedInUser,
+                loggedInUserId,
                 boardId,
             ],
             (err, result) => {
@@ -555,7 +592,10 @@ app.route('/profile').get(isUserAuthenticated, (req, res) => {
 });
 
 app.route('/itemCountChart').get(isUserAuthenticated, (req, res) => {
-    const loggedInUser = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
 
     pool.query(
         `
@@ -564,9 +604,9 @@ app.route('/itemCountChart').get(isUserAuthenticated, (req, res) => {
         ON Items.boardID = Boards.boardID  
         WHERE Items.isItemCompleted=FALSE AND Items.userID=$1 AND isBoardDeleted=FALSE
         GROUP BY boards.boardName
-        ORDER BY Boards.boardName;
+        ORDER BY itemCount DESC;
         `,
-        [loggedInUser],
+        [loggedInUserId],
         (err, data) => {
             if (err) throw err;
             const boardNames = [];
@@ -582,7 +622,10 @@ app.route('/itemCountChart').get(isUserAuthenticated, (req, res) => {
 });
 
 app.route('/studyTimeByBoardsChart').get(isUserAuthenticated, (req, res) => {
-    const loggedInUser = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
 
     pool.query(
         `
@@ -599,7 +642,7 @@ app.route('/studyTimeByBoardsChart').get(isUserAuthenticated, (req, res) => {
         GROUP BY T5.boardName
         ORDER BY T5.boardName;
         `,
-        [loggedInUser],
+        [loggedInUserId],
         (err, data) => {
             if (err) throw err;
             const boardNames = [];
@@ -618,7 +661,10 @@ app.route('/studyTimeByBoardsChart').get(isUserAuthenticated, (req, res) => {
 });
 
 app.route('/daysSinceLastSession').get(isUserAuthenticated, (req, res) => {
-    const loggedInUser = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
 
     pool.query(
         `
@@ -632,7 +678,7 @@ app.route('/daysSinceLastSession').get(isUserAuthenticated, (req, res) => {
         GROUP BY T3.boardName
         ORDER BY T3.boardName;
         `,
-        [loggedInUser],
+        [loggedInUserId],
         (err, data) => {
             if (err) throw err;
             const boardNames = [];
@@ -655,7 +701,10 @@ app.route('/daysSinceLastSession').get(isUserAuthenticated, (req, res) => {
 });
 
 app.route('/pausesByBoards').get(isUserAuthenticated, (req, res) => {
-    const loggedInUser = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
 
     pool.query(
         `
@@ -670,7 +719,7 @@ app.route('/pausesByBoards').get(isUserAuthenticated, (req, res) => {
             LIMIT 10) As T3
         ORDER BY T3.createdAt ASC
         `,
-        [loggedInUser],
+        [loggedInUserId],
         (err, data) => {
             if (err) throw err;
 
@@ -689,11 +738,14 @@ app.route('/pausesByBoards').get(isUserAuthenticated, (req, res) => {
 });
 
 app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
-    const loggedInUser = req.user.id;
+    let loggedInUserId;
+    req.session.guest
+        ? (loggedInUserId = req.session.guest.id)
+        : (loggedInUserId = req.user.id);
 
     pool.query(
         `
-        SELECT T6.*, T7.firstName, T7.lastName, T7.email, T7.userImage  FROM (SELECT T5.userID, SUM(T5.TimeStudied) AS boardStudyTime FROM (
+        SELECT T6.*, T7.firstName, T7.lastName, T7.email, T7.userImage FROM (SELECT T5.userID, SUM(T5.TimeStudied) AS boardStudyTime FROM (
             SELECT T4.userID, T4.isBoardDeleted, T3.TimeStudied FROM (
                 SELECT T1.*, T2.sessionDuration, (T2.sessionDuration - T1.sessionDurationRemaining) AS TimeStudied FROM (
                     SELECT * FROM StudySessionLogs 
@@ -706,7 +758,8 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
         GROUP BY T5.userID
         ORDER BY boardStudyTime DESC) AS T6
         INNER JOIN Users AS T7
-        ON T6.userID = T7.userID;
+        ON T6.userID = T7.userID
+        ORDER BY boardStudyTime DESC;
     `,
         (err, results) => {
             if (err) throw err;
@@ -723,11 +776,12 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
                     ).toFormat('hh:mm:ss'),
                 };
             });
+            console.log(users);
 
             if (users === []) {
                 rank = 0;
             } else {
-                const isUserFound = (user) => user.userid === loggedInUser;
+                const isUserFound = (user) => user.userid === loggedInUserId;
                 rank = users.findIndex(isUserFound);
             }
 

@@ -1,5 +1,7 @@
 function isUserAuthenticated(req, res, next) {
-    return req.session.user ? next() : res.redirect('/login');
+    return req.session.user || req.session.guest
+        ? next()
+        : res.redirect('/login');
 }
 
 export default isUserAuthenticated;
