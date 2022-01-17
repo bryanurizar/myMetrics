@@ -60,7 +60,11 @@ app.route('/').get((req, res) => {
 
 // Auth routes
 app.route('/login').get((req, res) => {
-    res.render('pages/login');
+    const isGuestLoggedIn = req.session.guest;
+    isGuestLoggedIn ? req.session.destroy() : null;
+
+    const isUserLoggedIn = req.user;
+    isUserLoggedIn ? res.redirect('/dashboard') : res.render('pages/login');
 });
 
 app.route('/auth/google').get(
@@ -776,7 +780,6 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
                     ).toFormat('hh:mm:ss'),
                 };
             });
-            console.log(users);
 
             if (users === []) {
                 rank = 0;
