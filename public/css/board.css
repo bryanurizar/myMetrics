@@ -29,12 +29,12 @@
 }
 
 .targeted {
-    background-color: #f4735e;
+    background-color: #b1d0e0;
     color: white;
 }
 
 .targeted:hover {
-    background-color: #f4735e;
+    background-color: #b1d0e0;
 }
 
 .list-popup {

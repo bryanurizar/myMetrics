@@ -47,7 +47,7 @@ passport.deserializeUser(function (id, done) {
 app.route('/guest').get((req, res) => {
     req.session.guest = {
         id: '1',
-        name: { familyName: 'Guest', givenName: 'Guest' },
+        name: { givenName: 'Guest', familyName: 'Guest' },
     };
     res.redirect('/dashboard');
 });
@@ -102,7 +102,7 @@ app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
             if (err) throw err;
             res.setHeader('Cache-Control', 'no-store');
             res.render('pages/dashboard', {
-                user: req.user || req.session.guest,
+                user: req.session.guest || req.user,
                 results: results.rows,
             });
         }
@@ -758,7 +758,6 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
                ON T1.sessionID = T2.sessionId) AS T3
             INNER JOIN Boards AS T4
             ON T4.boardID = T3.boardID) AS T5
-            WHERE T5.isBoardDeleted=FALSE
         GROUP BY T5.userID
         ORDER BY boardStudyTime DESC) AS T6
         INNER JOIN Users AS T7
