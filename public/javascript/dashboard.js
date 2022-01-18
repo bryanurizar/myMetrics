@@ -63,31 +63,31 @@ function renderNewBoard(boardName, boardId) {
     boardSection.appendChild(boardCard);
 }
 
-const boardsSection = document.querySelector('#boards');
-boardsSection.addEventListener('click', handleEditOrDeleteClick);
+const boardsSectionFlaticons = Array.from(
+    document.querySelectorAll('.dashboard-flaticons')
+);
+
+boardsSectionFlaticons.forEach((boardSelectionFlaticon) => {
+    boardSelectionFlaticon.addEventListener('click', handleEditOrDeleteClick);
+});
 
 function handleEditOrDeleteClick(e) {
-    const boardId = e.target
-        .closest('.dashboard-flaticons')
-        .nextElementSibling.href.substring(29, 41);
-
-    const boardName = e.target
-        .closest('.dashboard-flaticons')
-        .nextElementSibling.href.substring(42);
-
-    const boardElement = e.target.closest('.dashboard-flaticons')
-        .nextElementSibling.firstElementChild;
-
+    const boardId = e.target.parentNode.nextElementSibling.id;
+    const boardName = e.target.parentNode.nextElementSibling.innerText;
+    const boardElement = e.target.parentNode.nextElementSibling;
     const parentBoard = e.target.closest('.board-card');
 
     if (e.target.classList.contains('edit')) {
         boardElement.setAttribute('contenteditable', true);
+        boardElement.style.cursor = 'auto';
+        boardElement.removeEventListener('click', handleBoardNavigation);
         boardElement.focus();
         window.getSelection().selectAllChildren(boardElement);
 
         boardElement.addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 boardElement.removeAttribute('contenteditable', false);
+                boardElement.addEventListener('click', handleBoardNavigation);
                 window.getSelection().empty();
             }
         });
@@ -99,7 +99,8 @@ function handleEditOrDeleteClick(e) {
             };
 
             boardElement.setAttribute('contenteditable', false);
-
+            boardElement.style.cursor = 'pointer';
+            boardElement.addEventListener('click', handleBoardNavigation);
             editBoard(editedBoard.editedBoardId, editedBoard.updatedBoard);
         });
     } else if (e.target.classList.contains('trash')) {
@@ -109,14 +110,27 @@ function handleEditOrDeleteClick(e) {
 }
 
 // Below limits the board names to 45 characters
-const boardDiv = document.querySelector('.board-name > div');
+const boardElements = Array.from(document.querySelectorAll('.board-name'));
 
-boardDiv.addEventListener('keypress', () => {
-    if (boardDiv.innerText.length >= 45) {
-        alert('Maximum of 30 characters exceeded');
-        boardDiv.innerText = boardDiv.innerText.substring(0, 44);
-    }
+boardElements.forEach((boardElement) => {
+    boardElement.addEventListener('keypress', () => {
+        if (boardElement.innerText.length >= 45) {
+            alert('Maximum of 30 characters exceeded');
+            boardElement.innerText = boardElement.innerText.substring(0, 44);
+        }
+    });
 });
+
+// Event listeners on boards
+const boardNameDivs = Array.from(document.querySelectorAll('.board-name'));
+
+boardNameDivs.forEach((boardNameDiv) => {
+    boardNameDiv.addEventListener('click', handleBoardNavigation);
+});
+
+function handleBoardNavigation(e) {
+    window.location.href = `/boards/${e.target.id}/${e.target.innerText}`;
+}
 
 async function deleteBoard(id, name) {
     const boardData = {

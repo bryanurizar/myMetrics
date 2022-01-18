@@ -1,46 +1,50 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Dashboard | myMetrics</title>
-    <%- include('../partials/head'); %>
-    <link rel="stylesheet" href="/css/header.css" class="css">
-    <link rel="stylesheet" href="/css/dashboard.css">
-  </head>
+    <head>
+        <title>Dashboard | myMetrics</title>
+        <%- include('../partials/head'); %>
+        <link rel="stylesheet" href="/css/header.css" class="css" />
+        <link rel="stylesheet" href="/css/dashboard.css" />
+    </head>
 
-  <body>
-    <%- include('../partials/header');%>
-    
-    <section id="boards-section">
-      <h2 id="greeting">Hey, <span id="user-name"> <%=user.name.givenName%>! 👋 </span> What are we focusing on today?</h2>
-        <div id="create-board">
-          <input class="create-board" type="text" placeholder="Create new board">
-          <button class="btn create-btn">Create</button>
-        </div>
+    <body>
+        <%- include('../partials/header');%>
 
-      <div id="boards">  
-        <% results.forEach(result => {%>
-            <div class="board-card">
-              <div class="dashboard-flaticons">
-                <img class="flaticons edit" src="img/edit.svg" />
-                <img class="flaticons trash" src="img/trash.svg" />
-              </div>
-              <a class="board-name" href="/boards/<%=result.boardid%>/<%=encodeURI(decodeURI(result.boardname.toLowerCase()).replace(/ /g, "-"))%>">
-                <div>
-                    <%= result.boardname %>
-                </div>
-            </a>
+        <section id="boards-section">
+            <h2 id="greeting">
+                Hey,
+                <span id="user-name"> <%=user.name.givenName%>! 👋 </span> What
+                are we focusing on today?
+            </h2>
+            <div id="create-board">
+                <input
+                    class="create-board"
+                    type="text"
+                    placeholder="Create new board"
+                />
+                <button class="btn create-btn">Create</button>
             </div>
-        <% }); %>
-      </div>
-      </section>
 
-    
-    <script
-      type="module"
-      src="/javascript/dashboard.js"
-      async
-      defer
-    ></script>
- 
-  </body>
+            <div id="boards">
+                <% results.forEach(result => {%>
+                <div class="board-card">
+                    <div class="dashboard-flaticons">
+                        <img class="flaticons edit" src="img/edit.svg" />
+                        <img class="flaticons trash" src="img/trash.svg" />
+                    </div>
+                    <div class="board-name" id="<%=result.boardid%>">
+                        <%= result.boardname %>
+                    </div>
+                </div>
+                <% }); %>
+            </div>
+        </section>
+
+        <script
+            type="module"
+            src="/javascript/dashboard.js"
+            async
+            defer
+        ></script>
+    </body>
 </html>

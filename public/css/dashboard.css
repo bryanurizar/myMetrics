@@ -73,20 +73,15 @@
 
 .board-name {
     display: block;
-    /* justify-content: center; */
-    /* align-items: center; */
-    /* align-content: center; */
     font-size: 1rem;
     text-align: center;
-}
-
-.board-name > div {
     overflow-wrap: anywhere;
     word-break: normal;
     text-overflow: ellipsis;
     margin: 0;
     padding: 0.25rem;
     max-width: 15ch;
+    cursor: pointer;
 }
 
 .dashboard-flaticons {
