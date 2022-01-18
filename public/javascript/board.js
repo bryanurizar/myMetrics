@@ -147,12 +147,16 @@ function handleDeleteListClick(e) {
 const createTargetListBtn = document.querySelector('.create-list');
 createTargetListBtn.addEventListener('click', handleButtonClick);
 let targetItems = [];
+const todoCards = document.querySelectorAll('.todo-card');
 
 async function handleButtonClick() {
     const targetButtonsSection = document.querySelector('#target-list');
     const buttonText = targetButtonsSection.innerText.substring(0, 18);
 
     if (buttonText === 'Select Focus Items') {
+        todoCards.forEach((todoCard) => {
+            todoCard.classList.add('no-hover');
+        });
         enableTargetItemsSelection(targetButtonsSection);
     } else {
         await checkLengthOfTargetList();
@@ -229,6 +233,7 @@ function handleCancelBtn(e) {
     const todoCards = document.querySelectorAll('.todo-card');
     todoCards.forEach((todoCard) => {
         todoCard.classList.remove('targeted');
+        todoCard.classList.remove('no-hover');
         todoCard.removeEventListener('click', handleTodoCardClick);
     });
 }

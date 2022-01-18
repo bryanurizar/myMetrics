@@ -70,18 +70,18 @@
     visibility: hidden;
 }
 
-.todo-card:hover .flaticons,
-.todo-card:active img {
+.todo-card:not(.no-hover):hover .flaticons,
+.todo-card:not(.no-hover):active img {
     visibility: visible;
 }
 
-.todo-card:hover input {
+.todo-card:not(.no-hover):hover input {
     visibility: visible;
     margin-right: 0.25rem;
 }
 
-.todo-card:hover,
-.todo-card:active {
+.todo-card:not(.no-hover):hover,
+.todo-card:not(.no-hover):active {
     background-color: #f4f5f7;
 }
 
