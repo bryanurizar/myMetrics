@@ -29,6 +29,21 @@ const handleDragStart = (e) => {
 const handleDragOver = (e) => {
     let overCurrentCard;
     let overCurrentCardId;
+
+    const [x, y] = [e.clientX, e.clientY];
+    const mouseElement = document.elementFromPoint(x, y);
+    const isMouseElementItemsSection = mouseElement.classList.contains('items');
+    console.log('is items element', isMouseElementItemsSection);
+    let isCurrentItemsSectionEmpty;
+
+    isMouseElementItemsSection
+        ? (isCurrentItemsSectionEmpty = mouseElement.firstElementChild === null)
+        : null;
+
+    isCurrentItemsSectionEmpty
+        ? (mouseElement.style.backgroundColor = '#e3e5e8')
+        : null;
+
     try {
         overCurrentCard = e.target.closest('.todo-card');
         overCurrentCardId = overCurrentCard.id;
@@ -52,18 +67,22 @@ const handleDragOver = (e) => {
 const handleDrop = (e) => {
     e.preventDefault();
     const todoCards = Array.from(document.querySelectorAll('.todo-card'));
+    const itemSections = Array.from(document.querySelectorAll('.items'));
+
     todoCards.forEach((todoCard) => {
         todoCard.style.backgroundColor = 'white';
     });
 
+    itemSections.forEach((itemSection) => {
+        itemSection.style.background = '#EAEDF0';
+    });
+
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.items');
-    console.log(dropNode);
     const dropListId = dropNode.id.substring(10);
     const nearestCard = e.target.closest('.todo-card');
     const movedCardNode = document.querySelector(`#${cardId}`);
 
-    console.log(dropNode.firstElementChild);
     if (!dropNode.firstElementChild) {
         dropNode.appendChild(movedCardNode);
     } else {
@@ -90,7 +109,6 @@ draggableCards.forEach((draggableCard) => {
     draggableCard.addEventListener('dragstart', handleDragStart);
 });
 
-console.log(dropZones);
 dropZones.forEach((dropZone) => {
     dropZone.addEventListener('drop', handleDrop);
     dropZone.addEventListener('dragover', handleDragOver);
@@ -286,7 +304,6 @@ function handleTodoCardClick(e) {
             JSON.stringify(targetItems)
         );
     }
-    console.log(targetSessionStorage);
 }
 
 // Create new list using JavaScript object
