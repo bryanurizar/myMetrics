@@ -145,4 +145,5 @@ textarea {
 .todo-description:focus {
     padding: 0.25rem;
     font-size: 0.75rem;
+    cursor: auto;
 }
