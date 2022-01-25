@@ -18,25 +18,52 @@ addItemEventListeners();
 
 const draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.items');
+let draggedCardId;
 
 const handleDragStart = (e) => {
+    draggedCardId = e.target.id;
     e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDragOver = (e) => {
+    let overCurrentCard;
+    let overCurrentCardId;
+    try {
+        overCurrentCard = e.target.closest('.todo-card');
+        overCurrentCardId = overCurrentCard.id;
+    } catch (err) {
+        const todoCards = Array.from(document.querySelectorAll('.todo-card'));
+        todoCards.forEach((todoCard) => {
+            todoCard.style.backgroundColor = 'white';
+        });
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+        return;
+    }
+
+    if (overCurrentCardId !== draggedCardId) {
+        overCurrentCard.style.backgroundColor = '#f4f5f7';
+    }
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDrop = (e) => {
     e.preventDefault();
+    const todoCards = Array.from(document.querySelectorAll('.todo-card'));
+    todoCards.forEach((todoCard) => {
+        todoCard.style.backgroundColor = 'white';
+    });
+
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.items');
+    console.log(dropNode);
     const dropListId = dropNode.id.substring(10);
     const nearestCard = e.target.closest('.todo-card');
     const movedCardNode = document.querySelector(`#${cardId}`);
 
+    console.log(dropNode.firstElementChild);
     if (!dropNode.firstElementChild) {
         dropNode.appendChild(movedCardNode);
     } else {
@@ -63,6 +90,7 @@ draggableCards.forEach((draggableCard) => {
     draggableCard.addEventListener('dragstart', handleDragStart);
 });
 
+console.log(dropZones);
 dropZones.forEach((dropZone) => {
     dropZone.addEventListener('drop', handleDrop);
     dropZone.addEventListener('dragover', handleDragOver);
