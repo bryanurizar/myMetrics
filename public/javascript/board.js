@@ -18,64 +18,40 @@ addItemEventListeners();
 
 const draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.items');
-let draggedCardId;
 
 const handleDragStart = (e) => {
-    draggedCardId = e.target.id;
+    Array.from(draggableCards).forEach((draggableCard) => {
+        Array.from(draggableCard.children).forEach((draggableCardChild) => {
+            draggableCardChild.style.pointerEvents = 'none';
+        });
+    });
+
     e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
 };
 
+// What happens when the element is being dragged over a drop zone
+
+let emptyDropZone;
+
 const handleDragOver = (e) => {
-    let overCurrentCard;
-    let overCurrentCardId;
-
-    const [x, y] = [e.clientX, e.clientY];
-    const mouseElement = document.elementFromPoint(x, y);
-    const isMouseElementItemsSection = mouseElement.classList.contains('items');
-    console.log('is items element', isMouseElementItemsSection);
-    let isCurrentItemsSectionEmpty;
-
-    isMouseElementItemsSection
-        ? (isCurrentItemsSectionEmpty = mouseElement.firstElementChild === null)
-        : null;
-
-    isCurrentItemsSectionEmpty
-        ? (mouseElement.style.backgroundColor = '#e3e5e8')
-        : null;
-
-    try {
-        overCurrentCard = e.target.closest('.todo-card');
-        overCurrentCardId = overCurrentCard.id;
-    } catch (err) {
-        const todoCards = Array.from(document.querySelectorAll('.todo-card'));
-        todoCards.forEach((todoCard) => {
-            todoCard.style.backgroundColor = 'white';
-        });
-        e.preventDefault();
-        e.dataTransfer.dropEffect = 'move';
-        return;
-    }
-
-    if (overCurrentCardId !== draggedCardId) {
-        overCurrentCard.style.backgroundColor = '#f4f5f7';
+    if (
+        e.target.classList.contains('items') &&
+        e.target.children.length === 0
+    ) {
+        emptyDropZone = e.target;
+        emptyDropZone.style.backgroundColor = '#e2e4e8';
     }
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDrop = (e) => {
-    e.preventDefault();
-    const todoCards = Array.from(document.querySelectorAll('.todo-card'));
-    const itemSections = Array.from(document.querySelectorAll('.items'));
-
-    todoCards.forEach((todoCard) => {
-        todoCard.style.backgroundColor = 'white';
+    dropZones.forEach((dropZone) => {
+        dropZone.style.backgroundColor = '#eaedf0';
     });
 
-    itemSections.forEach((itemSection) => {
-        itemSection.style.background = '#EAEDF0';
-    });
+    e.target.style.opacity = '';
 
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.items');
@@ -107,12 +83,33 @@ function isMouseAboveMiddle(e) {
 
 draggableCards.forEach((draggableCard) => {
     draggableCard.addEventListener('dragstart', handleDragStart);
+    draggableCard.addEventListener('dragend', handleDragEnd);
+    draggableCard.addEventListener('dragenter', handleDragEnter);
+    draggableCard.addEventListener('dragleave', handleDragleave);
 });
 
 dropZones.forEach((dropZone) => {
     dropZone.addEventListener('drop', handleDrop);
     dropZone.addEventListener('dragover', handleDragOver);
 });
+
+function handleDragEnter(e) {
+    e.target.style.opacity = '0.5';
+}
+
+function handleDragEnd(e) {
+    e.preventDefault();
+    Array.from(draggableCards).forEach((draggableCard) => {
+        Array.from(draggableCard.children).forEach((draggableCardChild) => {
+            draggableCardChild.style.pointerEvents = 'auto';
+        });
+    });
+    e.target.style.cursor = 'pointer';
+}
+
+function handleDragleave(e) {
+    e.target.style.opacity = '';
+}
 
 async function updateRank(movedId, previousId, nextId, listId) {
     const rankData = {
