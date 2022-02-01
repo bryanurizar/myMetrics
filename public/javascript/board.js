@@ -32,16 +32,16 @@ const handleDragStart = (e) => {
 
 // What happens when the element is being dragged over a drop zone
 
-let emptyDropZone;
+// let emptyDropZone;
 
 const handleDragOver = (e) => {
-    if (
-        e.target.classList.contains('items') &&
-        e.target.children.length === 0
-    ) {
-        emptyDropZone = e.target;
-        emptyDropZone.style.backgroundColor = '#e2e4e8';
-    }
+    // if (
+    //     e.target.classList.contains('items') &&
+    //     e.target.children.length === 0
+    // ) {
+    //     emptyDropZone = e.target;
+    //     emptyDropZone.style.backgroundColor = '#e2e4e8';
+    // }
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
@@ -94,6 +94,7 @@ dropZones.forEach((dropZone) => {
 });
 
 function handleDragEnter(e) {
+    console.log(e.target);
     e.target.style.opacity = '0.5';
 }
 
