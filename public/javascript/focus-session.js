@@ -145,8 +145,12 @@ function displayTimer() {
 let ticker;
 let elapsedTime = 0;
 let startTime;
+const alarmAudio = new Audio('/audio/alarm.wav');
 
 function startTimer() {
+    alarmAudio.play();
+    alarmAudio.pause();
+
     startButton.remove();
     timerHeader.innerText = 'Session Started!';
     countdownTimer.innerHTML = studySessionDuration
@@ -201,7 +205,6 @@ function decrement() {
     ticker = setTimeout(decrement, 1000);
 
     if (isSessionDurationOver) {
-        const alarmAudio = new Audio('/audio/alarm.wav');
         alarmAudio.loop = true;
         alarmAudio.play();
 
