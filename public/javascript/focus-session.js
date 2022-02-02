@@ -202,7 +202,9 @@ function decrement() {
 
     if (isSessionDurationOver) {
         const alarmAudio = new Audio('/audio/alarm.wav');
+        alarmAudio.loop = true;
         alarmAudio.play();
+
         cancelTimer();
     }
     return;
