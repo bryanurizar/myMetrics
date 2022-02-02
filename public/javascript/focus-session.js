@@ -205,7 +205,6 @@ function decrement() {
     ticker = setTimeout(decrement, 1000);
 
     if (isSessionDurationOver) {
-        alarmAudio.loop = true;
         alarmAudio.play();
 
         cancelTimer();
