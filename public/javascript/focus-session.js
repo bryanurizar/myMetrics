@@ -201,6 +201,8 @@ function decrement() {
     ticker = setTimeout(decrement, 1000);
 
     if (isSessionDurationOver) {
+        const alarmAudio = new Audio('/audio/alarm.wav');
+        alarmAudio.play();
         cancelTimer();
     }
     return;
