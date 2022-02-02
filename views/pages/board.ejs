@@ -16,9 +16,10 @@
 
         <section id="board">
             <% lists.forEach(list => { %>
-            <div class="todo-list-container">
+            <div id="<%= list.listid%>" class="todo-list-container">
                 <div class="list-header">
                     <h4
+                        id="<%= list.listid%>"
                         class="list-name"
                         ondrop="return false;"
                         contenteditable

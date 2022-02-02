@@ -16,6 +16,20 @@ export function addItemEventListeners() {
     trashIcons.forEach((trashIcon) => {
         trashIcon.addEventListener('click', handleTrashIconClick);
     });
+
+    // Add event listener to list name
+    const listNames = document.querySelectorAll('.list-name');
+    listNames.forEach((listName) => {
+        listName.addEventListener('blur', handListNameUpdate);
+        listName.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter') {
+                e.preventDefault();
+                e.target.blur();
+                handListNameUpdate(e);
+            }
+            return;
+        });
+    });
 }
 
 // Handle function for checkbox click and updating db
@@ -72,6 +86,30 @@ async function updateEditedItem(item) {
         const response = await fetch(`/items/${item.id}`, {
             method: 'PATCH',
             body: JSON.stringify(item),
+            headers: { 'Content-type': 'application/json; charset=UTF-8' },
+        });
+        await response.text();
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+export function handListNameUpdate(e) {
+    const listId = e.target.id;
+    const listName = e.target.textContent.trim();
+    updateListName(listId, listName);
+}
+
+async function updateListName(id, name) {
+    const list = {
+        id: id,
+        name: name,
+    };
+
+    try {
+        const response = await fetch(`/lists/${list.id}`, {
+            method: 'PATCH',
+            body: JSON.stringify(list),
             headers: { 'Content-type': 'application/json; charset=UTF-8' },
         });
         await response.text();

@@ -456,6 +456,21 @@ app.route('/lists/:listId')
             }
         );
     })
+    .patch(isUserAuthenticated, async (req, res) => {
+        const listId = req.body.id;
+        const listName = req.body.name;
+        const loggedInUserId = req.user.id;
+
+        pool.query(
+            'UPDATE Lists SET listName=$1 WHERE listId=$2 AND userID=$3',
+            [listName, listId, loggedInUserId],
+            (err) => {
+                if (err) throw err;
+                console.log('List name updated in database.');
+                res.send('List name updated.');
+            }
+        );
+    })
     .delete(isUserAuthenticated, async (req, res) => {
         const listId = req.body.listId;
 

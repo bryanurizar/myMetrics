@@ -341,6 +341,7 @@ function createList(listName) {
 
 function renderList(id, listName) {
     const list = document.createElement('div');
+    list.setAttribute('id', id);
     list.classList.add('todo-list-container');
 
     const header = document.createElement('div');
