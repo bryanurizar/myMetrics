@@ -239,7 +239,6 @@ async function updateTargetList(items) {
         });
         const res = await response.json();
         await postStudySession(res.studySessionId);
-        window.location.replace(`/focus-session/${res.studySessionId}`);
     } catch (err) {
         console.log(err);
     }
@@ -252,18 +251,19 @@ async function postStudySession(studySessionId) {
     const studySessionData = {
         sessionID: studySessionId,
         sessionDuration: 0,
-        isSessionPageVisited: 'No',
+        isSessionPageVisited: false,
         boardId: boardId,
     };
 
-    const response = await fetch('/focus-session', {
+    await fetch('/focus-session', {
         method: 'POST',
         headers: {
             'content-type': 'application/json',
         },
         body: JSON.stringify(studySessionData),
     });
-    return response;
+
+    window.location.replace(`/focus-session/${studySessionData.sessionID}`);
 }
 
 function handleCancelBtn(e) {

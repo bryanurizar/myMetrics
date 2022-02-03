@@ -140,7 +140,7 @@ app.route('/boards/:boardId/:boardName')
         pool.query(
             'UPDATE Items SET isOnTargetList=FALSE WHERE userID=$1 AND isOnTargetList=True',
             [loggedInUserId],
-            (err, result) => {
+            (err) => {
                 if (err) throw err;
                 console.log('Target list reset.');
             }
@@ -495,27 +495,29 @@ app.route('/lists/:listId')
     });
 
 app.route('/focus-session')
-    .post(isUserAuthenticated, (req, res) => {
+    .post(isUserAuthenticated, async (req, res) => {
+        console.log('post route executed');
         const studySessionId = req.body.sessionID;
         const sessionDuration = req.body.sessionDuration;
         let loggedInUserId;
+        const boardId = req.body.boardId;
+
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)
             : (loggedInUserId = req.user.id);
-        const boardId = req.body.boardId;
 
         pool.query(
-            'INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID, isSessionPageVisited) VALUES ($1, $2, $3, $4, false)',
+            'INSERT INTO StudySessions (sessionID, sessionDuration, userID, boardID, isSessionPageVisited) VALUES ($1, $2, $3, $4, false) RETURNING *',
             [studySessionId, sessionDuration, loggedInUserId, boardId],
             (err, result) => {
                 if (err) {
                     console.log(err);
                     throw err;
                 }
-                console.log('Study session created');
+                console.log('Focus Session Page Created');
+                res.json({ result: result.rows });
             }
         );
-        res.json({});
     })
     .patch(isUserAuthenticated, (req, res) => {
         const studySessionId = req.body.sessionId;
@@ -524,12 +526,12 @@ app.route('/focus-session')
         pool.query(
             'UPDATE StudySessions SET sessionDuration=$1 WHERE sessionId=$2',
             [sessionDuration, studySessionId],
-            (err, result) => {
+            (err) => {
                 if (err) {
                     console.log(err);
                     throw err;
                 }
-                console.log('Study session created');
+                console.log('Focus Session Created');
             }
         );
         res.json({});
@@ -537,20 +539,27 @@ app.route('/focus-session')
 
 app.route('/focus-session/:studySessionId')
     .get(isUserAuthenticated, async (req, res) => {
+        console.log('get route executed');
         const studySessionId = req.params.studySessionId;
         let loggedInUserId;
+        let isSessionPageVisited;
+
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)
             : (loggedInUserId = req.user.id);
-        const boardId = req.body.boardId;
 
         try {
-            const session = await pool.query(
+            pool.query(
                 'SELECT * FROM StudySessions WHERE sessionID=$1',
-                [studySessionId]
+                [studySessionId],
+                (err, result) => {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    }
+                    isSessionPageVisited = result.rows[0].issessionpagevisited;
+                }
             );
-
-            let isSessionPageVisited = session.rows[0].issessionpagevisited;
 
             const targetItems = await pool.query(
                 'SELECT * FROM ITEMS WHERE isOnTargetList=True AND userid=$1 ORDER BY createdAt',
@@ -566,6 +575,7 @@ app.route('/focus-session/:studySessionId')
                 'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
                 [studySessionId]
             );
+            console.log('isSessionPageVisited set to true');
             res.render('pages/focus-session', { status: status });
         } catch (err) {
             console.error(err);
