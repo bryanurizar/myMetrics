@@ -506,6 +506,6 @@ boardName.addEventListener('click', () => {
 document.addEventListener('click', (e) => {
     if (e.target.closest('.boardname-wrapper') === null) {
         dropdownContent.classList.add('hidden');
-        dropdownSVG.classList.toggle('open');
+        dropdownSVG.classList.remove('open');
     }
 });
