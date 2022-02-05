@@ -130,42 +130,53 @@ app.route('/boards').post(isUserAuthenticated, (req, res) => {
 });
 
 app.route('/boards/:boardId/:boardName')
-    .get(isUserAuthenticated, (req, res) => {
+    .get(isUserAuthenticated, async (req, res) => {
+        const currentBoardId = req.params.boardId;
+        // const currentBoardName = req.params.boardName;
         let loggedInUserId;
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)
             : (loggedInUserId = req.user.id);
-        const boardID = req.params.boardId;
+        const client = await pool.connect();
 
-        pool.query(
-            'UPDATE Items SET isOnTargetList=FALSE WHERE userID=$1 AND isOnTargetList=True',
-            [loggedInUserId],
-            (err) => {
-                if (err) throw err;
-                console.log('Target list reset.');
-            }
-        );
+        try {
+            await client.query('BEGIN');
+            await client.query(
+                'UPDATE Items SET isOnTargetList=FALSE WHERE userID=$1 AND isOnTargetList=True',
+                [loggedInUserId]
+            );
 
-        pool.query(
-            'SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt',
-            [loggedInUserId, boardID],
-            (err, lists) => {
-                if (err) throw err;
+            const boardNames = await client.query(
+                'SELECT * FROM BOARDS WHERE userID=$1 AND isBoardDeleted=False ORDER BY createdAt',
+                [loggedInUserId]
+            );
 
-                pool.query(
-                    'SELECT * FROM Items WHERE isItemCompleted=FALSE AND userID=$1 ORDER BY itemposition',
-                    [loggedInUserId],
-                    (err, items) => {
-                        if (err) throw err;
-                        res.setHeader('Cache-Control', 'no-store');
-                        res.render('pages/board', {
-                            lists: lists.rows,
-                            items: items.rows,
-                        });
-                    }
-                );
-            }
-        );
+            console.log(boardNames.rows);
+
+            const lists = await client.query(
+                'SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt',
+                [loggedInUserId, currentBoardId]
+            );
+
+            const items = await client.query(
+                'SELECT * FROM Items WHERE isItemCompleted=FALSE AND userID=$1 ORDER BY itemposition',
+                [loggedInUserId]
+            );
+
+            await client.query('COMMIT');
+            res.setHeader('Cache-Control', 'no-store');
+            res.render('pages/board', {
+                currentBoardId: currentBoardId,
+                boards: boardNames.rows,
+                lists: lists.rows,
+                items: items.rows,
+            });
+        } catch (e) {
+            await client.query('ROLLBACK');
+            throw e;
+        } finally {
+            client.release();
+        }
     })
     .patch(isUserAuthenticated, (req, res) => {
         const boardId = req.body.boardId;

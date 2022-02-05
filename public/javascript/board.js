@@ -493,3 +493,19 @@ textarea.addEventListener('input', (e) => {
 textarea.addEventListener('blur', (e) => {
     e.target.value === '' ? e.target.removeAttribute('style') : null;
 });
+
+// Add event listener to the board dropdown
+const boardName = document.querySelector('.boardname-wrapper');
+const dropdownContent = document.querySelector('.dropdown-content');
+const dropdownSVG = document.querySelector('svg');
+boardName.addEventListener('click', () => {
+    dropdownContent.classList.toggle('hidden');
+    dropdownSVG.classList.toggle('open');
+});
+
+document.addEventListener('click', (e) => {
+    if (e.target.closest('.boardname-wrapper') === null) {
+        dropdownContent.classList.add('hidden');
+        dropdownSVG.classList.toggle('open');
+    }
+});
