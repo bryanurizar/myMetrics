@@ -208,10 +208,11 @@ async function handleButtonClick() {
 }
 
 function enableTargetItemsSelection(buttonName) {
+    const targetListButtons = document.querySelector('.targetlist-buttons');
     const cancelBtn = document.createElement('button');
     cancelBtn.innerText = 'Cancel';
     cancelBtn.className = 'cancel-btn';
-    buttonName.appendChild(cancelBtn);
+    targetListButtons.appendChild(cancelBtn);
 
     cancelBtn.addEventListener('click', handleCancelBtn);
     createTargetListBtn.innerText = 'Create Focus Session';

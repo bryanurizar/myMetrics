@@ -11,7 +11,9 @@
         <%- include('../partials/header'); %>
 
         <div id="target-list">
-            <button class="btn create-list">Select Focus Items</button>
+            <div class="targetlist-buttons">
+                <button class="btn create-list">Select Focus Items</button>
+            </div>
             <div class="dropdown">
                 <div class="boardname-wrapper">
                     <h2><%= boards.find(o => o.boardid === currentBoardId).boardname %></h2>
