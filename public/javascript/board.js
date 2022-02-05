@@ -208,7 +208,7 @@ async function handleButtonClick() {
 }
 
 function enableTargetItemsSelection(buttonName) {
-    const targetListButtons = document.querySelector('.targetlist-buttons');
+    const targetListButtons = document.querySelector('.target-list-buttons');
     const cancelBtn = document.createElement('button');
     cancelBtn.innerText = 'Cancel';
     cancelBtn.className = 'cancel-btn';

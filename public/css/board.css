@@ -88,14 +88,13 @@ span {
     margin-top: 2.5rem;
     display: flex;
     align-items: center;
-    /* transition: all 0.5s; */
 }
 
-#target-list > input {
+.target-list-buttons > input {
     height: 40px;
 }
 
-#target-list > button {
+.target-list-buttons > button {
     height: 40px;
 }
 
