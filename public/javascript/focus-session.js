@@ -145,7 +145,7 @@ function displayTimer() {
 let ticker;
 let elapsedTime = 0;
 let startTime;
-const alarmAudio = new Audio('/audio/alarm.wav');
+const alarmAudio = new Audio('/audio/alarm.mp3');
 
 function startTimer() {
     alarmAudio.play();
@@ -207,6 +207,7 @@ function decrement() {
     if (isSessionDurationOver) {
         alarmAudio.play();
 
+        setTimeout(() => alarmAudio.pause(), 9800);
         cancelTimer();
     }
     return;

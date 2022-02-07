@@ -30,18 +30,7 @@ const handleDragStart = (e) => {
     e.dataTransfer.dropEffect = 'move';
 };
 
-// What happens when the element is being dragged over a drop zone
-
-// let emptyDropZone;
-
 const handleDragOver = (e) => {
-    // if (
-    //     e.target.classList.contains('items') &&
-    //     e.target.children.length === 0
-    // ) {
-    //     emptyDropZone = e.target;
-    //     emptyDropZone.style.backgroundColor = '#e2e4e8';
-    // }
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
@@ -235,9 +224,9 @@ function handleDeleteListClick(e) {
 const createTargetListBtn = document.querySelector('.create-list');
 createTargetListBtn.addEventListener('click', handleButtonClick);
 let targetItems = [];
-const todoCards = document.querySelectorAll('.todo-card');
 
 async function handleButtonClick() {
+    const todoCards = document.querySelectorAll('.todo-card');
     const targetButtonsSection = document.querySelector('#target-list');
     const buttonText = targetButtonsSection.innerText.substring(0, 18);
 
@@ -482,13 +471,14 @@ function renderList(id, listName) {
 
     list.appendChild(todosDiv);
 
-    const newListInput = document.createElement('input');
+    const newListInput = document.createElement('textarea');
     newListInput.id = id;
-    newListInput.name = 'todoDescription';
+    newListInput.name = 'itemName';
     newListInput.classList.add('add-card');
-    newListInput.type = 'text';
-    newListInput.autoComplete = 'off';
     newListInput.placeholder = 'Add new card...';
+    newListInput.onDrop = 'return false';
+    newListInput.addEventListener('input', handleTextareaInput);
+    newListInput.addEventListener('blur', handleTextareaBlur);
     newListInput.addEventListener('drop', (e) => e.preventDefault());
     list.appendChild(newListInput);
 
@@ -578,18 +568,22 @@ board.addEventListener('keypress', (e) => {
 });
 
 //TODO: Fix textarea bug
-// Dynamically increases size of add card text area as user  types
-// const textarea = document.querySelector('.add-card');
+//Dynamically increases size of add card text area as user  types and then resets size of textarea
+const textarea = document.querySelector('.add-card');
 
-// textarea.addEventListener('input', (e) => {
-//     e.target.style.height = 'auto';
-//     e.target.style.height = e.target.scrollHeight + 'px';
-// });
+if (textarea) {
+    textarea.addEventListener('input', handleTextareaInput);
+    textarea.addEventListener('blur', handleTextareaBlur);
+}
 
-// // Sets add card textarea back to the original default size on blur
-// textarea.addEventListener('blur', (e) => {
-//     e.target.value === '' ? e.target.removeAttribute('style') : null;
-// });
+function handleTextareaInput(e) {
+    e.target.style.height = 'auto';
+    e.target.style.height = e.target.scrollHeight + 'px';
+}
+
+function handleTextareaBlur(e) {
+    e.target.value === '' ? e.target.removeAttribute('style') : null;
+}
 
 // Add event listener to the board dropdown
 const boardName = document.querySelector('.boardname-wrapper');
