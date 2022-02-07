@@ -56,6 +56,7 @@
                     <div id="modal-<%=list.listid%>" class="modal">
                         <h4 id="modal-title"><span>List Actions</span></h4>
                         <div id='<%=list.listid%>' class="move-list list-modal-item">
+                            <span>Move to..</span>
                             <label for="boards"></label>
                                 <select name="boards" id="boards">
                                     <%boards.filter(board => board.boardid !== currentBoardId).forEach(board => { %>

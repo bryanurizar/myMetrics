@@ -42,8 +42,9 @@ textarea,
 }
 
 input {
-    border: 0.0625em solid #ccc;
+    border: 0.0625rem solid #ccc;
 }
+
 .page-container {
     min-height: 100vh;
     display: flex;
@@ -160,7 +161,7 @@ img {
 
 .btn {
     background-color: var(--btn-clr);
-    border-radius: 1.25rem;
+    border-radius: 0.3125rem;
     padding: 0.625rem 1.125rem;
     border: none;
     color: white;
@@ -175,7 +176,7 @@ img {
 .cancel-btn {
     background-color: white;
     margin-left: 5px;
-    border-radius: 20px;
+    border-radius: 0.3125rem;
     padding: 10px 18px;
     border-style: solid;
     border-width: 1px;

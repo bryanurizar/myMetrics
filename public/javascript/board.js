@@ -94,7 +94,6 @@ dropZones.forEach((dropZone) => {
 });
 
 function handleDragEnter(e) {
-    console.log(e.target);
     e.target.style.opacity = '0.5';
 }
 
@@ -170,9 +169,7 @@ moveListDivs.forEach((moveListDiv) => {
 });
 
 function handleMoveListClick(e) {
-    console.log(e.target);
     const nearestSelection = e.target.previousElementSibling;
-    console.log(nearestSelection);
 
     selectedBoardId === undefined
         ? (selectedBoardId =
@@ -412,7 +409,6 @@ function renderList(id, listName) {
 
     (async () => {
         const currentBoardId = window.location.href.split('/')[4];
-        console.log(currentBoardId);
         const response = await fetch('/boards');
         const boardData = await response.json();
 
@@ -457,12 +453,10 @@ function renderList(id, listName) {
         moveDiv.appendChild(moveButton);
 
         select.addEventListener('change', () => {
-            console.log('changed');
             selectedBoardId = select.options[select.selectedIndex].id;
         });
 
         moveButton.addEventListener('click', (e) => {
-            console.log('move button clicked');
             handleMoveListClick(e);
         });
 

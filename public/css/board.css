@@ -17,15 +17,23 @@
     margin-left: 0;
 }
 
-.add-list {
+/* .add-list {
     margin-top: 0;
     width: 272px;
-    border-radius: 20px;
+    border-radius: 0.3125rem;
     height: 35px;
     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
 }
+
 .add-list:focus {
     outline: none;
+} */
+
+select {
+    border-radius: 0.3rem;
+    border: 0.0625rem solid #ccc;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 12px;
 }
 
 .targeted {
@@ -63,20 +71,16 @@
 }
 
 #modal-title {
-    font-weight: 500;
+    font-weight: 600;
     text-align: center;
     margin: 12px;
-}
-
-span {
-    border-bottom: solid 1px #dfe2e7;
 }
 
 .list-modal-item {
     padding: 5px;
     color: var(--primary-font-clr);
     cursor: pointer;
-    font-weight: 500;
+    /* font-weight: 500; */
     font-family: 'Montserrat', sans-serif;
 }
 
@@ -103,9 +107,8 @@ span {
 
 .add-list {
     padding: 0 1.25rem;
-    margin: 0.325rem 0;
     border: 0.0625em solid #ccc;
-    border-radius: 20px;
+    border-radius: 0.3125rem;
     width: 11rem;
     height: 35px;
     box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
@@ -158,7 +161,7 @@ span {
 }
 
 .dropdown-content a {
-    padding: 2px;
+    padding: 10px;
 }
 
 .dropdown-content a:hover {
@@ -166,9 +169,10 @@ span {
 }
 
 .move-btn {
+    font-size: 12px;
     background-color: var(--btn-clr);
-    border-radius: 1.25rem;
-    padding: 0.3rem 0.8rem;
+    border-radius: 0.3125rem;
+    padding: 0.3rem 0.5rem;
     border: none;
     color: white;
     letter-spacing: 0.0325em;
