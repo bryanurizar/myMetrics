@@ -110,24 +110,36 @@ app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
 });
 
 // Board routes
-app.route('/boards').post(isUserAuthenticated, (req, res) => {
-    const newBoardId = nanoid();
-    const newBoardName = req.body.newBoardName;
-    let loggedInUserId;
-    req.session.guest
-        ? (loggedInUserId = req.session.guest.id)
-        : (loggedInUserId = req.user.id);
+app.route('/boards')
+    .get(isUserAuthenticated, async (req, res) => {
+        const loggedInUserId = req.user.id;
+        pool.query(
+            'SELECT boardName, boardId FROM Boards WHERE userid=$1 AND isBoardDeleted=false',
+            [loggedInUserId],
+            (err, result) => {
+                if (err) throw err;
+                res.send(result.rows);
+            }
+        );
+    })
+    .post(isUserAuthenticated, (req, res) => {
+        const newBoardId = nanoid();
+        const newBoardName = req.body.newBoardName;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
 
-    pool.query(
-        'INSERT INTO Boards (boardID, boardName, userID) VALUES($1, $2, $3)',
-        [newBoardId, newBoardName, loggedInUserId],
-        (err) => {
-            if (err) throw err;
-            console.log('New board inserted into Boards table');
-            res.json({ newBoardId: newBoardId });
-        }
-    );
-});
+        pool.query(
+            'INSERT INTO Boards (boardID, boardName, userID) VALUES($1, $2, $3)',
+            [newBoardId, newBoardName, loggedInUserId],
+            (err) => {
+                if (err) throw err;
+                console.log('New board inserted into Boards table');
+                res.json({ newBoardId: newBoardId });
+            }
+        );
+    });
 
 app.route('/boards/:boardId/:boardName')
     .get(isUserAuthenticated, async (req, res) => {

@@ -170,7 +170,9 @@ moveListDivs.forEach((moveListDiv) => {
 });
 
 function handleMoveListClick(e) {
+    console.log(e.target);
     const nearestSelection = e.target.previousElementSibling;
+    console.log(nearestSelection);
 
     selectedBoardId === undefined
         ? (selectedBoardId =
@@ -408,16 +410,74 @@ function renderList(id, listName) {
     listModal.innerText = '...';
     header.appendChild(listModal);
 
-    const modal = document.createElement('div');
-    modal.id = `modal-${id}`;
-    modal.classList.add('modal');
-    modal.innerHTML = `
-        <h4 id="modal-title"><span>List Actions</span></h4>	
-        <p id="${id}" class="move-list list-modal-item">Move List..</p>
-        <p id="${id}" class="delete-list list-modal-item">Delete This List..</p>
-        `;
+    (async () => {
+        const currentBoardId = window.location.href.split('/')[4];
+        console.log(currentBoardId);
+        const response = await fetch('/boards');
+        const boardData = await response.json();
 
-    header.appendChild(modal);
+        const modal = document.createElement('div');
+        modal.id = `modal-${id}`;
+        modal.classList.add('modal');
+        header.appendChild(modal);
+
+        const modalTitle = document.createElement('h4');
+        modalTitle.id = 'modal-title';
+        modalTitle.innerHTML = '<span>List Actions</span>';
+        modal.appendChild(modalTitle);
+
+        const moveDiv = document.createElement('div');
+        moveDiv.id = id;
+        moveDiv.classList.add('move-list');
+        moveDiv.classList.add('list-modal-item');
+        modal.appendChild(moveDiv);
+
+        const label = document.createElement('label');
+        label.htmlFor = 'board';
+        moveDiv.appendChild(label);
+
+        const select = document.createElement('select');
+        select.name = 'boards';
+        select.id = 'boards';
+        moveDiv.appendChild(select);
+
+        boardData
+            .filter((board) => board.boardid !== currentBoardId)
+            .forEach((board) => {
+                const option = document.createElement('option');
+                option.id = board.boardid;
+                option.value = board.boardname;
+                option.innerHTML = board.boardname;
+                select.appendChild(option);
+            });
+
+        const moveButton = document.createElement('button');
+        moveButton.classList.add('move-btn');
+        moveButton.innerHTML = 'Move List..';
+        moveDiv.appendChild(moveButton);
+
+        select.addEventListener('change', () => {
+            console.log('changed');
+            selectedBoardId = select.options[select.selectedIndex].id;
+        });
+
+        moveButton.addEventListener('click', (e) => {
+            console.log('move button clicked');
+            handleMoveListClick(e);
+        });
+
+        const deleteDiv = document.createElement('p');
+        deleteDiv.id = id;
+        deleteDiv.classList.add('delete-list');
+        deleteDiv.classList.add('list-modal-item');
+        deleteDiv.innerHTML = 'Delete List..';
+        modal.appendChild(deleteDiv);
+
+        const deleteList = document.querySelector(`#modal-${id}`);
+        const deleteListLink = deleteList.querySelector('p');
+
+        deleteListLink.addEventListener('click', handleDeleteListClick);
+    })();
 
     const board = document.querySelector('#board');
     board.insertAdjacentElement('beforeend', list);
@@ -446,11 +506,6 @@ function renderList(id, listName) {
 
     const modalLink = document.querySelector(`[id="${id}"]`);
     modalLink.addEventListener('click', handleModal);
-
-    const deleteList = document.querySelector(`#modal-${id}`);
-    const deleteListLink = deleteList.querySelector('p');
-
-    deleteListLink.addEventListener('click', handleDeleteListClick);
 
     // Adding event listeners for the drag and drop API
     todosDiv.addEventListener('drop', handleDrop);
