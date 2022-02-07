@@ -171,6 +171,7 @@ img {
 
 .btn:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
+    /* background-color: green; */
 }
 
 .cancel-btn {
