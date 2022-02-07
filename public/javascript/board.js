@@ -153,6 +153,51 @@ function handleModal(e) {
     }
 }
 
+//Handle move list modal
+const moveListDivs = document.querySelectorAll('.move-list > button');
+// const select = document.querySelector('#boards');
+const selections = document.querySelectorAll('select');
+let selectedBoardId;
+
+selections.forEach((selection) => {
+    selection.addEventListener('change', () => {
+        selectedBoardId = selection.options[selection.selectedIndex].id;
+    });
+});
+
+moveListDivs.forEach((moveListDiv) => {
+    moveListDiv.addEventListener('click', handleMoveListClick);
+});
+
+function handleMoveListClick(e) {
+    const nearestSelection = e.target.previousElementSibling;
+
+    selectedBoardId === undefined
+        ? (selectedBoardId =
+              nearestSelection.options[nearestSelection.selectedIndex].id)
+        : selectedBoardId;
+
+    const listId = e.target.closest('.move-list').id;
+
+    const removedList = e.target.closest('.todo-list-container');
+    moveList(listId, selectedBoardId);
+    removedList.remove();
+}
+
+async function moveList(listId, boardId) {
+    const updatedListData = {
+        movedListId: listId,
+        movedToBoardId: boardId,
+    };
+
+    const response = await fetch(`/lists/${listId}`, {
+        method: 'PATCH',
+        body: JSON.stringify(updatedListData),
+        header: { 'Content-Type': 'application/json; charset=UTF-8' },
+    });
+    return response;
+}
+
 const deleteList = document.querySelectorAll('.delete-list');
 
 deleteList.forEach((list) => {
@@ -207,7 +252,7 @@ async function handleButtonClick() {
     }
 }
 
-function enableTargetItemsSelection(buttonName) {
+function enableTargetItemsSelection() {
     const targetListButtons = document.querySelector('.target-list-buttons');
     const cancelBtn = document.createElement('button');
     cancelBtn.innerText = 'Cancel';
@@ -368,7 +413,8 @@ function renderList(id, listName) {
     modal.classList.add('modal');
     modal.innerHTML = `
         <h4 id="modal-title"><span>List Actions</span></h4>	
-        <p id="${id}" class="delete-list">Delete This List..</p>
+        <p id="${id}" class="move-list list-modal-item">Move List..</p>
+        <p id="${id}" class="delete-list list-modal-item">Delete This List..</p>
         `;
 
     header.appendChild(modal);
@@ -482,18 +528,19 @@ board.addEventListener('keypress', (e) => {
     }
 });
 
+//TODO: Fix textarea bug
 // Dynamically increases size of add card text area as user  types
-const textarea = document.querySelector('.add-card');
+// const textarea = document.querySelector('.add-card');
 
-textarea.addEventListener('input', (e) => {
-    e.target.style.height = 'auto';
-    e.target.style.height = e.target.scrollHeight + 'px';
-});
+// textarea.addEventListener('input', (e) => {
+//     e.target.style.height = 'auto';
+//     e.target.style.height = e.target.scrollHeight + 'px';
+// });
 
-// Sets add card textarea back to the original default size on blur
-textarea.addEventListener('blur', (e) => {
-    e.target.value === '' ? e.target.removeAttribute('style') : null;
-});
+// // Sets add card textarea back to the original default size on blur
+// textarea.addEventListener('blur', (e) => {
+//     e.target.value === '' ? e.target.removeAttribute('style') : null;
+// });
 
 // Add event listener to the board dropdown
 const boardName = document.querySelector('.boardname-wrapper');

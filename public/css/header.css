@@ -37,7 +37,9 @@ li:first-child {
 }
 li > a:active {
     color: var(--btn-clr);
+    background-color: #f7f7f7;
 }
+
 #nav-checkbox:checked ~ ul.nav-menu li.nav-item {
     display: block;
 }

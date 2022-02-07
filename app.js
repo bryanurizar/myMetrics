@@ -151,8 +151,6 @@ app.route('/boards/:boardId/:boardName')
                 [loggedInUserId]
             );
 
-            console.log(boardNames.rows);
-
             const lists = await client.query(
                 'SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt',
                 [loggedInUserId, currentBoardId]
@@ -468,9 +466,35 @@ app.route('/lists/:listId')
         );
     })
     .patch(isUserAuthenticated, async (req, res) => {
+        const loggedInUserId = req.user.id;
         const listId = req.body.id;
         const listName = req.body.name;
-        const loggedInUserId = req.user.id;
+        const newBoardId = req.body.movedToBoardId;
+        const movedListId = req.body.movedListId;
+
+        console.log(movedListId, newBoardId);
+
+        if (movedListId) {
+            const client = await pool.connect();
+            await client.query('BEGIN');
+            try {
+                await client.query(
+                    'UPDATE Items SET boardid=$1 WHERE listid=$2',
+                    [newBoardId, movedListId]
+                );
+                await client.query(
+                    'UPDATE Lists SET boardid=$1 WHERE listid=$2',
+                    [newBoardId, movedListId]
+                );
+                await client.query('COMMIT');
+            } catch (e) {
+                await client.query('ROLLBACK');
+                throw e;
+            } finally {
+                client.release();
+            }
+            console.log('List moved to other board');
+        }
 
         pool.query(
             'UPDATE Lists SET listName=$1 WHERE listId=$2 AND userID=$3',

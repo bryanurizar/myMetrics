@@ -32,7 +32,7 @@
                     </svg>
                 </div>
                 <div class="dropdown-content hidden">
-                    <% boards.forEach(board => { %>
+                    <% boards.filter(board => board.boardid !== currentBoardId).forEach(board => { %>
                     <a href=<%=`/boards/${board.boardid}/${board.boardname}`%> ><%=board.boardname%></a>
                     <% }) %>
                 </div>
@@ -52,10 +52,20 @@
                         <%= list.listname %>
                     </h4>
                     <h4 id="<%= list.listid%>" class="list-popup">...</h4>
+
                     <div id="modal-<%=list.listid%>" class="modal">
                         <h4 id="modal-title"><span>List Actions</span></h4>
-                        <p id="<%= list.listid%>" class="delete-list">
-                            Delete This List..
+                        <div id='<%=list.listid%>' class="move-list list-modal-item">
+                            <label for="boards"></label>
+                                <select name="boards" id="boards">
+                                    <%boards.filter(board => board.boardid !== currentBoardId).forEach(board => { %>
+                                        <option id='<%=board.boardid%>' value="<%=board.boardname%>"><%=board.boardname%></option>
+                                    <%}) %>
+                                </select>
+                            <button class="move-btn">Move List</button>
+                        </div>
+                        <p id="<%= list.listid%>" class="delete-list list-modal-item">
+                            Delete List..
                         </p>
                     </div>
                 </div>

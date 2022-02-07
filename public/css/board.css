@@ -72,12 +72,15 @@ span {
     border-bottom: solid 1px #dfe2e7;
 }
 
-.delete-list {
+.list-modal-item {
     padding: 5px;
+    color: var(--primary-font-clr);
     cursor: pointer;
+    font-weight: 500;
+    font-family: 'Montserrat', sans-serif;
 }
 
-.delete-list:hover {
+.list-modal-item:hover {
     background-color: #f7f7f7;
 }
 
@@ -162,7 +165,21 @@ span {
     background-color: #f7f7f7;
 }
 
-@media only screen and (max-width: 767px) {
+.move-btn {
+    background-color: var(--btn-clr);
+    border-radius: 1.25rem;
+    padding: 0.3rem 0.8rem;
+    border: none;
+    color: white;
+    letter-spacing: 0.0325em;
+    box-shadow: 0 0.5em 1.125em 0 rgba(0, 0, 0, 0.2);
+}
+
+.move-btn:hover {
+    background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
+}
+
+@media only screen and (max-width: 475px) {
     .dropdown {
         display: none;
     }
