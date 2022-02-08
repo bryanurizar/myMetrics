@@ -497,11 +497,11 @@ app.route('/lists/:listId')
             await client.query('BEGIN');
             try {
                 await client.query(
-                    'UPDATE Items SET boardid=$1 WHERE listid=$2',
+                    'UPDATE Items SET boardId=$1 WHERE listid=$2',
                     [newBoardId, movedListId]
                 );
                 await client.query(
-                    'UPDATE Lists SET boardid=$1 WHERE listid=$2',
+                    'UPDATE Lists SET boardId=$1 WHERE listid=$2',
                     [newBoardId, movedListId]
                 );
                 await client.query('COMMIT');
@@ -655,7 +655,7 @@ app.route('/focus-session/:studySessionId')
                 loggedInUserId,
                 boardId,
             ],
-            (err, result) => {
+            (err) => {
                 if (err) throw err;
                 console.log('User action added to study session log');
             }
