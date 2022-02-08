@@ -17,18 +17,6 @@
     margin-left: 0;
 }
 
-/* .add-list {
-    margin-top: 0;
-    width: 272px;
-    border-radius: 0.3125rem;
-    height: 35px;
-    box-shadow: 0 2px 8px 0 rgb(0 0 0 / 6%);
-}
-
-.add-list:focus {
-    outline: none;
-} */
-
 select {
     border-radius: 0.3rem;
     border: 0.0625rem solid #ccc;
@@ -80,7 +68,6 @@ select {
     padding: 5px;
     color: var(--primary-font-clr);
     cursor: pointer;
-    /* font-weight: 500; */
     font-family: 'Montserrat', sans-serif;
 }
 

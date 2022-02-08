@@ -126,6 +126,7 @@ document.addEventListener('click', handleModal);
 
 function handleModal(e) {
     if (e.target.classList.contains('list-popup')) {
+        console.log('contains list-popup class');
         const modalId = `#modal-${e.target.id}`;
         const modal = document.querySelector(modalId);
         modal.classList.add('modal-styles');
@@ -417,6 +418,10 @@ function renderList(id, listName) {
         moveDiv.classList.add('list-modal-item');
         modal.appendChild(moveDiv);
 
+        const moveSpan = document.createElement('span');
+        moveSpan.innerHTML = 'Move to.. ';
+        moveDiv.appendChild(moveSpan);
+
         const label = document.createElement('label');
         label.htmlFor = 'board';
         moveDiv.appendChild(label);
@@ -439,6 +444,7 @@ function renderList(id, listName) {
         const moveButton = document.createElement('button');
         moveButton.classList.add('move-btn');
         moveButton.innerHTML = 'Move List..';
+        moveButton.style.marginLeft = '3.5px';
         moveDiv.appendChild(moveButton);
 
         select.addEventListener('change', () => {
@@ -567,7 +573,6 @@ board.addEventListener('keypress', (e) => {
     }
 });
 
-//TODO: Fix textarea bug
 //Dynamically increases size of add card text area as user  types and then resets size of textarea
 const textarea = document.querySelector('.add-card');
 

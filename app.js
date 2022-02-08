@@ -112,7 +112,11 @@ app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
 // Board routes
 app.route('/boards')
     .get(isUserAuthenticated, async (req, res) => {
-        const loggedInUserId = req.user.id;
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
+
         pool.query(
             'SELECT boardName, boardId FROM Boards WHERE userid=$1 AND isBoardDeleted=false',
             [loggedInUserId],
@@ -125,6 +129,7 @@ app.route('/boards')
     .post(isUserAuthenticated, (req, res) => {
         const newBoardId = nanoid();
         const newBoardName = req.body.newBoardName;
+
         let loggedInUserId;
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)
@@ -144,11 +149,12 @@ app.route('/boards')
 app.route('/boards/:boardId/:boardName')
     .get(isUserAuthenticated, async (req, res) => {
         const currentBoardId = req.params.boardId;
-        // const currentBoardName = req.params.boardName;
+
         let loggedInUserId;
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)
             : (loggedInUserId = req.user.id);
+
         const client = await pool.connect();
 
         try {
@@ -196,7 +202,7 @@ app.route('/boards/:boardId/:boardName')
             pool.query(
                 'UPDATE Boards SET isBoardDeleted=True WHERE BoardID=$1',
                 [boardId],
-                (err, result) => {
+                (err) => {
                     if (err) throw err;
                     console.log('Board marked as deleted');
                 }
@@ -205,7 +211,7 @@ app.route('/boards/:boardId/:boardName')
             pool.query(
                 'UPDATE Boards SET boardName=$1 WHERE BoardID=$2',
                 [updatedBoardName, boardId],
-                (err, result) => {
+                (err) => {
                     if (err) throw err;
                     console.log('Board name updated');
                 }
@@ -443,11 +449,12 @@ async function updateRank(rankData) {
 app.route('/lists').post(isUserAuthenticated, (req, res) => {
     const listName = req.body.listName;
     const boardId = req.body.boardId;
+    const listId = nanoid();
+
     let loggedInUserId;
     req.session.guest
         ? (loggedInUserId = req.session.guest.id)
         : (loggedInUserId = req.user.id);
-    const listId = nanoid();
 
     pool.query(
         'INSERT INTO Lists (listID, listName, userID, boardId) VALUES ($1, $2, $3, $4)',
@@ -462,6 +469,7 @@ app.route('/lists').post(isUserAuthenticated, (req, res) => {
 app.route('/lists/:listId')
     .post(isUserAuthenticated, (req, res) => {
         const newList = req.body.newList;
+
         let loggedInUserId;
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)
@@ -483,8 +491,6 @@ app.route('/lists/:listId')
         const listName = req.body.name;
         const newBoardId = req.body.movedToBoardId;
         const movedListId = req.body.movedListId;
-
-        console.log(movedListId, newBoardId);
 
         if (movedListId) {
             const client = await pool.connect();
@@ -543,12 +549,11 @@ app.route('/lists/:listId')
 
 app.route('/focus-session')
     .post(isUserAuthenticated, async (req, res) => {
-        console.log('post route executed');
         const studySessionId = req.body.sessionID;
         const sessionDuration = req.body.sessionDuration;
-        let loggedInUserId;
         const boardId = req.body.boardId;
 
+        let loggedInUserId;
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)
             : (loggedInUserId = req.user.id);
@@ -586,7 +591,6 @@ app.route('/focus-session')
 
 app.route('/focus-session/:studySessionId')
     .get(isUserAuthenticated, async (req, res) => {
-        console.log('get route executed');
         const studySessionId = req.params.studySessionId;
         let loggedInUserId;
         let isSessionPageVisited;
@@ -622,7 +626,6 @@ app.route('/focus-session/:studySessionId')
                 'UPDATE StudySessions SET isSessionPageVisited=TRUE  WHERE sessionID=$1',
                 [studySessionId]
             );
-            console.log('isSessionPageVisited set to true');
             res.render('pages/focus-session', { status: status });
         } catch (err) {
             console.error(err);
@@ -637,6 +640,7 @@ app.route('/focus-session/:studySessionId')
         const boardId = req.body.boardId;
         const sessionId = req.params.studySessionId;
         const userAction = req.body.userAction;
+
         let loggedInUserId;
         req.session.guest
             ? (loggedInUserId = req.session.guest.id)

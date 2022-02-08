@@ -8,7 +8,6 @@ html {
     background-color: var(--bg-clr);
     font-family: 'Montserrat', sans-serif;
     font-size: 1em;
-    /* font-weight: 600; */
     min-width: 360px;
     box-sizing: border-box;
 }
@@ -171,7 +170,6 @@ img {
 
 .btn:hover {
     background-image: linear-gradient(rgba(0, 0, 0, 0.2) 0 0);
-    /* background-color: green; */
 }
 
 .cancel-btn {

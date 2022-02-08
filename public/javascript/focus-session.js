@@ -158,7 +158,6 @@ function startTimer() {
         .toFormat('hh:mm:ss');
     startTime = new Date().getTime();
     decrement();
-    // ticker = setInterval(decrement, 1000);
 }
 
 function pauseOrResumeTimer(e) {
