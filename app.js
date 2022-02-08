@@ -23,6 +23,7 @@ app.use(
         type: ['application/json', 'text/plain'],
     })
 );
+
 app.use(cors());
 
 app.use(
