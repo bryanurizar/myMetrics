@@ -124,47 +124,6 @@ app.route('/dashboard')
         res.end();
     });
 
-// function newUpdateRank(data) {
-//     if (data.draggedBoardRank < data.dropBoardRank) {
-//         pool.query(
-//             'UPDATE boards SET boardposition = boardposition - 1 WHERE boardposition <= $1',
-//             [data.dropBoardRank],
-//             (err) => {
-//                 if (err) throw err;
-//             }
-//         );
-
-//         pool.query(
-//             'UPDATE boards SET boardposition=$1 WHERE boardId=$2',
-//             [data.dropBoardRank, data.draggedBoardId],
-//             (err) => {
-//                 if (err) throw err;
-//             }
-//         );
-//         console.log('< done');
-//         return;
-//     }
-
-//     if (data.draggedBoardRank > data.dropBoardRank) {
-//         pool.query(
-//             'UPDATE boards SET boardposition = boardposition + 1 WHERE boardposition >= $1',
-//             [data.dropBoardRank],
-//             (err) => {
-//                 if (err) throw err;
-//             }
-//         );
-//         pool.query(
-//             'UPDATE boards SET boardposition=$1 WHERE boardId=$2',
-//             [data.dropBoardRank, data.draggedBoardId],
-//             (err) => {
-//                 if (err) throw err;
-//             }
-//         );
-//         console.log('> done');
-//         return;
-//     }
-// }
-
 // Board routes
 app.route('/boards')
     .get(isUserAuthenticated, async (req, res) => {

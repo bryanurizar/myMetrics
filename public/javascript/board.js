@@ -402,6 +402,8 @@ function renderList(id, listName) {
         const response = await fetch('/boards');
         const boardData = await response.json();
 
+        console.log(boardData);
+
         const modal = document.createElement('div');
         modal.id = `modal-${id}`;
         modal.classList.add('modal');
