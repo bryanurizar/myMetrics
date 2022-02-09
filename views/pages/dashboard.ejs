@@ -27,7 +27,12 @@
 
             <div id="boards">
                 <% results.forEach(result => {%>
-                <div class="board-card">
+                <div
+                    id="<%=result.boardid%>"
+                    class="board-card drop"
+                    draggable="true"
+                    data-rank="<%=result.boardposition%>"
+                >
                     <div class="dashboard-flaticons">
                         <img class="flaticons edit" src="img/edit.svg" />
                         <img class="flaticons trash" src="img/trash.svg" />

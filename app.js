@@ -90,25 +90,80 @@ app.route('/logout').get((req, res) => {
 });
 
 // Dashboard route
-app.route('/dashboard').get(isUserAuthenticated, (req, res) => {
-    let loggedInUserId;
-    req.session.guest
-        ? (loggedInUserId = req.session.guest.id)
-        : (loggedInUserId = req.user.id);
+app.route('/dashboard')
+    .get(isUserAuthenticated, (req, res) => {
+        let loggedInUserId;
+        req.session.guest
+            ? (loggedInUserId = req.session.guest.id)
+            : (loggedInUserId = req.user.id);
 
-    pool.query(
-        'SELECT boardID, boardName FROM Boards WHERE userID=$1 AND isBoardDeleted=FALSE ORDER BY createdAt',
-        [loggedInUserId],
-        (err, results) => {
-            if (err) throw err;
-            res.setHeader('Cache-Control', 'no-store');
-            res.render('pages/dashboard', {
-                user: req.session.guest || req.user,
-                results: results.rows,
-            });
-        }
-    );
-});
+        pool.query(
+            'SELECT boardID, boardName, boardposition FROM Boards WHERE userID=$1 AND isBoardDeleted=FALSE ORDER BY boardposition',
+            [loggedInUserId],
+            (err, results) => {
+                if (err) throw err;
+                res.setHeader('Cache-Control', 'no-store');
+                res.render('pages/dashboard', {
+                    user: req.session.guest || req.user,
+                    results: results.rows,
+                });
+            }
+        );
+    })
+    .patch(isUserAuthenticated, (req, res) => {
+        const boardData = req.body;
+        boardData.forEach((board) => {
+            pool.query(
+                'UPDATE Boards SET boardposition=$1 WHERE boardId=$2',
+                [board.boardRank, board.boardId],
+                (err) => {
+                    if (err) throw err;
+                }
+            );
+        });
+        res.end();
+    });
+
+// function newUpdateRank(data) {
+//     if (data.draggedBoardRank < data.dropBoardRank) {
+//         pool.query(
+//             'UPDATE boards SET boardposition = boardposition - 1 WHERE boardposition <= $1',
+//             [data.dropBoardRank],
+//             (err) => {
+//                 if (err) throw err;
+//             }
+//         );
+
+//         pool.query(
+//             'UPDATE boards SET boardposition=$1 WHERE boardId=$2',
+//             [data.dropBoardRank, data.draggedBoardId],
+//             (err) => {
+//                 if (err) throw err;
+//             }
+//         );
+//         console.log('< done');
+//         return;
+//     }
+
+//     if (data.draggedBoardRank > data.dropBoardRank) {
+//         pool.query(
+//             'UPDATE boards SET boardposition = boardposition + 1 WHERE boardposition >= $1',
+//             [data.dropBoardRank],
+//             (err) => {
+//                 if (err) throw err;
+//             }
+//         );
+//         pool.query(
+//             'UPDATE boards SET boardposition=$1 WHERE boardId=$2',
+//             [data.dropBoardRank, data.draggedBoardId],
+//             (err) => {
+//                 if (err) throw err;
+//             }
+//         );
+//         console.log('> done');
+//         return;
+//     }
+// }
 
 // Board routes
 app.route('/boards')
