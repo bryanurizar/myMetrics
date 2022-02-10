@@ -41,9 +41,9 @@ async function createBoard(boardName) {
     document.querySelector('.create-board').value = '';
     renderNewBoard(boardName, res.newBoardId);
 
-    document.addEventListener('dragenter', handleDragEnter);
-    document.addEventListener('dragleave', handleDragLeave);
-    document.addEventListener('dragend', handleDragEnd);
+    // document.addEventListener('dragenter', handleDragEnter);
+    // document.addEventListener('dragleave', handleDragLeave);
+    // document.addEventListener('dragend', handleDragEnd);
 }
 
 // async function updateRankOfNewBoard(id, rank) {
@@ -67,10 +67,9 @@ function renderNewBoard(boardName, boardId) {
     const newBoardName = document.createElement('div');
     newBoardName.className = 'board-name';
     newBoardName.id = boardId;
-
-    const boardDiv = document.createElement('div');
-    boardDiv.innerText = boardName;
-    newBoardName.appendChild(boardDiv);
+    newBoardName.innerText = boardName;
+    boardCard.appendChild(newBoardName);
+    newBoardName.addEventListener('click', handleBoardNavigation);
 
     const editTrashDiv = document.createElement('div');
     editTrashDiv.className = 'dashboard-flaticons';
