@@ -144,6 +144,7 @@ app.route('/boards')
     .post(isUserAuthenticated, (req, res) => {
         const newBoardId = nanoid();
         const newBoardName = req.body.newBoardName;
+        const newBoardRank = req.body.newBoardRank;
 
         let loggedInUserId;
         req.session.guest
@@ -151,8 +152,8 @@ app.route('/boards')
             : (loggedInUserId = req.user.id);
 
         pool.query(
-            'INSERT INTO Boards (boardID, boardName, userID) VALUES($1, $2, $3)',
-            [newBoardId, newBoardName, loggedInUserId],
+            'INSERT INTO Boards (boardID, boardName, boardPosition, userID) VALUES($1, $2, $3, $4)',
+            [newBoardId, newBoardName, newBoardRank, loggedInUserId],
             (err) => {
                 if (err) throw err;
                 console.log('New board inserted into Boards table');

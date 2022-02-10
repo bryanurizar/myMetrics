@@ -18,6 +18,8 @@ createBoardInput.addEventListener('keypress', (e) => {
 const boardSection = document.querySelector('#boards');
 
 async function createBoard(boardName) {
+    const newBoardRank = Number(boardSection.lastElementChild.dataset.rank) + 1;
+
     if (boardName === '') {
         alert('Please enter a valid board name');
         return;
@@ -25,6 +27,7 @@ async function createBoard(boardName) {
 
     const data = {
         newBoardName: boardName,
+        newBoardRank: newBoardRank,
     };
 
     const response = await fetch('/boards', {
@@ -37,20 +40,34 @@ async function createBoard(boardName) {
     const res = await response.json();
     document.querySelector('.create-board').value = '';
     renderNewBoard(boardName, res.newBoardId);
+
+    document.addEventListener('dragenter', handleDragEnter);
+    document.addEventListener('dragleave', handleDragLeave);
+    document.addEventListener('dragend', handleDragEnd);
 }
 
+// async function updateRankOfNewBoard(id, rank) {
+//     const response = await fetch(`/boards/${boardId}`, {
+//         method: "PATCH",
+
+//     });
+// }
+
 function renderNewBoard(boardName, boardId) {
+    const lastBoardCardRank =
+        document.querySelector('#boards').lastElementChild.dataset.rank;
+
     const boardCard = document.createElement('div');
     boardCard.id = boardId;
     boardCard.classList.add('board-card');
     boardCard.classList.add('drop');
     boardCard.draggable = true;
+    boardCard.dataset.rank = Number(lastBoardCardRank) + 1;
 
-    const newBoardName = document.createElement('a');
+    const newBoardName = document.createElement('div');
     newBoardName.className = 'board-name';
-    newBoardName.href = `/boards/${boardId}/${encodeURI(
-        decodeURI(boardName.toLowerCase()).replace(/ /g, '-')
-    )}`;
+    newBoardName.id = boardId;
+
     const boardDiv = document.createElement('div');
     boardDiv.innerText = boardName;
     newBoardName.appendChild(boardDiv);
@@ -175,11 +192,12 @@ async function editBoard(id, name) {
 
 // Drag and Drop implementation for boards
 let draggedBoardCard;
-const dropBoards = document.querySelectorAll('.drop');
+let dropBoards = document.querySelectorAll('.drop');
 
-document.addEventListener('dragstart', (e) => {
+function handleDragStart(e) {
     draggedBoardCard = e.target;
     draggedBoardCard.opacity = '0.5';
+    console.log(dropBoards);
 
     Array.from(dropBoards).forEach((dropBoard) => {
         Array.from(dropBoard.children).forEach((dropBoardChild) => {
@@ -188,30 +206,31 @@ document.addEventListener('dragstart', (e) => {
     });
 
     e.dataTransfer.effectAllowed = 'move';
-});
+}
 
-document.addEventListener('dragenter', (e) => {
+function handleDragEnter(e) {
     if (e.target.closest('.drop')) {
         e.target.closest('.drop').style.border = '1px dashed';
     }
-});
+}
 
-document.addEventListener('dragleave', (e) => {
+function handleDragLeave(e) {
     if (e.target.closest('.drop')) {
         e.target.closest('.drop').style.border = '';
     }
-});
+}
 
-document.addEventListener('dragend', () => {
+function handleDragEnd() {
+    // dropBoards = document.querySelectorAll('.drop');
     Array.from(dropBoards).forEach((dropBoard) => {
         Array.from(dropBoard.children).forEach((dropBoardChild) => {
             dropBoardChild.style.pointerEvents = 'auto';
         });
     });
     draggedBoardCard.style.opacity = '';
-});
+}
 
-document.addEventListener('drop', (e) => {
+function handleDragDrop(e) {
     e.preventDefault();
     e.target.style.border = '';
 
@@ -239,11 +258,17 @@ document.addEventListener('drop', (e) => {
     (async () => {
         await patchRank(updateRank(boardRankData));
     })();
-});
-
-document.addEventListener('dragover', (e) => {
+}
+function handleDragOver(e) {
     e.preventDefault();
-});
+}
+
+document.addEventListener('dragstart', handleDragStart);
+document.addEventListener('dragenter', handleDragEnter);
+document.addEventListener('dragleave', handleDragLeave);
+document.addEventListener('dragend', handleDragEnd);
+document.addEventListener('drop', handleDragDrop);
+document.addEventListener('dragover', handleDragOver);
 
 async function patchRank(data) {
     await fetch('/dashboard', {
