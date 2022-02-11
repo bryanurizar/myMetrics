@@ -20,6 +20,8 @@
         "pausecount",
         "studysessionlogs",
         "studysessions",
+        "touchenter",
+        "touchleave",
         "userid",
         "userimage"
     ]

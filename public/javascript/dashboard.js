@@ -40,18 +40,7 @@ async function createBoard(boardName) {
     const res = await response.json();
     document.querySelector('.create-board').value = '';
     renderNewBoard(boardName, res.newBoardId);
-
-    // document.addEventListener('dragenter', handleDragEnter);
-    // document.addEventListener('dragleave', handleDragLeave);
-    // document.addEventListener('dragend', handleDragEnd);
 }
-
-// async function updateRankOfNewBoard(id, rank) {
-//     const response = await fetch(`/boards/${boardId}`, {
-//         method: "PATCH",
-
-//     });
-// }
 
 function renderNewBoard(boardName, boardId) {
     const lastBoardCardRank =
@@ -193,10 +182,9 @@ async function editBoard(id, name) {
 let draggedBoardCard;
 let dropBoards = document.querySelectorAll('.drop');
 
-function handleDragStart(e) {
+function handleStart(e) {
     draggedBoardCard = e.target;
     draggedBoardCard.opacity = '0.5';
-    console.log(dropBoards);
 
     Array.from(dropBoards).forEach((dropBoard) => {
         Array.from(dropBoard.children).forEach((dropBoardChild) => {
@@ -207,19 +195,18 @@ function handleDragStart(e) {
     e.dataTransfer.effectAllowed = 'move';
 }
 
-function handleDragEnter(e) {
+function handleEnter(e) {
     if (e.target.closest('.drop')) {
         e.target.closest('.drop').style.border = '1px dashed';
     }
 }
-
-function handleDragLeave(e) {
+function handleLeave(e) {
     if (e.target.closest('.drop')) {
         e.target.closest('.drop').style.border = '';
     }
 }
 
-function handleDragEnd() {
+function handleEnd() {
     // dropBoards = document.querySelectorAll('.drop');
     Array.from(dropBoards).forEach((dropBoard) => {
         Array.from(dropBoard.children).forEach((dropBoardChild) => {
@@ -229,7 +216,7 @@ function handleDragEnd() {
     draggedBoardCard.style.opacity = '';
 }
 
-function handleDragDrop(e) {
+function handleDrop(e) {
     e.preventDefault();
     e.target.style.border = '';
 
@@ -258,16 +245,16 @@ function handleDragDrop(e) {
         await patchRank(updateRank(boardRankData));
     })();
 }
-function handleDragOver(e) {
+function handleOver(e) {
     e.preventDefault();
 }
 
-document.addEventListener('dragstart', handleDragStart);
-document.addEventListener('dragenter', handleDragEnter);
-document.addEventListener('dragleave', handleDragLeave);
-document.addEventListener('dragend', handleDragEnd);
-document.addEventListener('drop', handleDragDrop);
-document.addEventListener('dragover', handleDragOver);
+document.addEventListener('dragstart', handleStart);
+document.addEventListener('dragenter', handleEnter);
+document.addEventListener('dragleave', handleLeave);
+document.addEventListener('dragend', handleEnd);
+document.addEventListener('drop', handleDrop);
+document.addEventListener('dragover', handleOver);
 
 async function patchRank(data) {
     await fetch('/dashboard', {
