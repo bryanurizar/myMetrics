@@ -145,7 +145,7 @@ function displayTimer() {
 let ticker;
 let elapsedTime = 0;
 let startTime;
-const alarmAudio = new Audio('/audio/alarm.mp3');
+const alarmAudio = new Audio('/audio/alarm.wav');
 
 function startTimer() {
     alarmAudio.play();
