@@ -590,18 +590,36 @@ app.route('/focus-session')
     .patch(isUserAuthenticated, (req, res) => {
         const studySessionId = req.body.sessionId;
         const sessionDuration = 3600 * req.body.hours + 60 * req.body.minutes;
+        const sessionDurationExtension =
+            3600 * req.body.extendHours + 60 * req.body.extendMinutes;
 
-        pool.query(
-            'UPDATE StudySessions SET sessionDuration=$1 WHERE sessionId=$2',
-            [sessionDuration, studySessionId],
-            (err) => {
-                if (err) {
-                    console.log(err);
-                    throw err;
+        if (sessionDurationExtension) {
+            pool.query(
+                'UPDATE StudySessions SET sessionDuration=sessionDuration+$1 WHERE sessionId=$2',
+                [sessionDurationExtension, studySessionId],
+                (err) => {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    }
                 }
-                console.log('Focus Session Created');
-            }
-        );
+            );
+        }
+
+        if (sessionDuration) {
+            pool.query(
+                'UPDATE StudySessions SET sessionDuration=$1 WHERE sessionId=$2',
+                [sessionDuration, studySessionId],
+                (err) => {
+                    if (err) {
+                        console.log(err);
+                        throw err;
+                    }
+                    console.log('Focus Session Created');
+                }
+            );
+        }
+
         res.json({});
     });
 

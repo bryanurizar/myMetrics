@@ -87,22 +87,35 @@ countdownTimer.id = 'countdown-timer';
 
 // Adds the event listener to the start button
 startButton.addEventListener('click', displayTimer);
-document.addEventListener('keydown', (e) => {
-    if (e.key === 'Enter') displayTimer();
-});
+document.addEventListener('keydown', isEnter);
 
+function isEnter(e) {
+    if (e.key === 'Enter') {
+        displayTimer();
+    }
+}
+
+let ticker;
+let elapsedTime = 0;
+let startTime;
+const alarmAudio = new Audio('/audio/alarm.wav');
 let studySessionDuration;
 
-function displayTimer() {
-    const areInputsNumbers =
-        isNumeric(hoursInput.value) && isNumeric(minutesInput.value);
+function areInputsNumbers(hours, minutes) {
+    const areInputsNumbers = isNumeric(hours.value) && isNumeric(minutes.value);
+
     if (!areInputsNumbers) {
         alert('Inputs are not numbers. Please try again');
-        return;
+        return false;
     }
-
     timerInputs.remove();
+    return true;
+}
 
+function displayTimer() {
+    if (!areInputsNumbers(hoursInput, minutesInput)) return;
+
+    document.removeEventListener('keydown', isEnter);
     // Captures user input and includes board ID / study session ID
     const sessionData = {
         sessionId: sessionId,
@@ -146,7 +159,12 @@ function displayTimer() {
     extendButton.className = 'btn';
     extendButton.innerText = 'Extend Session';
     extendDiv.appendChild(extendButton);
-    extendButton.addEventListener('click', extendTimer);
+
+    const extendModal = document.querySelector('.extend-timer');
+
+    extendButton.addEventListener('click', () => {
+        extendModal.classList.toggle('hidden');
+    });
 
     // Starts the timer
     startTimer();
@@ -156,12 +174,17 @@ function displayTimer() {
     postStudySessionLog('Start', studySessionDuration);
 }
 
-// Timer logic (i.e. pause, resume, cancel logic)
-let ticker;
-let elapsedTime = 0;
-let startTime;
-const alarmAudio = new Audio('/audio/alarm.wav');
+document.addEventListener('click', (e) => {
+    if (
+        (e.target.closest('.extend-timer') === null &&
+            !e.target.closest('#extend-timer')) ||
+        e.target.closest('.cancel-btn')
+    ) {
+        extendModal.classList.add('hidden');
+    }
+});
 
+// Timer logic (i.e. pause, resume, cancel logic)
 function startTimer() {
     alarmAudio.play();
     alarmAudio.pause();
@@ -208,15 +231,32 @@ function cancelTimer() {
 }
 
 // Additional time functionality
-function extendTimer() {
-    const extendDiv = document.querySelector('.extend-timer');
-    extendDiv.style.visibility = 'visible';
 
-    //TODO
-    //[] Add extend time button
-    //[] Create modal/dropdown to allow input
-    //[] On enter/click, should add the additional time to the focus session and adjust the studySessionDuration variable
-    //[] Should adjust the innerHTML as well so its displayed
+const extendButton = document.querySelector('.extend-button > button');
+extendButton.addEventListener('click', extendTimer);
+const extendModal = document.querySelector('.extend-timer');
+
+function extendTimer() {
+    const hoursInput = document.querySelector('#hours');
+    const minutesInput = document.querySelector('#minutes');
+
+    if (!areInputsNumbers(hoursInput, minutesInput)) return;
+
+    const sessionData = {
+        sessionId: sessionId,
+        extendHours: Number(hoursInput.value),
+        extendMinutes: Number(minutesInput.value),
+    };
+
+    updateStudySession(sessionData);
+
+    studySessionDuration = studySessionDuration.minus(elapsedTime).plus({
+        hours: Number(hoursInput.value),
+        minutes: Number(minutesInput.value),
+    });
+    countdownTimer.innerHTML = studySessionDuration.toFormat('hh:mm:ss');
+    extendModal.classList.toggle('hidden');
+    startTime = new Date().getTime() - 1000;
 }
 
 function decrement() {
