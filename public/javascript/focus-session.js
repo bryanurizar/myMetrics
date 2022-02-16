@@ -105,7 +105,16 @@ function areInputsNumbers(hours, minutes) {
     const areInputsNumbers = isNumeric(hours.value) && isNumeric(minutes.value);
 
     if (!areInputsNumbers) {
-        alert('Inputs are not numbers. Please try again');
+        alert('Inputs need to be positive values. Please try again');
+        return false;
+    }
+
+    if (
+        Number(hours.value) < 0 ||
+        Number(minutes.value) < 0 ||
+        (Number(hours.value) === 0 && Number(minutes.value) === 0)
+    ) {
+        alert('Inputs need to be positive values. Please try again');
         return false;
     }
     timerInputs.remove();
