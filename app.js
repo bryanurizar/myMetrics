@@ -589,9 +589,12 @@ app.route('/focus-session')
     })
     .patch(isUserAuthenticated, (req, res) => {
         const studySessionId = req.body.sessionId;
-        const sessionDuration = 3600 * req.body.hours + 60 * req.body.minutes;
-        const sessionDurationExtension =
-            3600 * req.body.extendHours + 60 * req.body.extendMinutes;
+        const sessionDuration = Math.round(
+            3600 * req.body.hours + 60 * req.body.minutes
+        );
+        const sessionDurationExtension = Math.round(
+            3600 * req.body.extendHours + 60 * req.body.extendMinutes
+        );
 
         if (sessionDurationExtension) {
             pool.query(

@@ -58,6 +58,7 @@ const hoursInput = document.createElement('input');
 hoursInput.placeholder = 'HH';
 hoursInput.autocomplete = 'off';
 hoursInput.id = 'hours';
+hoursInput.inputMode = 'numeric';
 
 const timerSeparator = document.createElement('div');
 timerSeparator.className = 'separator';
@@ -67,6 +68,7 @@ const minutesInput = document.createElement('input');
 minutesInput.placeholder = 'MM';
 minutesInput.autocomplete = 'off';
 minutesInput.id = 'minutes';
+minutesInput.inputMode = 'numeric';
 
 const timerButtons = document.createElement('div');
 studySection.appendChild(timerButtons);
@@ -80,6 +82,8 @@ timerInputs.appendChild(hoursInput);
 timerInputs.appendChild(timerSeparator);
 timerInputs.appendChild(minutesInput);
 timerButtons.appendChild(startButton);
+hoursInput.focus();
+hoursInput.select();
 
 // Creates div where the countdown timer will be displayed
 const countdownTimer = document.createElement('div');
@@ -173,6 +177,9 @@ function displayTimer() {
 
     extendButton.addEventListener('click', () => {
         extendModal.classList.toggle('hidden');
+        const hoursInput = document.querySelector('#hours');
+        hoursInput.focus();
+        hoursInput.select();
     });
 
     // Starts the timer
@@ -182,6 +189,15 @@ function displayTimer() {
     updateStudySession(sessionData);
     postStudySessionLog('Start', studySessionDuration);
 }
+
+document.addEventListener('keydown', (e) => {
+    const isExtendModalHidden = document
+        .querySelector('.extend-timer')
+        .classList.contains('hidden');
+    if (!isExtendModalHidden) {
+        if (e.key === 'Enter') extendTimer();
+    }
+});
 
 document.addEventListener('click', (e) => {
     if (
@@ -250,6 +266,7 @@ function extendTimer() {
     const minutesInput = document.querySelector('#minutes');
 
     if (!areInputsNumbers(hoursInput, minutesInput)) return;
+    extendModal.className = 'extend-timer hidden';
 
     const sessionData = {
         sessionId: sessionId,
@@ -264,8 +281,9 @@ function extendTimer() {
         minutes: Number(minutesInput.value),
     });
     countdownTimer.innerHTML = studySessionDuration.toFormat('hh:mm:ss');
-    extendModal.classList.toggle('hidden');
     startTime = new Date().getTime() - 1000;
+    hoursInput.value = '';
+    minutesInput.value = '';
 }
 
 function decrement() {
