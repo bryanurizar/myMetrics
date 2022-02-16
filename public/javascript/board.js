@@ -607,3 +607,21 @@ document.addEventListener('click', (e) => {
         dropdownSVG.classList.remove('open');
     }
 });
+
+// Drag and Drop for Lists
+const draggableLists = document.querySelectorAll('.todo-list-container');
+draggableLists.forEach((draggableList) => {
+    draggableList.addEventListener('dragstart', handleListDrag, true);
+});
+
+function handleListDrag(e) {
+    console.log('list drag');
+    removeTodoCardDropZone();
+    e.dataTransfer.setData('text/plain', e.target.id);
+}
+
+function removeTodoCardDropZone() {
+    dropZones.forEach((dropZone) => {
+        dropZone.removeEventListener('drop', handleDrop);
+    });
+}

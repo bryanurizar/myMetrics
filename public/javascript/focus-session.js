@@ -73,7 +73,7 @@ studySection.appendChild(timerButtons);
 timerButtons.classList.add('timer-btns');
 
 const startButton = document.createElement('button');
-startButton.innerText = 'Start Timer';
+startButton.innerText = 'Start';
 startButton.className = 'btn';
 
 timerInputs.appendChild(hoursInput);
@@ -87,6 +87,10 @@ countdownTimer.id = 'countdown-timer';
 
 // Adds the event listener to the start button
 startButton.addEventListener('click', displayTimer);
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') displayTimer();
+});
+
 let studySessionDuration;
 
 function displayTimer() {
@@ -132,6 +136,17 @@ function displayTimer() {
     cancelButton.innerText = 'End';
     timerButtons.appendChild(cancelButton);
     cancelButton.addEventListener('click', cancelTimer);
+
+    const extendDiv = document.createElement('div');
+    extendDiv.id = 'extend-timer';
+    studySection.appendChild(extendDiv);
+
+    const extendButton = document.createElement('button');
+    extendButton.id = 'extend-btn';
+    extendButton.className = 'btn';
+    extendButton.innerText = 'Extend Session';
+    extendDiv.appendChild(extendButton);
+    extendButton.addEventListener('click', extendTimer);
 
     // Starts the timer
     startTimer();
@@ -190,6 +205,18 @@ function cancelTimer() {
         <div id="session-ended">
             <h2>Your Focus Session Has Ended.</h2>
         </div>`;
+}
+
+// Additional time functionality
+function extendTimer() {
+    const extendDiv = document.querySelector('.extend-timer');
+    extendDiv.style.visibility = 'visible';
+
+    //TODO
+    //[] Add extend time button
+    //[] Create modal/dropdown to allow input
+    //[] On enter/click, should add the additional time to the focus session and adjust the studySessionDuration variable
+    //[] Should adjust the innerHTML as well so its displayed
 }
 
 function decrement() {

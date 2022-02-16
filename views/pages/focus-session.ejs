@@ -16,7 +16,31 @@
             </div>
             <%} else { %>
             <div id="study-container">
-                <div id="study-timer"></div>
+                <div id="study-timer">
+                    <div class="extend-timer hidden">
+                        <p>Extend By..</p>
+                        <div class="timerInputs">
+                            <input
+                                type="text"
+                                placeholder="HH"
+                                autocomplete="off"
+                                id="hours"
+                            />
+                            <div class="separator">
+                                <p>:</p>
+                            </div>
+                            <input
+                                type="text"
+                                placeholder="MM"
+                                autocompleted="off"
+                                id="minutes"
+                            />
+                        </div>
+                        <div class="extend-button">
+                            <button class="btn">Extend</button>
+                        </div>
+                    </div>
+                </div>
                 <div id="study-list">
                     <div class="todo-list-container">
                         <div class="list-header">
