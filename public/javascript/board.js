@@ -29,21 +29,25 @@ const handleDragStart = (e) => {
 
     e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
+    e.target.style.opacity = '0.5';
 };
 
 const handleDragOver = (e) => {
+    if (e.dataTransfer.types.length !== 1) return;
     e.stopPropagation();
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDrop = (e) => {
+    if (e.dataTransfer.types.length !== 1) return;
     e.stopPropagation();
     dropZones.forEach((dropZone) => {
         dropZone.style.backgroundColor = '#eaedf0';
     });
 
     e.target.style.opacity = '';
+    e.target.style.border = '';
 
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.items');
@@ -86,12 +90,15 @@ dropZones.forEach((dropZone) => {
 });
 
 function handleDragEnter(e) {
-    console.log('card: drag enter');
+    if (e.dataTransfer.types.length !== 1) return;
     e.stopPropagation();
+    console.log('card dragenter', e.dataTransfer.types);
     e.target.style.opacity = '0.5';
+    e.target.style.border = '1px dashed';
 }
 
 function handleDragEnd(e) {
+    if (e.dataTransfer.types.length !== 1) return;
     e.stopPropagation();
     e.preventDefault();
     Array.from(draggableCards).forEach((draggableCard) => {
@@ -103,8 +110,10 @@ function handleDragEnd(e) {
 }
 
 function handleDragleave(e) {
+    if (e.dataTransfer.types.length !== 1) return;
     e.stopPropagation();
     e.target.style.opacity = '';
+    e.target.style.border = '';
 }
 
 async function updateRank(movedId, previousId, nextId, listId) {
@@ -649,8 +658,6 @@ Array.from(draggables).forEach((draggable) => {
 });
 
 function handleListDragStart(e) {
-    // if (e.target.id.includes('card')) return;
-
     Array.from(draggables).forEach((draggable) => {
         Array.from(draggable.children).forEach((draggableChild) => {
             draggableChild.style.pointerEvents = 'none';
@@ -691,7 +698,6 @@ function handleListDragEnd(e) {
 function handleListDragEnter(e) {
     if (e.dataTransfer.types.length === 1) return;
     if (e.target.closest('.todo-list-container')) {
-        console.log('executed');
         e.target.closest('.todo-list-container').style.border = '1px dashed';
     }
 }
