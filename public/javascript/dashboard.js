@@ -18,7 +18,8 @@ createBoardInput.addEventListener('keypress', (e) => {
 const boardSection = document.querySelector('#boards');
 
 async function createBoard(boardName) {
-    const newBoardRank = Number(boardSection.lastElementChild.dataset.rank) + 1;
+    const newBoardRank =
+        Number(boardSection.lastElementChild?.dataset.rank) + 1 || 1;
 
     if (boardName === '') {
         alert('Please enter a valid board name');
@@ -44,7 +45,7 @@ async function createBoard(boardName) {
 
 function renderNewBoard(boardName, boardId) {
     const lastBoardCardRank =
-        document.querySelector('#boards').lastElementChild.dataset.rank;
+        document.querySelector('#boards').lastElementChild?.dataset.rank || 0;
 
     const boardCard = document.createElement('div');
     boardCard.id = boardId;
@@ -184,7 +185,7 @@ let dropBoards = document.querySelectorAll('.drop');
 
 function handleStart(e) {
     draggedBoardCard = e.target;
-    draggedBoardCard.opacity = '0.5';
+    draggedBoardCard.style.opacity = '0.5';
 
     Array.from(dropBoards).forEach((dropBoard) => {
         Array.from(dropBoard.children).forEach((dropBoardChild) => {
@@ -245,6 +246,7 @@ function handleDrop(e) {
         await patchRank(updateRank(boardRankData));
     })();
 }
+
 function handleOver(e) {
     e.preventDefault();
 }

@@ -141,6 +141,19 @@ app.route('/boards')
             }
         );
     })
+    .patch(isUserAuthenticated, (req, res) => {
+        const listData = req.body;
+        listData.forEach((list) => {
+            pool.query(
+                'UPDATE Lists SET listposition=$1 WHERE listId=$2',
+                [list.listRank, list.listId],
+                (err) => {
+                    if (err) throw err;
+                }
+            );
+        });
+        res.end();
+    })
     .post(isUserAuthenticated, (req, res) => {
         const newBoardId = nanoid();
         const newBoardName = req.body.newBoardName;
@@ -181,12 +194,12 @@ app.route('/boards/:boardId/:boardName')
             );
 
             const boardNames = await client.query(
-                'SELECT * FROM BOARDS WHERE userID=$1 AND isBoardDeleted=False ORDER BY createdAt',
+                'SELECT * FROM BOARDS WHERE userID=$1 AND isBoardDeleted=False ORDER BY boardName',
                 [loggedInUserId]
             );
 
             const lists = await client.query(
-                'SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt',
+                'SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY listPosition',
                 [loggedInUserId, currentBoardId]
             );
 
@@ -465,6 +478,7 @@ async function updateRank(rankData) {
 app.route('/lists').post(isUserAuthenticated, (req, res) => {
     const listName = req.body.listName;
     const boardId = req.body.boardId;
+    const listRank = req.body.listRank;
     const listId = nanoid();
 
     let loggedInUserId;
@@ -473,8 +487,8 @@ app.route('/lists').post(isUserAuthenticated, (req, res) => {
         : (loggedInUserId = req.user.id);
 
     pool.query(
-        'INSERT INTO Lists (listID, listName, userID, boardId) VALUES ($1, $2, $3, $4)',
-        [listId, listName, loggedInUserId, boardId],
+        'INSERT INTO Lists (listID, listName, listposition, userID, boardId) VALUES ($1, $2, $3, $4, $5)',
+        [listId, listName, listRank, loggedInUserId, boardId],
         (err) => {
             if (err) throw err;
             res.json({ listId: listId });
@@ -512,13 +526,19 @@ app.route('/lists/:listId')
             const client = await pool.connect();
             await client.query('BEGIN');
             try {
+                let lastListPosition = await client.query(
+                    'SELECT listposition FROM Lists ORDER BY listposition DESC LIMIT 1'
+                );
+
+                lastListPosition = lastListPosition.rows[0].listposition;
+
                 await client.query(
                     'UPDATE Items SET boardId=$1 WHERE listid=$2',
                     [newBoardId, movedListId]
                 );
                 await client.query(
-                    'UPDATE Lists SET boardId=$1 WHERE listid=$2',
-                    [newBoardId, movedListId]
+                    'UPDATE Lists SET boardId=$1, listposition=$2 WHERE listid=$3',
+                    [newBoardId, lastListPosition + 1, movedListId]
                 );
                 await client.query('COMMIT');
             } catch (e) {

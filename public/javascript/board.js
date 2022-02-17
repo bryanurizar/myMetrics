@@ -12,14 +12,16 @@ addItemEventListeners();
 
 /*
  ***
- *** Drag and Drop API Implementation
+ *** Drag and Drop API Implementation for Cards
  ***
  */
 
-const draggableCards = document.querySelectorAll('.todo-card');
+let draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.items');
 
 const handleDragStart = (e) => {
+    e.stopPropagation();
+    draggableCards = document.querySelectorAll('.todo-card');
     Array.from(draggableCards).forEach((draggableCard) => {
         Array.from(draggableCard.children).forEach((draggableCardChild) => {
             draggableCardChild.style.pointerEvents = 'none';
@@ -28,19 +30,25 @@ const handleDragStart = (e) => {
 
     e.dataTransfer.setData('text/plain', e.target.id);
     e.dataTransfer.dropEffect = 'move';
+    e.target.style.opacity = '0.5';
 };
 
 const handleDragOver = (e) => {
+    if (e.dataTransfer.types.length !== 1) return;
+    e.stopPropagation();
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDrop = (e) => {
+    if (e.dataTransfer.types.length !== 1) return;
+    e.stopPropagation();
     dropZones.forEach((dropZone) => {
         dropZone.style.backgroundColor = '#eaedf0';
     });
 
     e.target.style.opacity = '';
+    e.target.style.border = '';
 
     const cardId = e.dataTransfer.getData('text/plain');
     const dropNode = e.target.closest('.items');
@@ -83,10 +91,15 @@ dropZones.forEach((dropZone) => {
 });
 
 function handleDragEnter(e) {
+    if (e.dataTransfer.types.length !== 1) return;
+    e.stopPropagation();
     e.target.style.opacity = '0.5';
+    e.target.style.border = '1px dashed';
 }
 
 function handleDragEnd(e) {
+    if (e.dataTransfer.types.length !== 1) return;
+    e.stopPropagation();
     e.preventDefault();
     Array.from(draggableCards).forEach((draggableCard) => {
         Array.from(draggableCard.children).forEach((draggableCardChild) => {
@@ -97,7 +110,10 @@ function handleDragEnd(e) {
 }
 
 function handleDragleave(e) {
+    if (e.dataTransfer.types.length !== 1) return;
+    e.stopPropagation();
     e.target.style.opacity = '';
+    e.target.style.border = '';
 }
 
 async function updateRank(movedId, previousId, nextId, listId) {
@@ -126,7 +142,6 @@ document.addEventListener('click', handleModal);
 
 function handleModal(e) {
     if (e.target.classList.contains('list-popup')) {
-        console.log('contains list-popup class');
         const modalId = `#modal-${e.target.id}`;
         const modal = document.querySelector(modalId);
         modal.classList.add('modal-styles');
@@ -352,11 +367,17 @@ newListInput.addEventListener('keypress', (e) => {
 
 function createList(listName) {
     const url = new URL(window.location.href);
+    const newListRank =
+        Number(
+            document.querySelector('.todo-list-container:nth-last-child(2)')
+                ?.dataset.rank
+        ) + 1 || 1;
     const boardId = url.pathname.split('/')[2];
 
     const newList = {
-        listName: listName,
         boardId: boardId,
+        listName: listName,
+        listRank: newListRank,
     };
 
     (async () => {
@@ -375,9 +396,24 @@ function createList(listName) {
 }
 
 function renderList(id, listName) {
+    const lastListRank =
+        Number(
+            document.querySelector('.todo-list-container:nth-last-child(2)')
+                ?.dataset.rank
+        ) || 0;
+
     const list = document.createElement('div');
     list.setAttribute('id', id);
     list.classList.add('todo-list-container');
+    list.draggable = 'true';
+    list.dataset.rank = Number(lastListRank) + 1;
+
+    list.addEventListener('dragstart', handleListDragStart);
+    list.addEventListener('drop', handleListDrop);
+    list.addEventListener('dragover', handleListDragOver);
+    list.addEventListener('dragenter', handleListDragEnter);
+    list.addEventListener('dragleave', handleListDragLeave);
+    list.addEventListener('dragend', handleListDragEnd);
 
     const header = document.createElement('div');
     header.classList.add('list-header');
@@ -401,8 +437,6 @@ function renderList(id, listName) {
         const currentBoardId = window.location.href.split('/')[4];
         const response = await fetch('/boards');
         const boardData = await response.json();
-
-        console.log(boardData);
 
         const modal = document.createElement('div');
         modal.id = `modal-${id}`;
@@ -550,6 +584,11 @@ function renderCard(listId, cardId, cardContent) {
 
     // Adding event listener for the drag and drop API
     todoCard.addEventListener('dragstart', handleDragStart);
+    todoCard.addEventListener('dragenter', handleDragEnter);
+    todoCard.addEventListener('dragleave', handleDragleave);
+    todoCard.addEventListener('dragover', handleDragOver);
+    todoCard.addEventListener('drop', handleDrop);
+    todoCard.addEventListener('dragend', handleDragEnd);
 
     // Adding event listeners to checkbox, edit and trash icons on new element
     const itemCheckbox = todoCard.querySelector('input[type="checkbox"]');
@@ -608,20 +647,152 @@ document.addEventListener('click', (e) => {
     }
 });
 
-// Drag and Drop for Lists
-const draggableLists = document.querySelectorAll('.todo-list-container');
-draggableLists.forEach((draggableList) => {
-    draggableList.addEventListener('dragstart', handleListDrag, true);
+/*
+ ***
+ *** Drag and Drop for Lists
+ ***
+ */
+
+// Sets the draggables as the lists
+let draggables = document.querySelectorAll('.todo-list-container');
+
+// Add dragstart event listener to the lists above
+Array.from(draggables).forEach((draggable) => {
+    draggable.addEventListener('dragstart', handleListDragStart);
 });
 
-function handleListDrag(e) {
-    console.log('list drag');
-    removeTodoCardDropZone();
+function handleListDragStart(e) {
+    draggables = document.querySelectorAll('.todo-list-container');
+    Array.from(draggables).forEach((draggable) => {
+        Array.from(draggable.children).forEach((draggableChild) => {
+            draggableChild.style.pointerEvents = 'none';
+        });
+    });
+
     e.dataTransfer.setData('text/plain', e.target.id);
+    e.dataTransfer.setData('listdrag', 'listdrag');
+    e.dataTransfer.dropEffect = 'move';
+    e.target.style.opacity = '0.5';
 }
 
-function removeTodoCardDropZone() {
-    dropZones.forEach((dropZone) => {
-        dropZone.removeEventListener('drop', handleDrop);
+// Adds the drop event to the lists so that they are valid drop targets
+// Adds the dragover event which fires whenever a draggables enters a valid drop target
+
+Array.from(draggables).forEach((draggable) => {
+    draggable.addEventListener('drop', handleListDrop);
+    draggable.addEventListener('dragover', handleListDragOver);
+    draggable.addEventListener('dragenter', handleListDragEnter);
+    draggable.addEventListener('dragleave', handleListDragLeave);
+    draggable.addEventListener('dragend', handleListDragEnd);
+});
+
+function handleListDragEnd(e) {
+    Array.from(draggables).forEach((draggable) => {
+        Array.from(draggable.children).forEach((draggableChild) => {
+            draggableChild.style.pointerEvents = 'auto';
+        });
     });
+    e.target.style.opacity = '';
+    e.target.closest('.todo-list-container').style.border = '';
+}
+
+function handleListDragEnter(e) {
+    if (e.dataTransfer.types.length === 1) return;
+    if (e.target.closest('.todo-list-container')) {
+        e.target.closest('.todo-list-container').style.border = '1px dashed';
+    }
+}
+
+function handleListDragLeave(e) {
+    if (e.dataTransfer.types.length === 1) return;
+    if (e.target.closest('.todo-list-container')) {
+        e.target.closest('.todo-list-container').style.border = '';
+    }
+}
+
+function handleListDrop(e) {
+    e.preventDefault(); // prevents default browser behaviour
+    e.target.closest('.todo-list-container').style.border = '';
+    const draggedListId = e.dataTransfer.getData('text/plain');
+    const draggedList = document.getElementById(draggedListId);
+    const draggedListRank = draggedList.dataset.rank;
+
+    const dropZoneList = e.target.closest('.todo-list-container');
+    const dropZoneListRank = dropZoneList.dataset.rank;
+
+    if (draggedListRank < dropZoneListRank) {
+        draggedList.parentNode.removeChild(draggedList);
+        dropZoneList.insertAdjacentElement('afterend', draggedList);
+    }
+
+    if (draggedListRank > dropZoneListRank) {
+        draggedList.parentNode.removeChild(draggedList);
+        dropZoneList.insertAdjacentElement('beforebegin', draggedList);
+    }
+
+    const listRankData = {
+        draggedListId: draggedListId,
+        draggedListRank: draggedListRank,
+        dropZoneListId: dropZoneList.id,
+        dropZoneListRank: dropZoneListRank,
+    };
+
+    (async () => {
+        await patchRank(updateListRank(listRankData));
+    })();
+}
+
+function handleListDragOver(e) {
+    e.preventDefault(); // prevents default browser behavior
+    e.dataTransfer.dropEffect = 'move';
+}
+
+async function patchRank(data) {
+    await fetch('/boards', {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+}
+
+function updateListRank(data) {
+    const lists = Array.from(document.querySelectorAll('.todo-list-container'));
+
+    if (data.draggedListRank < data.dropZoneListRank) {
+        lists.map((list) => {
+            if (list.dataset.rank <= data.dropZoneListRank) {
+                list.dataset.rank = list.dataset.rank - 1;
+            }
+
+            if (list.id === data.draggedListId) {
+                list.dataset.rank = data.dropZoneListRank;
+            }
+        });
+    }
+
+    if (data.draggedListRank > data.dropZoneListRank) {
+        lists.map((list) => {
+            if (list.dataset.rank >= data.dropZoneListRank) {
+                list.dataset.rank = Number(list.dataset.rank) + 1;
+            }
+            if (list.id === data.draggedListId) {
+                list.dataset.rank = data.dropZoneListRank;
+            }
+        });
+    }
+
+    const updatedLists = Array.from(
+        document.querySelectorAll('.todo-list-container')
+    );
+
+    const listRankData = updatedLists.map((updatedList) => {
+        return {
+            listId: updatedList.id,
+            listRank: updatedList.dataset.rank,
+        };
+    });
+
+    return listRankData;
 }
