@@ -16,11 +16,12 @@ addItemEventListeners();
  ***
  */
 
-const draggableCards = document.querySelectorAll('.todo-card');
+let draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.items');
 
 const handleDragStart = (e) => {
     e.stopPropagation();
+    draggableCards = document.querySelectorAll('.todo-card');
     Array.from(draggableCards).forEach((draggableCard) => {
         Array.from(draggableCard.children).forEach((draggableCardChild) => {
             draggableCardChild.style.pointerEvents = 'none';
@@ -92,7 +93,6 @@ dropZones.forEach((dropZone) => {
 function handleDragEnter(e) {
     if (e.dataTransfer.types.length !== 1) return;
     e.stopPropagation();
-    console.log('card dragenter', e.dataTransfer.types);
     e.target.style.opacity = '0.5';
     e.target.style.border = '1px dashed';
 }
@@ -142,7 +142,6 @@ document.addEventListener('click', handleModal);
 
 function handleModal(e) {
     if (e.target.classList.contains('list-popup')) {
-        console.log('contains list-popup class');
         const modalId = `#modal-${e.target.id}`;
         const modal = document.querySelector(modalId);
         modal.classList.add('modal-styles');
@@ -585,6 +584,11 @@ function renderCard(listId, cardId, cardContent) {
 
     // Adding event listener for the drag and drop API
     todoCard.addEventListener('dragstart', handleDragStart);
+    todoCard.addEventListener('dragenter', handleDragEnter);
+    todoCard.addEventListener('dragleave', handleDragleave);
+    todoCard.addEventListener('dragover', handleDragOver);
+    todoCard.addEventListener('drop', handleDrop);
+    todoCard.addEventListener('dragend', handleDragEnd);
 
     // Adding event listeners to checkbox, edit and trash icons on new element
     const itemCheckbox = todoCard.querySelector('input[type="checkbox"]');
@@ -650,7 +654,7 @@ document.addEventListener('click', (e) => {
  */
 
 // Sets the draggables as the lists
-const draggables = document.querySelectorAll('.todo-list-container');
+let draggables = document.querySelectorAll('.todo-list-container');
 
 // Add dragstart event listener to the lists above
 Array.from(draggables).forEach((draggable) => {
@@ -658,6 +662,7 @@ Array.from(draggables).forEach((draggable) => {
 });
 
 function handleListDragStart(e) {
+    draggables = document.querySelectorAll('.todo-list-container');
     Array.from(draggables).forEach((draggable) => {
         Array.from(draggable.children).forEach((draggableChild) => {
             draggableChild.style.pointerEvents = 'none';
@@ -668,10 +673,6 @@ function handleListDragStart(e) {
     e.dataTransfer.setData('listdrag', 'listdrag');
     e.dataTransfer.dropEffect = 'move';
     e.target.style.opacity = '0.5';
-    console.log(
-        'list drag start executed',
-        e.dataTransfer.getData('text/plain')
-    );
 }
 
 // Adds the drop event to the lists so that they are valid drop targets
