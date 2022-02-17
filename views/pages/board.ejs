@@ -41,7 +41,7 @@
 
         <section id="board">
             <% lists.forEach(list => { %>
-            <div id="<%= list.listid%>" class="todo-list-container">
+            <div id="<%= list.listid%>" class="todo-list-container" draggable="true" data-rank="<%=list.listposition%>">
                 <div class="list-header">
                     <h4
                         id="<%= list.listid%>"

@@ -184,7 +184,7 @@ let dropBoards = document.querySelectorAll('.drop');
 
 function handleStart(e) {
     draggedBoardCard = e.target;
-    draggedBoardCard.opacity = '0.5';
+    draggedBoardCard.style.opacity = '0.5';
 
     Array.from(dropBoards).forEach((dropBoard) => {
         Array.from(dropBoard.children).forEach((dropBoardChild) => {
@@ -245,6 +245,7 @@ function handleDrop(e) {
         await patchRank(updateRank(boardRankData));
     })();
 }
+
 function handleOver(e) {
     e.preventDefault();
 }

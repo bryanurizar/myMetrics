@@ -12,7 +12,7 @@ addItemEventListeners();
 
 /*
  ***
- *** Drag and Drop API Implementation
+ *** Drag and Drop API Implementation for Cards
  ***
  */
 
@@ -375,9 +375,18 @@ function createList(listName) {
 }
 
 function renderList(id, listName) {
+    const lastListRank =
+        document.querySelector('#board').lastElementChild.dataset.rank;
+
     const list = document.createElement('div');
     list.setAttribute('id', id);
     list.classList.add('todo-list-container');
+    list.draggable = 'true';
+    list.dataset.rank = Number(lastListRank) + 1;
+
+    list.addEventListener('dragstart', handleListDragStart);
+    list.addEventListener('drop', handleListDrop);
+    list.addEventListener('dragover', handleListDragOver);
 
     const header = document.createElement('div');
     header.classList.add('list-header');
@@ -401,8 +410,6 @@ function renderList(id, listName) {
         const currentBoardId = window.location.href.split('/')[4];
         const response = await fetch('/boards');
         const boardData = await response.json();
-
-        console.log(boardData);
 
         const modal = document.createElement('div');
         modal.id = `modal-${id}`;
@@ -607,3 +614,152 @@ document.addEventListener('click', (e) => {
         dropdownSVG.classList.remove('open');
     }
 });
+
+/*
+ ***
+ *** Drag and Drop for Lists
+ ***
+ */
+
+// Sets the draggables as the lists
+const draggables = document.querySelectorAll('.todo-list-container');
+
+// Add dragstart event listener to the lists above
+Array.from(draggables).forEach((draggable) => {
+    draggable.addEventListener('dragstart', handleListDragStart);
+});
+
+function handleListDragStart(e) {
+    if (e.target.id.includes('card')) return;
+
+    Array.from(draggables).forEach((draggable) => {
+        Array.from(draggable.children).forEach((draggableChild) => {
+            draggableChild.style.pointerEvents = 'none';
+        });
+    });
+
+    e.dataTransfer.setData('text/plain', e.target.id);
+    e.dataTransfer.dropEffect = 'move';
+    e.target.style.opacity = '0.5';
+}
+
+// Adds the drop event to the lists so that they are valid drop targets
+// Adds the dragover event which fires whenever a draggables enters a valid drop target
+
+Array.from(draggables).forEach((draggable) => {
+    draggable.addEventListener('drop', handleListDrop);
+    draggable.addEventListener('dragover', handleListDragOver);
+    draggable.addEventListener('dragenter', handleListDragEnter);
+    draggable.addEventListener('dragleave', handleListDragLeave);
+    draggable.addEventListener('dragend', handleListDragEnd);
+});
+
+function handleListDragEnd(e) {
+    Array.from(draggables).forEach((draggable) => {
+        Array.from(draggable.children).forEach((draggableChild) => {
+            draggableChild.style.pointerEvents = 'auto';
+        });
+    });
+    e.target.style.opacity = '';
+    e.target.closest('.todo-list-container').style.border = '';
+}
+
+function handleListDragEnter(e) {
+    if (e.target.closest('.todo-list-container')) {
+        e.target.closest('.todo-list-container').style.border = '1px dashed';
+    }
+}
+
+function handleListDragLeave(e) {
+    if (e.target.closest('.todo-list-container')) {
+        e.target.closest('.todo-list-container').style.border = '';
+    }
+}
+
+function handleListDrop(e) {
+    console.log('dropped');
+    e.preventDefault(); // prevents default browser behaviour
+    e.target.closest('.todo-list-container').style.border = '';
+    const draggedListId = e.dataTransfer.getData('text/plain');
+    const draggedList = document.getElementById(draggedListId);
+    const draggedListRank = draggedList.dataset.rank;
+
+    const dropZoneList = e.target.closest('.todo-list-container');
+    const dropZoneListRank = dropZoneList.dataset.rank;
+
+    if (draggedListRank < dropZoneListRank) {
+        draggedList.parentNode.removeChild(draggedList);
+        dropZoneList.insertAdjacentElement('afterend', draggedList);
+    }
+
+    if (draggedListRank > dropZoneListRank) {
+        draggedList.parentNode.removeChild(draggedList);
+        dropZoneList.insertAdjacentElement('beforebegin', draggedList);
+    }
+
+    const listRankData = {
+        draggedListId: draggedListId,
+        draggedListRank: draggedListRank,
+        dropZoneListId: dropZoneList.id,
+        dropZoneListRank: dropZoneListRank,
+    };
+
+    (async () => {
+        await patchRank(updateListRank(listRankData));
+    })();
+}
+
+function handleListDragOver(e) {
+    e.preventDefault(); // prevents default browser behavior
+    e.dataTransfer.dropEffect = 'move';
+}
+
+async function patchRank(data) {
+    await fetch('/boards', {
+        method: 'PATCH',
+        headers: {
+            'content-type': 'application/json',
+        },
+        body: JSON.stringify(data),
+    });
+}
+
+function updateListRank(data) {
+    const lists = Array.from(document.querySelectorAll('.todo-list-container'));
+
+    if (data.draggedListRank < data.dropZoneListRank) {
+        lists.map((list) => {
+            if (list.dataset.rank <= data.dropZoneListRank) {
+                list.dataset.rank = list.dataset.rank - 1;
+            }
+
+            if (list.id === data.draggedListId) {
+                list.dataset.rank = data.dropZoneListRank;
+            }
+        });
+    }
+
+    if (data.draggedListRank > data.dropZoneListRank) {
+        lists.map((list) => {
+            if (list.dataset.rank >= data.dropZoneListRank) {
+                list.dataset.rank = Number(list.dataset.rank) + 1;
+            }
+            if (list.id === data.draggedListId) {
+                list.dataset.rank = data.dropZoneListRank;
+            }
+        });
+    }
+
+    const updatedLists = Array.from(
+        document.querySelectorAll('.todo-list-container')
+    );
+
+    const listRankData = updatedLists.map((updatedList) => {
+        return {
+            listId: updatedList.id,
+            listRank: updatedList.dataset.rank,
+        };
+    });
+
+    return listRankData;
+}

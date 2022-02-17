@@ -141,6 +141,19 @@ app.route('/boards')
             }
         );
     })
+    .patch(isUserAuthenticated, (req, res) => {
+        const listData = req.body;
+        listData.forEach((list) => {
+            pool.query(
+                'UPDATE Lists SET listposition=$1 WHERE listId=$2',
+                [list.listRank, list.listId],
+                (err) => {
+                    if (err) throw err;
+                }
+            );
+        });
+        res.end();
+    })
     .post(isUserAuthenticated, (req, res) => {
         const newBoardId = nanoid();
         const newBoardName = req.body.newBoardName;
@@ -181,12 +194,12 @@ app.route('/boards/:boardId/:boardName')
             );
 
             const boardNames = await client.query(
-                'SELECT * FROM BOARDS WHERE userID=$1 AND isBoardDeleted=False ORDER BY createdAt',
+                'SELECT * FROM BOARDS WHERE userID=$1 AND isBoardDeleted=False ORDER BY boardName',
                 [loggedInUserId]
             );
 
             const lists = await client.query(
-                'SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY createdAt',
+                'SELECT * FROM Lists WHERE userID=$1 AND boardID=$2 ORDER BY listPosition',
                 [loggedInUserId, currentBoardId]
             );
 
