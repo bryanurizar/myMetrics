@@ -526,13 +526,19 @@ app.route('/lists/:listId')
             const client = await pool.connect();
             await client.query('BEGIN');
             try {
+                let lastListPosition = await client.query(
+                    'SELECT listposition FROM Lists ORDER BY listposition DESC LIMIT 1'
+                );
+
+                lastListPosition = lastListPosition.rows[0].listposition;
+
                 await client.query(
                     'UPDATE Items SET boardId=$1 WHERE listid=$2',
                     [newBoardId, movedListId]
                 );
                 await client.query(
-                    'UPDATE Lists SET boardId=$1 WHERE listid=$2',
-                    [newBoardId, movedListId]
+                    'UPDATE Lists SET boardId=$1, listposition=$2 WHERE listid=$3',
+                    [newBoardId, lastListPosition + 1, movedListId]
                 );
                 await client.query('COMMIT');
             } catch (e) {
