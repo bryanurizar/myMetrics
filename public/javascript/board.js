@@ -382,18 +382,22 @@ function createList(listName) {
 }
 
 function renderList(id, listName) {
-    const lastListRank =
-        document.querySelector('#board').lastElementChild.dataset.rank;
+    const lastListRank = document.querySelector(
+        '.todo-list-container:nth-last-child(2)'
+    ).dataset.rank;
 
     const list = document.createElement('div');
     list.setAttribute('id', id);
     list.classList.add('todo-list-container');
     list.draggable = 'true';
-    list.dataset.rank = Number(lastListRank) + 1;
+    list.dataset.rank = 1 || Number(lastListRank) + 1;
 
     list.addEventListener('dragstart', handleListDragStart);
     list.addEventListener('drop', handleListDrop);
     list.addEventListener('dragover', handleListDragOver);
+    list.addEventListener('dragenter', handleListDragEnter);
+    list.addEventListener('dragleave', handleListDragLeave);
+    list.addEventListener('dragend', handleListDragEnd);
 
     const header = document.createElement('div');
     header.classList.add('list-header');

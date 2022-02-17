@@ -18,7 +18,8 @@ createBoardInput.addEventListener('keypress', (e) => {
 const boardSection = document.querySelector('#boards');
 
 async function createBoard(boardName) {
-    const newBoardRank = Number(boardSection.lastElementChild.dataset.rank) + 1;
+    const newBoardRank =
+        Number(boardSection.lastElementChild?.dataset.rank) + 1 || 0;
 
     if (boardName === '') {
         alert('Please enter a valid board name');
@@ -44,7 +45,7 @@ async function createBoard(boardName) {
 
 function renderNewBoard(boardName, boardId) {
     const lastBoardCardRank =
-        document.querySelector('#boards').lastElementChild.dataset.rank;
+        document.querySelector('#boards').lastElementChild?.dataset.rank || 0;
 
     const boardCard = document.createElement('div');
     boardCard.id = boardId;
