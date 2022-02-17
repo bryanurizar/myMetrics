@@ -19,7 +19,7 @@ const boardSection = document.querySelector('#boards');
 
 async function createBoard(boardName) {
     const newBoardRank =
-        Number(boardSection.lastElementChild?.dataset.rank) + 1 || 0;
+        Number(boardSection.lastElementChild?.dataset.rank) + 1 || 1;
 
     if (boardName === '') {
         alert('Please enter a valid board name');

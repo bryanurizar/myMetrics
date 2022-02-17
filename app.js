@@ -478,6 +478,7 @@ async function updateRank(rankData) {
 app.route('/lists').post(isUserAuthenticated, (req, res) => {
     const listName = req.body.listName;
     const boardId = req.body.boardId;
+    const listRank = req.body.listRank;
     const listId = nanoid();
 
     let loggedInUserId;
@@ -486,8 +487,8 @@ app.route('/lists').post(isUserAuthenticated, (req, res) => {
         : (loggedInUserId = req.user.id);
 
     pool.query(
-        'INSERT INTO Lists (listID, listName, userID, boardId) VALUES ($1, $2, $3, $4)',
-        [listId, listName, loggedInUserId, boardId],
+        'INSERT INTO Lists (listID, listName, listposition, userID, boardId) VALUES ($1, $2, $3, $4, $5)',
+        [listId, listName, listRank, loggedInUserId, boardId],
         (err) => {
             if (err) throw err;
             res.json({ listId: listId });

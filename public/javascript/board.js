@@ -359,11 +359,17 @@ newListInput.addEventListener('keypress', (e) => {
 
 function createList(listName) {
     const url = new URL(window.location.href);
+    const newListRank =
+        Number(
+            document.querySelector('.todo-list-container:nth-last-child(2)')
+                ?.dataset.rank
+        ) + 1 || 1;
     const boardId = url.pathname.split('/')[2];
 
     const newList = {
-        listName: listName,
         boardId: boardId,
+        listName: listName,
+        listRank: newListRank,
     };
 
     (async () => {
@@ -382,15 +388,17 @@ function createList(listName) {
 }
 
 function renderList(id, listName) {
-    const lastListRank = document.querySelector(
-        '.todo-list-container:nth-last-child(2)'
-    ).dataset.rank;
+    const lastListRank =
+        Number(
+            document.querySelector('.todo-list-container:nth-last-child(2)')
+                ?.dataset.rank
+        ) || 0;
 
     const list = document.createElement('div');
     list.setAttribute('id', id);
     list.classList.add('todo-list-container');
     list.draggable = 'true';
-    list.dataset.rank = 1 || Number(lastListRank) + 1;
+    list.dataset.rank = Number(lastListRank) + 1;
 
     list.addEventListener('dragstart', handleListDragStart);
     list.addEventListener('drop', handleListDrop);
