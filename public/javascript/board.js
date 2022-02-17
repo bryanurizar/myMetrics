@@ -20,6 +20,7 @@ const draggableCards = document.querySelectorAll('.todo-card');
 const dropZones = document.querySelectorAll('.items');
 
 const handleDragStart = (e) => {
+    e.stopPropagation();
     Array.from(draggableCards).forEach((draggableCard) => {
         Array.from(draggableCard.children).forEach((draggableCardChild) => {
             draggableCardChild.style.pointerEvents = 'none';
@@ -31,11 +32,13 @@ const handleDragStart = (e) => {
 };
 
 const handleDragOver = (e) => {
+    e.stopPropagation();
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
 };
 
 const handleDrop = (e) => {
+    e.stopPropagation();
     dropZones.forEach((dropZone) => {
         dropZone.style.backgroundColor = '#eaedf0';
     });
@@ -83,10 +86,13 @@ dropZones.forEach((dropZone) => {
 });
 
 function handleDragEnter(e) {
+    console.log('card: drag enter');
+    e.stopPropagation();
     e.target.style.opacity = '0.5';
 }
 
 function handleDragEnd(e) {
+    e.stopPropagation();
     e.preventDefault();
     Array.from(draggableCards).forEach((draggableCard) => {
         Array.from(draggableCard.children).forEach((draggableCardChild) => {
@@ -97,6 +103,7 @@ function handleDragEnd(e) {
 }
 
 function handleDragleave(e) {
+    e.stopPropagation();
     e.target.style.opacity = '';
 }
 
@@ -630,7 +637,7 @@ Array.from(draggables).forEach((draggable) => {
 });
 
 function handleListDragStart(e) {
-    if (e.target.id.includes('card')) return;
+    // if (e.target.id.includes('card')) return;
 
     Array.from(draggables).forEach((draggable) => {
         Array.from(draggable.children).forEach((draggableChild) => {
@@ -639,8 +646,13 @@ function handleListDragStart(e) {
     });
 
     e.dataTransfer.setData('text/plain', e.target.id);
+    e.dataTransfer.setData('listdrag', 'listdrag');
     e.dataTransfer.dropEffect = 'move';
     e.target.style.opacity = '0.5';
+    console.log(
+        'list drag start executed',
+        e.dataTransfer.getData('text/plain')
+    );
 }
 
 // Adds the drop event to the lists so that they are valid drop targets
@@ -665,19 +677,21 @@ function handleListDragEnd(e) {
 }
 
 function handleListDragEnter(e) {
+    if (e.dataTransfer.types.length === 1) return;
     if (e.target.closest('.todo-list-container')) {
+        console.log('executed');
         e.target.closest('.todo-list-container').style.border = '1px dashed';
     }
 }
 
 function handleListDragLeave(e) {
+    if (e.dataTransfer.types.length === 1) return;
     if (e.target.closest('.todo-list-container')) {
         e.target.closest('.todo-list-container').style.border = '';
     }
 }
 
 function handleListDrop(e) {
-    console.log('dropped');
     e.preventDefault(); // prevents default browser behaviour
     e.target.closest('.todo-list-container').style.border = '';
     const draggedListId = e.dataTransfer.getData('text/plain');
