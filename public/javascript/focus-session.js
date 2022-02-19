@@ -103,6 +103,7 @@ let ticker;
 let elapsedTime = 0;
 let startTime;
 const alarmAudio = new Audio('/audio/alarm.wav');
+const clockAudio = new Audio('/audio/clock.wav');
 let studySessionDuration;
 
 function areInputsNumbers(hours, minutes) {
@@ -213,6 +214,8 @@ document.addEventListener('click', (e) => {
 function startTimer() {
     alarmAudio.play();
     alarmAudio.pause();
+    clockAudio.play();
+    clockAudio.pause();
 
     startButton.remove();
     timerHeader.innerText = 'Session Started!';
@@ -295,9 +298,19 @@ function decrement() {
 
     let isSessionDurationOver =
         Number(studySessionDuration.minus(elapsedTime).toFormat('s')) < 0;
+
+    let isThirtySecondsLeft =
+        Number(studySessionDuration.minus(elapsedTime).toFormat('s')) <= 30;
     ticker = setTimeout(decrement, 1000);
 
+    if (isThirtySecondsLeft) {
+        clockAudio.play();
+
+        setTimeout(() => alarmAudio.pause(), 4000);
+    }
+
     if (isSessionDurationOver) {
+        clockAudio.pause();
         alarmAudio.play();
 
         setTimeout(() => alarmAudio.pause(), 9800);
