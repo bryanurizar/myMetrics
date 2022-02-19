@@ -159,7 +159,7 @@ function displayTimer() {
 
     const cancelButton = document.createElement('button');
     cancelButton.id = 'cancel-btn';
-    cancelButton.className = 'btn cancel-btn';
+    cancelButton.className = 'cancel-btn';
     cancelButton.innerText = 'End';
     timerButtons.appendChild(cancelButton);
     cancelButton.addEventListener('click', cancelTimer);
