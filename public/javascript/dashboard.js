@@ -67,6 +67,7 @@ function renderNewBoard(boardName, boardId) {
         <img class="flaticons edit" src="img/edit.svg" />
         <img class="flaticons trash" src="img/trash.svg" />
         `;
+    editTrashDiv.addEventListener('click', handleEditOrDeleteClick);
     boardCard.appendChild(editTrashDiv);
     boardCard.appendChild(newBoardName);
     boardSection.appendChild(boardCard);
