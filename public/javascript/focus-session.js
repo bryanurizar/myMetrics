@@ -265,6 +265,7 @@ extendButton.addEventListener('click', extendTimer);
 const extendModal = document.querySelector('.extend-timer');
 
 function extendTimer() {
+    clockAudio.pause();
     const hoursInput = document.querySelector('#hours');
     const minutesInput = document.querySelector('#minutes');
 
