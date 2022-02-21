@@ -227,6 +227,7 @@ function startTimer() {
 }
 
 function pauseOrResumeTimer(e) {
+    clockAudio.pause();
     studySessionDuration = studySessionDuration.minus(elapsedTime);
     startTime = new Date().getTime();
     elapsedTime = 0;
@@ -246,6 +247,7 @@ function pauseOrResumeTimer(e) {
 }
 
 function cancelTimer() {
+    clockAudio.pause();
     if (studySessionDuration) {
         clearTimeout(ticker);
         studySessionDuration = studySessionDuration.minus(elapsedTime - 1000);
@@ -306,15 +308,11 @@ function decrement() {
 
     if (isThirtySecondsLeft) {
         clockAudio.play();
-
-        setTimeout(() => alarmAudio.pause(), 4000);
     }
 
     if (isSessionDurationOver) {
         clockAudio.pause();
         alarmAudio.play();
-
-        setTimeout(() => alarmAudio.pause(), 9800);
         cancelTimer();
     }
     return;

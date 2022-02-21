@@ -213,3 +213,19 @@ img {
 ::-webkit-scrollbar-button {
     display: none;
 }
+
+.error-message {
+    min-height: 60vh;
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.header-404 {
+    font-size: 3rem;
+}
+
+.error-message p {
+    margin-top: 1rem;
+}

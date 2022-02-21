@@ -689,11 +689,12 @@ app.route('/focus-session/:studySessionId')
         }
     })
     .post(isUserAuthenticated, (req, res) => {
-        const studySessionDuration =
+        const studySessionDuration = Math.round(
             (req.body.hours || 0) * 3600 +
-            (req.body.minutes || 0) * 60 +
-            (req.body.seconds || 0) +
-            (req.body.milliseconds || 0) / 1000;
+                (req.body.minutes || 0) * 60 +
+                (req.body.seconds || 0) +
+                (req.body.milliseconds || 0) / 1000
+        );
         const boardId = req.body.boardId;
         const sessionId = req.params.studySessionId;
         const userAction = req.body.userAction;
@@ -928,6 +929,9 @@ app.route('/leaderboard').get(isUserAuthenticated, (req, res) => {
             });
         }
     );
+});
+app.use((req, res) => {
+    res.status(404).render('pages/404');
 });
 
 app.listen(port, () =>
