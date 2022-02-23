@@ -16,7 +16,7 @@
             </div>
             <div class="dropdown">
                 <div class="boardname-wrapper">
-                    <h2><%= boards.find(o => o.boardid === currentBoardId).boardname %></h2>
+                    <h2 style="word-break: break-word; text-align: right;"><%= boards.find(o => o.boardid === currentBoardId).boardname %></h2>
                     <svg
                         width="24"
                         height="24"
@@ -31,7 +31,7 @@
                         ></path>
                     </svg>
                 </div>
-                <div class="dropdown-content hidden">
+                <div style="word-break:word; overflow:hidden" class="dropdown-content hidden">
                     <% boards.filter(board => board.boardid !== currentBoardId).forEach(board => { %>
                     <a href=<%=`/boards/${board.boardid}/${board.boardname}`%> ><%=board.boardname%></a>
                     <% }) %>
@@ -60,7 +60,7 @@
                             <label for="boards"></label>
                                 <select name="boards" id="boards">
                                     <%boards.filter(board => board.boardid !== currentBoardId).forEach(board => { %>
-                                        <option id='<%=board.boardid%>' value="<%=board.boardname%>"><%=board.boardname%></option>
+                                        <option id='<%=board.boardid%>' value="<%=board.boardname%>"><%=board.boardname.substring(0, 16) + '...'%></option>
                                     <%}) %>
                                 </select>
                             <button class="move-btn">Move List</button>
@@ -105,6 +105,7 @@
                     class="add-card"
                     placeholder="Add new card.."
                     ondrop="return false;"
+                    maxlength="255"
                 ></textarea>
             </div>
             <% }); %>

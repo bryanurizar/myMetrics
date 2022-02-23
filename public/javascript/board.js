@@ -361,11 +361,14 @@ newListInput.addEventListener('drop', (e) => e.preventDefault());
 newListInput.addEventListener('keypress', (e) => {
     if (e.key === 'Enter') {
         createList(newListInput.value);
-        newListInput.value = '';
     }
 });
 
 function createList(listName) {
+    if (listName === '' || listName.length > 30) {
+        alert('Please enter a valid list name.');
+        return;
+    }
     const url = new URL(window.location.href);
     const newListRank =
         Number(
@@ -393,6 +396,7 @@ function createList(listName) {
             console.log(err);
         }
     })();
+    document.querySelector('.add-list').value = '';
 }
 
 function renderList(id, listName) {
@@ -423,9 +427,16 @@ function renderList(id, listName) {
     listTitle.classList.add('list-name');
     listTitle.contentEditable = true;
     listTitle.innerText = listName;
+    listTitle.style.overflow = 'hidden';
+    listTitle.spellcheck = 'false';
     header.appendChild(listTitle);
 
     listTitle.addEventListener('drop', (e) => e.preventDefault());
+    listTitle.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            e.target.blur();
+        }
+    });
 
     const listModal = document.createElement('h4');
     listModal.id = id;
@@ -519,6 +530,7 @@ function renderList(id, listName) {
     newListInput.classList.add('add-card');
     newListInput.placeholder = 'Add new card...';
     newListInput.onDrop = 'return false';
+    newListInput.maxLength = '255';
     newListInput.addEventListener('input', handleTextareaInput);
     newListInput.addEventListener('blur', handleTextareaBlur);
     newListInput.addEventListener('drop', (e) => e.preventDefault());
@@ -537,6 +549,23 @@ function renderList(id, listName) {
     todosDiv.addEventListener('drop', handleDrop);
     todosDiv.addEventListener('dragover', handleDragOver);
 }
+
+document.addEventListener('input', (e) => {
+    if (
+        e.target.classList.contains('list-name') &&
+        e.target.innerText.length > 30
+    ) {
+        alert('Maximum of 30 characters exceeded');
+        e.target.innerText = e.target.innerText.substring(0, 30);
+        e.target.blur();
+    }
+});
+
+newListInput.addEventListener('input', () => {
+    newListInput.value.length > 30
+        ? newListInput.classList.add('invalid')
+        : newListInput.classList.remove('invalid');
+});
 
 function addCard(listId, itemName) {
     if (itemName === '') return;
@@ -599,6 +628,16 @@ function renderCard(listId, cardId, cardContent) {
     itemEditIcon.addEventListener('click', handleEditIconClick);
     itemTrashIcon.addEventListener('click', handleTrashIconClick);
 }
+
+document.addEventListener('input', (e) => {
+    if (
+        e.target.classList.contains('todo-description') &&
+        e.target.innerText.length > 255
+    ) {
+        alert('Maximum of 255 characters exceeded');
+        e.target.innerText = e.target.innerText.substring(0, 255);
+    }
+});
 
 // Added event listener to the input elements of the list by using event delegation
 const board = document.querySelector('#board');

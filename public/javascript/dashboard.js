@@ -8,8 +8,14 @@ createBoardBtn.addEventListener('click', () => {
     createBoard(newBoardName);
 });
 
-createBoardInput.addEventListener('keypress', (e) => {
-    if (e.target.className === 'create-board' && e.key === 'Enter') {
+createBoardInput.addEventListener('input', () => {
+    createBoardInput.value.length > 30
+        ? createBoardInput.classList.add('invalid')
+        : createBoardInput.classList.remove('invalid');
+});
+
+createBoardInput.addEventListener('keydown', (e) => {
+    if (e.target.classList.contains('create-board') && e.key === 'Enter') {
         const newBoardName = e.target.value;
         createBoard(newBoardName);
     }
@@ -18,13 +24,13 @@ createBoardInput.addEventListener('keypress', (e) => {
 const boardSection = document.querySelector('#boards');
 
 async function createBoard(boardName) {
-    const newBoardRank =
-        Number(boardSection.lastElementChild?.dataset.rank) + 1 || 1;
-
-    if (boardName === '') {
-        alert('Please enter a valid board name');
+    if (boardName === '' || boardName.length > 30) {
+        alert('Please enter a valid board name.');
         return;
     }
+
+    const newBoardRank =
+        Number(boardSection.lastElementChild?.dataset.rank) + 1 || 1;
 
     const data = {
         newBoardName: boardName,
@@ -119,16 +125,15 @@ function handleEditOrDeleteClick(e) {
     }
 }
 
-// Below limits the board names to 45 characters
-const boardElements = Array.from(document.querySelectorAll('.board-name'));
-
-boardElements.forEach((boardElement) => {
-    boardElement.addEventListener('keypress', () => {
-        if (boardElement.innerText.length >= 45) {
-            alert('Maximum of 30 characters exceeded');
-            boardElement.innerText = boardElement.innerText.substring(0, 44);
-        }
-    });
+// Prevent more than 30 chars for board name
+document.addEventListener('input', (e) => {
+    if (
+        e.target.classList.contains('board-name') &&
+        e.target.innerText.length > 30
+    ) {
+        alert('Maximum of 30 characters exceeded');
+        e.target.innerText = e.target.innerText.substring(0, 30);
+    }
 });
 
 // Event listeners on boards

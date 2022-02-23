@@ -44,6 +44,20 @@ input {
     border: 0.0625rem solid #ccc;
 }
 
+input:focus {
+    outline: none;
+    box-shadow: 0 0 5px #2f75f2;
+    -webkit-box-shadow: 0 0 5px #2f75f2;
+    -moz-box-shadow: 0 0 5px #2f75f2;
+}
+
+.invalid:focus {
+    outline: none;
+    box-shadow: 0 0 5px red;
+    -webkit-box-shadow: 0 0 5px red;
+    -moz-box-shadow: 0 0 5px red;
+}
+
 .page-container {
     min-height: 100vh;
     display: flex;
