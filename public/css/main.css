@@ -243,3 +243,9 @@ img {
 .error-message p {
     margin-top: 1rem;
 }
+
+.current {
+    color: #275cc2;
+    /* font-weight: 500; */
+    /* background-color: #f7f7f7; */
+}
