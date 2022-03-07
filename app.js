@@ -737,9 +737,9 @@ app.route('/itemCountChart').get(isUserAuthenticated, (req, res) => {
 
     pool.query(
         `
-        SELECT Boards.boardName, COUNT(*) as itemCount FROM Items 
-        INNER JOIN Boards 
-        ON Items.boardID = Boards.boardID  
+        SELECT Boards.boardName, COUNT(*) as itemCount 
+        FROM Items 
+        INNER JOIN Boards ON Items.boardID = Boards.boardID  
         WHERE Items.isItemCompleted=FALSE AND Items.userID=$1 AND isBoardDeleted=FALSE
         GROUP BY boards.boardName
         ORDER BY itemCount DESC;
@@ -806,15 +806,11 @@ app.route('/daysSinceLastSession').get(isUserAuthenticated, (req, res) => {
 
     pool.query(
         `
-        SELECT T3.boardName, MAX(T3.createdAt) AS LastSessionDate FROM (
-	        SELECT T1.*, T2.boardName, T2.isBoardDeleted FROM (
-		        SELECT StudySessionLogs.LogId, StudySessionLogs.boardID, StudySessionLogs.createdAt FROM StudySessionLogs 
-			    WHERE StudySessionLogs.userAction='Cancel' AND userID=$1) AS T1			
-            JOIN Boards as T2
-            ON T2.boardID = T1.boardID
-            WHERE T2.isBoardDeleted=FALSE) AS T3
-        GROUP BY T3.boardName
-        ORDER BY T3.boardName;
+        SELECT T1.boardname, T1.createdAt, T2.lastsessiondate FROM (
+            SELECT boardId, boardname, createdAt FROM boards WHERE isBoardDeleted='false' AND userid=$1) AS T1 
+            LEFT JOIN (SELECT boardId, MAX(createdAt) AS lastsessiondate FROM studysessionlogs WHERE userAction='Start' GROUP BY boardId) AS T2 
+            ON T1.boardId = T2.boardId
+         ORDER BY T1.boardname;
         `,
         [loggedInUserId],
         (err, data) => {
@@ -823,10 +819,17 @@ app.route('/daysSinceLastSession').get(isUserAuthenticated, (req, res) => {
             const daysSinceLastSession = [];
             const boardsData = data.rows;
             boardsData.forEach((boardData) => {
-                const numberOfDays = Math.floor(
-                    (Date.now() - boardData.lastsessiondate) /
-                        (1000 * 3600 * 24)
-                );
+                let numberOfDays;
+                if (!boardData.lastsessiondate) {
+                    numberOfDays = Math.floor(
+                        (Date.now() - boardData.createdAt) / (1000 * 3600 * 24)
+                    );
+                } else {
+                    numberOfDays = Math.floor(
+                        (Date.now() - boardData.lastsessiondate) /
+                            (1000 * 3600 * 24)
+                    );
+                }
                 boardNames.push(boardData.boardname);
                 daysSinceLastSession.push(numberOfDays);
             });
@@ -846,16 +849,16 @@ app.route('/pausesByBoards').get(isUserAuthenticated, (req, res) => {
 
     pool.query(
         `
-        SELECT T3.SessionID, T3.pauseCount FROM (
-            SELECT StudySessionLogs.SessionID, StudySessionLogs.userAction, T2.createdAt,
-            COUNT(StudySessionLogs.userAction) AS pauseCount FROM StudySessionLogs
-            INNER JOIN StudySessions AS T2
-            ON StudySessionLogs.SessionID = T2.SessionID
-            WHERE StudySessionLogs.userAction = 'Pause' AND StudySessionLogs.userID=$1
-            GROUP BY StudySessionLogs.SessionID, StudySessionLogs.userAction, T2.createdAt
-            ORDER BY createdAt DESC
-            LIMIT 10) As T3
-        ORDER BY T3.createdAt ASC
+        SELECT T1.sessionId, T1.createdAt, T2.pausecount 
+        FROM (
+            SELECT sessionId, createdAt  
+            FROM StudySessionLogs 
+            WHERE userAction = 'Start' AND userid=$1) AS T1 
+                LEFT JOIN (
+                    SELECT sessionId, COUNT(*) AS pausecount FROM StudySessionLogs WHERE userAction = 'Pause' GROUP BY sessionId) AS T2
+                ON T1.sessionId = T2.sessionId
+        ORDER BY T1.createdAt DESC
+        LIMIT 10;
         `,
         [loggedInUserId],
         (err, data) => {
@@ -865,7 +868,7 @@ app.route('/pausesByBoards').get(isUserAuthenticated, (req, res) => {
             const pausesCount = [];
             const pauseCountByBoards = data.rows;
             pauseCountByBoards.forEach((pauseCountByBoard) => {
-                pausesCount.push(pauseCountByBoard.pausecount);
+                pausesCount.unshift(pauseCountByBoard.pausecount);
             });
             res.json({
                 lastTenSessions: lastTenSessions,
